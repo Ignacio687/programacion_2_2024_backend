@@ -19,7 +19,7 @@
     "feignClient": null,
     "jhipsterVersion": "8.7.0",
     "jwtSecretKey": "OTg3NTQ3OTVlZDVmMDQzY2I5OWU3OTNlMDUyMjJkZTQ2NjlhMDllMzJiNmIzZDRjNDQ5ZWQ0YTBhYTM3Y2JkMjBhMjFmMzE0NjM4ZWUwZTViMzIxYzQ2ODZiYTRlMjdmNWRmMWI2NDg4Y2NhZjJmYjRhOGViNWU2NjBiNmYxMzQ=",
-    "languages": ["es"],
+    "languages": ["es", "en", "pt-br"],
     "messageBroker": false,
     "microfrontend": null,
     "microfrontends": [],
