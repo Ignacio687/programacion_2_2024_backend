@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230955"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "freePrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Extra",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "extras",
+      "relationshipName": "devices",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

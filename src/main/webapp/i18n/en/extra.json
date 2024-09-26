@@ -1,0 +1,28 @@
+{
+  "computechApp": {
+    "extra": {
+      "home": {
+        "title": "Extras",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Extra",
+        "createOrEditLabel": "Create or edit a Extra",
+        "notFound": "No Extras found"
+      },
+      "created": "A new Extra is created with identifier {{ param }}",
+      "updated": "A Extra is updated with identifier {{ param }}",
+      "deleted": "A Extra is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Extra {{ id }}?"
+      },
+      "detail": {
+        "title": "Extra"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "price": "Price",
+      "freePrice": "Free Price",
+      "devices": "Devices"
+    }
+  }
+}

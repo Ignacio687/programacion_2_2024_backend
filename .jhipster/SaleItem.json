@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230957"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "SaleItem",
+  "relationships": [
+    {
+      "otherEntityName": "option",
+      "relationshipName": "option",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "extra",
+      "relationshipName": "extra",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "sale",
+      "otherEntityRelationshipName": "saleItems",
+      "relationshipName": "sale",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

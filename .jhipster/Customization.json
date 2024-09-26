@@ -1,0 +1,28 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230953"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Customization",
+  "relationships": [
+    {
+      "otherEntityName": "option",
+      "otherEntityRelationshipName": "customization",
+      "relationshipName": "options",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

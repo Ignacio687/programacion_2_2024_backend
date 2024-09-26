@@ -1,0 +1,141 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-device-heading" data-cy="DeviceCreateUpdateHeading" jhiTranslate="computechApp.device.home.createOrEditLabel">
+        Crear o editar Device
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="computechApp.device.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let codeRef = editForm.get('code')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_code" jhiTranslate="computechApp.device.code">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+          @if (codeRef.invalid && (codeRef.dirty || codeRef.touched)) {
+            <div>
+              @if (editForm.get('code')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="computechApp.device.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="computechApp.device.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        @let basePriceRef = editForm.get('basePrice')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_basePrice" jhiTranslate="computechApp.device.basePrice">Base Price</label>
+          <input type="number" class="form-control" name="basePrice" id="field_basePrice" data-cy="basePrice" formControlName="basePrice" />
+          @if (basePriceRef.invalid && (basePriceRef.dirty || basePriceRef.touched)) {
+            <div>
+              @if (editForm.get('basePrice')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('basePrice')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_currency" jhiTranslate="computechApp.device.currency">Currency</label>
+          <input type="text" class="form-control" name="currency" id="field_currency" data-cy="currency" formControlName="currency" />
+        </div>
+
+        <div class="mb-3">
+          <label for="field_characteristics" jhiTranslate="computechApp.device.characteristics">Characteristics</label>
+          <select
+            class="form-control"
+            id="field_characteristics"
+            data-cy="characteristics"
+            multiple
+            name="characteristics"
+            formControlName="characteristics"
+            [compareWith]="compareCharacteristic"
+          >
+            @for (characteristicOption of characteristicsSharedCollection; track $index) {
+              <option [ngValue]="characteristicOption">{{ characteristicOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_options" jhiTranslate="computechApp.device.options">Options</label>
+          <select
+            class="form-control"
+            id="field_options"
+            data-cy="options"
+            multiple
+            name="options"
+            formControlName="options"
+            [compareWith]="compareOption"
+          >
+            @for (optionOption of optionsSharedCollection; track $index) {
+              <option [ngValue]="optionOption">{{ optionOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_extras" jhiTranslate="computechApp.device.extras">Extras</label>
+          <select
+            class="form-control"
+            id="field_extras"
+            data-cy="extras"
+            multiple
+            name="extras"
+            formControlName="extras"
+            [compareWith]="compareExtra"
+          >
+            @for (extraOption of extrasSharedCollection; track $index) {
+              <option [ngValue]="extraOption">{{ extraOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

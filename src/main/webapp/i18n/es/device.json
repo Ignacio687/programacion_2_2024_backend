@@ -1,0 +1,32 @@
+{
+  "computechApp": {
+    "device": {
+      "home": {
+        "title": "Devices",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Device",
+        "createOrEditLabel": "Crear o editar Device",
+        "notFound": "Ningún Devices encontrado"
+      },
+      "created": "Un nuevo Device ha sido creado con el identificador {{ param }}",
+      "updated": "Un Device ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Device ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Device {{ id }}?"
+      },
+      "detail": {
+        "title": "Device"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "basePrice": "Base Price",
+      "currency": "Currency",
+      "sales": "Sales",
+      "characteristics": "Characteristics",
+      "options": "Options",
+      "extras": "Extras"
+    }
+  }
+}

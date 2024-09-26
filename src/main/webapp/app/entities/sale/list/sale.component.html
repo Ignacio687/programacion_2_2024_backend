@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="SaleHeading">
+    <span jhiTranslate="computechApp.sale.home.title">Sales</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="computechApp.sale.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-sale"
+        [routerLink]="['/sale/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="computechApp.sale.home.createLabel">Crear nuevo Sale</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (sales?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="computechApp.sale.home.notFound">Ningún Sales encontrado</span>
+    </div>
+  }
+
+  @if (sales && sales.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="devicePrice">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.devicePrice">Device Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="finalPrice">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.finalPrice">Final Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="saleDate">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.saleDate">Sale Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="currency">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.currency">Currency</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="device.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.device">Device</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (sale of sales; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
+              </td>
+              <td>{{ sale.devicePrice }}</td>
+              <td>{{ sale.finalPrice }}</td>
+              <td>{{ sale.saleDate | formatMediumDatetime }}</td>
+              <td>{{ sale.currency }}</td>
+              <td>
+                @if (sale.device) {
+                  <div>
+                    <a [routerLink]="['/device', sale.device.id, 'view']">{{ sale.device.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/sale', sale.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (sales && sales.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

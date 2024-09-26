@@ -1,0 +1,29 @@
+{
+  "computechApp": {
+    "option": {
+      "home": {
+        "title": "Options",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Option",
+        "createOrEditLabel": "Crear o editar Option",
+        "notFound": "Ningún Options encontrado"
+      },
+      "created": "Un nuevo Option ha sido creado con el identificador {{ param }}",
+      "updated": "Un Option ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Option ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Option {{ id }}?"
+      },
+      "detail": {
+        "title": "Option"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "additionalPrice": "Additional Price",
+      "customization": "Customization",
+      "devices": "Devices"
+    }
+  }
+}

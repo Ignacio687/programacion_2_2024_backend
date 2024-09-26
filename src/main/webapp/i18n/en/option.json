@@ -1,0 +1,29 @@
+{
+  "computechApp": {
+    "option": {
+      "home": {
+        "title": "Options",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Option",
+        "createOrEditLabel": "Create or edit a Option",
+        "notFound": "No Options found"
+      },
+      "created": "A new Option is created with identifier {{ param }}",
+      "updated": "A Option is updated with identifier {{ param }}",
+      "deleted": "A Option is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Option {{ id }}?"
+      },
+      "detail": {
+        "title": "Option"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "additionalPrice": "Additional Price",
+      "customization": "Customization",
+      "devices": "Devices"
+    }
+  }
+}

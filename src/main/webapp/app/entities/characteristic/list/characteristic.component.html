@@ -1,0 +1,116 @@
+<div>
+  <h2 id="page-heading" data-cy="CharacteristicHeading">
+    <span jhiTranslate="computechApp.characteristic.home.title">Characteristics</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="computechApp.characteristic.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-characteristic"
+        [routerLink]="['/characteristic/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="computechApp.characteristic.home.createLabel">Crear nuevo Characteristic</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (characteristics?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="computechApp.characteristic.home.notFound">Ningún Characteristics encontrado</span>
+    </div>
+  }
+
+  @if (characteristics && characteristics.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.characteristic.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.characteristic.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="devices.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.characteristic.devices">Devices</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (characteristic of characteristics; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/characteristic', characteristic.id, 'view']">{{ characteristic.id }}</a>
+              </td>
+              <td>{{ characteristic.name }}</td>
+              <td>{{ characteristic.description }}</td>
+              <td>
+                @for (devices of characteristic.devices; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/device', devices.id, 'view']">{{ devices.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/characteristic', characteristic.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/characteristic', characteristic.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(characteristic)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

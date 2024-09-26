@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (characteristic(); as characteristicRef) {
+      <div>
+        <h2 data-cy="characteristicDetailsHeading"><span jhiTranslate="computechApp.characteristic.detail.title">Characteristic</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ characteristicRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.characteristic.name">Name</span></dt>
+          <dd>
+            <span>{{ characteristicRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.characteristic.description">Description</span></dt>
+          <dd>
+            <span>{{ characteristicRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.characteristic.devices">Devices</span></dt>
+          <dd>
+            @for (devices of characteristicRef.devices; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/device', devices.id, 'view']">{{ devices?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/characteristic', characteristicRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

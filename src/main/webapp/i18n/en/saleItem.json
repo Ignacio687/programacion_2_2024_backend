@@ -1,0 +1,27 @@
+{
+  "computechApp": {
+    "saleItem": {
+      "home": {
+        "title": "Sale Items",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Sale Item",
+        "createOrEditLabel": "Create or edit a Sale Item",
+        "notFound": "No Sale Items found"
+      },
+      "created": "A new Sale Item is created with identifier {{ param }}",
+      "updated": "A Sale Item is updated with identifier {{ param }}",
+      "deleted": "A Sale Item is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Sale Item {{ id }}?"
+      },
+      "detail": {
+        "title": "Sale Item"
+      },
+      "id": "ID",
+      "price": "Price",
+      "option": "Option",
+      "extra": "Extra",
+      "sale": "Sale"
+    }
+  }
+}

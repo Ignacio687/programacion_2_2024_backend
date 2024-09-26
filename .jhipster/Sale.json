@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230956"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "devicePrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "finalPrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "saleDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "currency",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Sale",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "saleItem",
+      "otherEntityRelationshipName": "sale",
+      "relationshipName": "saleItems",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "sales",
+      "relationshipName": "device",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

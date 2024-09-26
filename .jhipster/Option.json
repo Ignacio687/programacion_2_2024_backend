@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230954"
+  },
+  "applications": "*",
+  "entityTableName": "jhi_option",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "additionalPrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Option",
+  "relationships": [
+    {
+      "otherEntityName": "customization",
+      "otherEntityRelationshipName": "options",
+      "relationshipName": "customization",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "options",
+      "relationshipName": "devices",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

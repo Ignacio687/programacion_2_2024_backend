@@ -1,0 +1,26 @@
+{
+  "computechApp": {
+    "characteristic": {
+      "home": {
+        "title": "Characteristics",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Characteristic",
+        "createOrEditLabel": "Criar ou editar Characteristic",
+        "notFound": "Nenhum Characteristic encontrado"
+      },
+      "created": "Um novo Characteristic foi criado com o identificador {{ param }}",
+      "updated": "Um Characteristic foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Characteristic foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Characteristic {{ id }}?"
+      },
+      "detail": {
+        "title": "Characteristic"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "devices": "Devices"
+    }
+  }
+}

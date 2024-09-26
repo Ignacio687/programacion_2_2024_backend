@@ -1,0 +1,139 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-sale-heading" data-cy="SaleCreateUpdateHeading" jhiTranslate="computechApp.sale.home.createOrEditLabel">
+        Crear o editar Sale
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="computechApp.sale.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let devicePriceRef = editForm.get('devicePrice')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_devicePrice" jhiTranslate="computechApp.sale.devicePrice">Device Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="devicePrice"
+            id="field_devicePrice"
+            data-cy="devicePrice"
+            formControlName="devicePrice"
+          />
+          @if (devicePriceRef.invalid && (devicePriceRef.dirty || devicePriceRef.touched)) {
+            <div>
+              @if (editForm.get('devicePrice')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('devicePrice')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let finalPriceRef = editForm.get('finalPrice')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_finalPrice" jhiTranslate="computechApp.sale.finalPrice">Final Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="finalPrice"
+            id="field_finalPrice"
+            data-cy="finalPrice"
+            formControlName="finalPrice"
+          />
+          @if (finalPriceRef.invalid && (finalPriceRef.dirty || finalPriceRef.touched)) {
+            <div>
+              @if (editForm.get('finalPrice')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('finalPrice')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let saleDateRef = editForm.get('saleDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_saleDate" jhiTranslate="computechApp.sale.saleDate">Sale Date</label>
+          <div class="d-flex">
+            <input
+              id="field_saleDate"
+              data-cy="saleDate"
+              type="datetime-local"
+              class="form-control"
+              name="saleDate"
+              formControlName="saleDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (saleDateRef.invalid && (saleDateRef.dirty || saleDateRef.touched)) {
+            <div>
+              @if (editForm.get('saleDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('saleDate')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Este campo debe ser una fecha y hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_currency" jhiTranslate="computechApp.sale.currency">Currency</label>
+          <input type="text" class="form-control" name="currency" id="field_currency" data-cy="currency" formControlName="currency" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_device" jhiTranslate="computechApp.sale.device">Device</label>
+          <select
+            class="form-control"
+            id="field_device"
+            data-cy="device"
+            name="device"
+            formControlName="device"
+            [compareWith]="compareDevice"
+          >
+            <option [ngValue]="null"></option>
+            @for (deviceOption of devicesSharedCollection; track $index) {
+              <option [ngValue]="deviceOption">{{ deviceOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

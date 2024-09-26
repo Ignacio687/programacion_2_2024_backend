@@ -1,0 +1,26 @@
+{
+  "computechApp": {
+    "customization": {
+      "home": {
+        "title": "Customizations",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Customization",
+        "createOrEditLabel": "Crear o editar Customization",
+        "notFound": "Ningún Customizations encontrado"
+      },
+      "created": "Un nuevo Customization ha sido creado con el identificador {{ param }}",
+      "updated": "Un Customization ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Customization ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Customization {{ id }}?"
+      },
+      "detail": {
+        "title": "Customization"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "options": "Options"
+    }
+  }
+}

@@ -1,0 +1,137 @@
+<div>
+  <h2 id="page-heading" data-cy="OptionHeading">
+    <span jhiTranslate="computechApp.option.home.title">Options</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="computechApp.option.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-option"
+        [routerLink]="['/option/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="computechApp.option.home.createLabel">Crear nuevo Option</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (options?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="computechApp.option.home.notFound">Ningún Options encontrado</span>
+    </div>
+  }
+
+  @if (options && options.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="code">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.code">Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="additionalPrice">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.additionalPrice">Additional Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="customization.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.customization">Customization</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="devices.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.option.devices">Devices</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (option of options; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/option', option.id, 'view']">{{ option.id }}</a>
+              </td>
+              <td>{{ option.code }}</td>
+              <td>{{ option.name }}</td>
+              <td>{{ option.description }}</td>
+              <td>{{ option.additionalPrice }}</td>
+              <td>
+                @if (option.customization) {
+                  <div>
+                    <a [routerLink]="['/customization', option.customization.id, 'view']">{{ option.customization.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @for (devices of option.devices; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/device', devices.id, 'view']">{{ devices.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/option', option.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/option', option.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(option)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

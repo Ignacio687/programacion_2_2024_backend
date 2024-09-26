@@ -1,0 +1,63 @@
+entity Device {
+  code String required
+  name String
+  description String
+  basePrice Double required
+  currency String
+}
+
+entity Characteristic {
+  name String required
+  description String
+}
+
+entity Customization {
+  name String required
+  description String
+}
+
+entity Option {
+  code String required
+  name String
+  description String
+  additionalPrice Double required
+}
+
+entity Extra {
+  name String required
+  description String
+  price Double required
+  freePrice Double required
+}
+
+entity Sale {
+  devicePrice Double required
+  finalPrice Double required
+  saleDate Instant required
+  currency String
+}
+
+entity SaleItem {
+  price Double required
+}
+
+relationship ManyToMany {
+  Device{characteristics} to Characteristic{devices}
+  Device{options} to Option{devices}
+  Device{extras} to Extra{devices}
+}
+
+relationship OneToMany {
+  Customization{options} to Option{customization}
+  Device{sales} to Sale{device}
+  Sale{saleItems} to SaleItem{sale}
+}
+
+relationship ManyToOne {
+  SaleItem{option} to Option
+  SaleItem{extra} to Extra
+}
+
+paginate Device with pagination
+paginate Extra with pagination
+paginate Sale with pagination

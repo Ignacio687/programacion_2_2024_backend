@@ -8,7 +8,13 @@
       "entities": {
         "main": "Entidades",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "adminAuthority": "Authority"
+        "device": "Device",
+        "characteristic": "Characteristic",
+        "customization": "Customization",
+        "option": "Option",
+        "extra": "Extra",
+        "sale": "Sale",
+        "saleItem": "Sale Item"
       },
       "account": {
         "main": "Conta",

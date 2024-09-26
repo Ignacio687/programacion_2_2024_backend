@@ -1,0 +1,28 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230952"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Characteristic",
+  "relationships": [
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "characteristics",
+      "relationshipName": "devices",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

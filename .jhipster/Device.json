@@ -1,0 +1,63 @@
+{
+  "annotations": {
+    "changelogDate": "20240926230951"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "basePrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "currency",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Device",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "sale",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "sales",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "characteristic",
+      "otherEntityRelationshipName": "devices",
+      "relationshipName": "characteristics",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "option",
+      "otherEntityRelationshipName": "devices",
+      "relationshipName": "options",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "extra",
+      "otherEntityRelationshipName": "devices",
+      "relationshipName": "extras",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

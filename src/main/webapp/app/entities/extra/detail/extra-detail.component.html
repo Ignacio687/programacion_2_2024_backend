@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (extra(); as extraRef) {
+      <div>
+        <h2 data-cy="extraDetailsHeading"><span jhiTranslate="computechApp.extra.detail.title">Extra</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ extraRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.extra.name">Name</span></dt>
+          <dd>
+            <span>{{ extraRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.extra.description">Description</span></dt>
+          <dd>
+            <span>{{ extraRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.extra.price">Price</span></dt>
+          <dd>
+            <span>{{ extraRef.price }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.extra.freePrice">Free Price</span></dt>
+          <dd>
+            <span>{{ extraRef.freePrice }}</span>
+          </dd>
+          <dt><span jhiTranslate="computechApp.extra.devices">Devices</span></dt>
+          <dd>
+            @for (devices of extraRef.devices; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/device', devices.id, 'view']">{{ devices?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/extra', extraRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

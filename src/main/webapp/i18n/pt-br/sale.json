@@ -1,0 +1,29 @@
+{
+  "computechApp": {
+    "sale": {
+      "home": {
+        "title": "Sales",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Sale",
+        "createOrEditLabel": "Criar ou editar Sale",
+        "notFound": "Nenhum Sale encontrado"
+      },
+      "created": "Um novo Sale foi criado com o identificador {{ param }}",
+      "updated": "Um Sale foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Sale foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Sale {{ id }}?"
+      },
+      "detail": {
+        "title": "Sale"
+      },
+      "id": "ID",
+      "devicePrice": "Device Price",
+      "finalPrice": "Final Price",
+      "saleDate": "Sale Date",
+      "currency": "Currency",
+      "saleItems": "Sale Items",
+      "device": "Device"
+    }
+  }
+}
