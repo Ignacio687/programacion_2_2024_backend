@@ -138,6 +138,9 @@ public class SaleResource {
                 if (sale.getCurrency() != null) {
                     existingSale.setCurrency(sale.getCurrency());
                 }
+                if (sale.getFinalized() != null) {
+                    existingSale.setFinalized(sale.getFinalized());
+                }
 
                 return existingSale;
             })

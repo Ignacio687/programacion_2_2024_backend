@@ -46,6 +46,9 @@ class SaleResourceIT {
     private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
     private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_FINALIZED = false;
+    private static final Boolean UPDATED_FINALIZED = true;
+
     private static final String ENTITY_API_URL = "/api/sales";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -79,7 +82,8 @@ class SaleResourceIT {
             .devicePrice(DEFAULT_DEVICE_PRICE)
             .finalPrice(DEFAULT_FINAL_PRICE)
             .saleDate(DEFAULT_SALE_DATE)
-            .currency(DEFAULT_CURRENCY);
+            .currency(DEFAULT_CURRENCY)
+            .finalized(DEFAULT_FINALIZED);
     }
 
     /**
@@ -93,7 +97,8 @@ class SaleResourceIT {
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .finalized(UPDATED_FINALIZED);
     }
 
     @BeforeEach
@@ -211,7 +216,8 @@ class SaleResourceIT {
             .andExpect(jsonPath("$.[*].devicePrice").value(hasItem(DEFAULT_DEVICE_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].finalPrice").value(hasItem(DEFAULT_FINAL_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].saleDate").value(hasItem(DEFAULT_SALE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY)));
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY)))
+            .andExpect(jsonPath("$.[*].finalized").value(hasItem(DEFAULT_FINALIZED.booleanValue())));
     }
 
     @Test
@@ -229,7 +235,8 @@ class SaleResourceIT {
             .andExpect(jsonPath("$.devicePrice").value(DEFAULT_DEVICE_PRICE.doubleValue()))
             .andExpect(jsonPath("$.finalPrice").value(DEFAULT_FINAL_PRICE.doubleValue()))
             .andExpect(jsonPath("$.saleDate").value(DEFAULT_SALE_DATE.toString()))
-            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY));
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY))
+            .andExpect(jsonPath("$.finalized").value(DEFAULT_FINALIZED.booleanValue()));
     }
 
     @Test
@@ -255,7 +262,8 @@ class SaleResourceIT {
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .finalized(UPDATED_FINALIZED);
 
         restSaleMockMvc
             .perform(
@@ -363,7 +371,8 @@ class SaleResourceIT {
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .finalized(UPDATED_FINALIZED);
 
         restSaleMockMvc
             .perform(

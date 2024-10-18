@@ -47,11 +47,14 @@ public class DeviceAsserts {
     public static void assertDeviceUpdatableFieldsEquals(Device expected, Device actual) {
         assertThat(expected)
             .as("Verify Device relevant properties")
+            .satisfies(e -> assertThat(e.getSupplierForeignKey()).as("check supplierForeignKey").isEqualTo(actual.getSupplierForeignKey()))
+            .satisfies(e -> assertThat(e.getSupplier()).as("check supplier").isEqualTo(actual.getSupplier()))
             .satisfies(e -> assertThat(e.getCode()).as("check code").isEqualTo(actual.getCode()))
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
             .satisfies(e -> assertThat(e.getBasePrice()).as("check basePrice").isEqualTo(actual.getBasePrice()))
-            .satisfies(e -> assertThat(e.getCurrency()).as("check currency").isEqualTo(actual.getCurrency()));
+            .satisfies(e -> assertThat(e.getCurrency()).as("check currency").isEqualTo(actual.getCurrency()))
+            .satisfies(e -> assertThat(e.getActive()).as("check active").isEqualTo(actual.getActive()));
     }
 
     /**

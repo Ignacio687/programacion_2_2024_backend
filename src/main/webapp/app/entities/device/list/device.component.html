@@ -42,6 +42,20 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="supplierForeignKey">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.device.supplierForeignKey">Supplier Foreign Key</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="supplier">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.device.supplier">Supplier</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="code">
               <div class="d-flex">
                 <span jhiTranslate="computechApp.device.code">Code</span>
@@ -77,6 +91,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="active">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.device.active">Active</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -86,11 +107,14 @@
               <td>
                 <a [routerLink]="['/device', device.id, 'view']">{{ device.id }}</a>
               </td>
+              <td>{{ device.supplierForeignKey }}</td>
+              <td>{{ device.supplier }}</td>
               <td>{{ device.code }}</td>
               <td>{{ device.name }}</td>
               <td>{{ device.description }}</td>
               <td>{{ device.basePrice }}</td>
               <td>{{ device.currency }}</td>
+              <td>{{ device.active }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/device', device.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

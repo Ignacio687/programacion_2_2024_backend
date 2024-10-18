@@ -14,15 +14,18 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type DeviceFormGroupInput = IDevice | PartialWithRequiredKeyOf<NewDevice>;
 
-type DeviceFormDefaults = Pick<NewDevice, 'id' | 'characteristics' | 'options' | 'extras'>;
+type DeviceFormDefaults = Pick<NewDevice, 'id' | 'active' | 'characteristics' | 'options' | 'extras'>;
 
 type DeviceFormGroupContent = {
   id: FormControl<IDevice['id'] | NewDevice['id']>;
+  supplierForeignKey: FormControl<IDevice['supplierForeignKey']>;
+  supplier: FormControl<IDevice['supplier']>;
   code: FormControl<IDevice['code']>;
   name: FormControl<IDevice['name']>;
   description: FormControl<IDevice['description']>;
   basePrice: FormControl<IDevice['basePrice']>;
   currency: FormControl<IDevice['currency']>;
+  active: FormControl<IDevice['active']>;
   characteristics: FormControl<IDevice['characteristics']>;
   options: FormControl<IDevice['options']>;
   extras: FormControl<IDevice['extras']>;
@@ -45,6 +48,12 @@ export class DeviceFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignKey: new FormControl(deviceRawValue.supplierForeignKey, {
+        validators: [Validators.required],
+      }),
+      supplier: new FormControl(deviceRawValue.supplier, {
+        validators: [Validators.required],
+      }),
       code: new FormControl(deviceRawValue.code, {
         validators: [Validators.required],
       }),
@@ -54,6 +63,7 @@ export class DeviceFormService {
         validators: [Validators.required],
       }),
       currency: new FormControl(deviceRawValue.currency),
+      active: new FormControl(deviceRawValue.active),
       characteristics: new FormControl(deviceRawValue.characteristics ?? []),
       options: new FormControl(deviceRawValue.options ?? []),
       extras: new FormControl(deviceRawValue.extras ?? []),
@@ -77,6 +87,7 @@ export class DeviceFormService {
   private getFormDefaults(): DeviceFormDefaults {
     return {
       id: null,
+      active: false,
       characteristics: [],
       options: [],
       extras: [],

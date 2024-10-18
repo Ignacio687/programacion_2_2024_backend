@@ -49,10 +49,10 @@ describe('Characteristic Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Device query and add missing value', () => {
       const characteristic: ICharacteristic = { id: 456 };
-      const devices: IDevice[] = [{ id: 14632 }];
+      const devices: IDevice[] = [{ id: 17739 }];
       characteristic.devices = devices;
 
-      const deviceCollection: IDevice[] = [{ id: 11206 }];
+      const deviceCollection: IDevice[] = [{ id: 11385 }];
       jest.spyOn(deviceService, 'query').mockReturnValue(of(new HttpResponse({ body: deviceCollection })));
       const additionalDevices = [...devices];
       const expectedCollection: IDevice[] = [...additionalDevices, ...deviceCollection];
@@ -71,7 +71,7 @@ describe('Characteristic Management Update Component', () => {
 
     it('Should update editForm', () => {
       const characteristic: ICharacteristic = { id: 456 };
-      const devices: IDevice = { id: 3327 };
+      const devices: IDevice = { id: 28300 };
       characteristic.devices = [devices];
 
       activatedRoute.data = of({ characteristic });

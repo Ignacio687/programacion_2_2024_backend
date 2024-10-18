@@ -101,10 +101,10 @@ describe('SaleItem Management Update Component', () => {
 
     it('Should call Sale query and add missing value', () => {
       const saleItem: ISaleItem = { id: 456 };
-      const sale: ISale = { id: 22978 };
+      const sale: ISale = { id: 17188 };
       saleItem.sale = sale;
 
-      const saleCollection: ISale[] = [{ id: 16794 }];
+      const saleCollection: ISale[] = [{ id: 14344 }];
       jest.spyOn(saleService, 'query').mockReturnValue(of(new HttpResponse({ body: saleCollection })));
       const additionalSales = [sale];
       const expectedCollection: ISale[] = [...additionalSales, ...saleCollection];
@@ -127,7 +127,7 @@ describe('SaleItem Management Update Component', () => {
       saleItem.option = option;
       const extra: IExtra = { id: 21428 };
       saleItem.extra = extra;
-      const sale: ISale = { id: 6069 };
+      const sale: ISale = { id: 9677 };
       saleItem.sale = sale;
 
       activatedRoute.data = of({ saleItem });

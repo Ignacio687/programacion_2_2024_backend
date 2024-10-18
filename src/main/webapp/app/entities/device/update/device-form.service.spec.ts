@@ -20,11 +20,14 @@ describe('Device Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignKey: expect.any(Object),
+            supplier: expect.any(Object),
             code: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
             basePrice: expect.any(Object),
             currency: expect.any(Object),
+            active: expect.any(Object),
             characteristics: expect.any(Object),
             options: expect.any(Object),
             extras: expect.any(Object),
@@ -38,11 +41,14 @@ describe('Device Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignKey: expect.any(Object),
+            supplier: expect.any(Object),
             code: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
             basePrice: expect.any(Object),
             currency: expect.any(Object),
+            active: expect.any(Object),
             characteristics: expect.any(Object),
             options: expect.any(Object),
             extras: expect.any(Object),

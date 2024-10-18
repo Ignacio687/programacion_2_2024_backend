@@ -49,10 +49,10 @@ describe('Extra Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Device query and add missing value', () => {
       const extra: IExtra = { id: 456 };
-      const devices: IDevice[] = [{ id: 26253 }];
+      const devices: IDevice[] = [{ id: 22529 }];
       extra.devices = devices;
 
-      const deviceCollection: IDevice[] = [{ id: 26513 }];
+      const deviceCollection: IDevice[] = [{ id: 2050 }];
       jest.spyOn(deviceService, 'query').mockReturnValue(of(new HttpResponse({ body: deviceCollection })));
       const additionalDevices = [...devices];
       const expectedCollection: IDevice[] = [...additionalDevices, ...deviceCollection];
@@ -71,7 +71,7 @@ describe('Extra Management Update Component', () => {
 
     it('Should update editForm', () => {
       const extra: IExtra = { id: 456 };
-      const devices: IDevice = { id: 3217 };
+      const devices: IDevice = { id: 26979 };
       extra.devices = [devices];
 
       activatedRoute.data = of({ extra });

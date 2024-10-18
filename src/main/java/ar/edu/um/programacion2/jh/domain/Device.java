@@ -26,6 +26,14 @@ public class Device implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "supplier_foreign_key", nullable = false)
+    private Long supplierForeignKey;
+
+    @NotNull
+    @Column(name = "supplier", nullable = false)
+    private String supplier;
+
+    @NotNull
     @Column(name = "code", nullable = false)
     private String code;
 
@@ -41,6 +49,9 @@ public class Device implements Serializable {
 
     @Column(name = "currency")
     private String currency;
+
+    @Column(name = "active")
+    private Boolean active;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "device")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -90,6 +101,32 @@ public class Device implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSupplierForeignKey() {
+        return this.supplierForeignKey;
+    }
+
+    public Device supplierForeignKey(Long supplierForeignKey) {
+        this.setSupplierForeignKey(supplierForeignKey);
+        return this;
+    }
+
+    public void setSupplierForeignKey(Long supplierForeignKey) {
+        this.supplierForeignKey = supplierForeignKey;
+    }
+
+    public String getSupplier() {
+        return this.supplier;
+    }
+
+    public Device supplier(String supplier) {
+        this.setSupplier(supplier);
+        return this;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
     public String getCode() {
@@ -155,6 +192,19 @@ public class Device implements Serializable {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Boolean getActive() {
+        return this.active;
+    }
+
+    public Device active(Boolean active) {
+        this.setActive(active);
+        return this;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Set<Sale> getSales() {
@@ -281,11 +331,14 @@ public class Device implements Serializable {
     public String toString() {
         return "Device{" +
             "id=" + getId() +
+            ", supplierForeignKey=" + getSupplierForeignKey() +
+            ", supplier='" + getSupplier() + "'" +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", basePrice=" + getBasePrice() +
             ", currency='" + getCurrency() + "'" +
+            ", active='" + getActive() + "'" +
             "}";
     }
 }

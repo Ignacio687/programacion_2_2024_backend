@@ -40,6 +40,12 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DeviceResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_KEY = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_KEY = 2L;
+
+    private static final String DEFAULT_SUPPLIER = "AAAAAAAAAA";
+    private static final String UPDATED_SUPPLIER = "BBBBBBBBBB";
+
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
@@ -54,6 +60,9 @@ class DeviceResourceIT {
 
     private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
     private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_ACTIVE = false;
+    private static final Boolean UPDATED_ACTIVE = true;
 
     private static final String ENTITY_API_URL = "/api/devices";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -88,11 +97,14 @@ class DeviceResourceIT {
      */
     public static Device createEntity() {
         return new Device()
+            .supplierForeignKey(DEFAULT_SUPPLIER_FOREIGN_KEY)
+            .supplier(DEFAULT_SUPPLIER)
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .basePrice(DEFAULT_BASE_PRICE)
-            .currency(DEFAULT_CURRENCY);
+            .currency(DEFAULT_CURRENCY)
+            .active(DEFAULT_ACTIVE);
     }
 
     /**
@@ -103,11 +115,14 @@ class DeviceResourceIT {
      */
     public static Device createUpdatedEntity() {
         return new Device()
+            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .basePrice(UPDATED_BASE_PRICE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .active(UPDATED_ACTIVE);
     }
 
     @BeforeEach
@@ -164,6 +179,38 @@ class DeviceResourceIT {
 
     @Test
     @Transactional
+    void checkSupplierForeignKeyIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        device.setSupplierForeignKey(null);
+
+        // Create the Device, which fails.
+
+        restDeviceMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(device)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkSupplierIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        device.setSupplier(null);
+
+        // Create the Device, which fails.
+
+        restDeviceMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(device)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkCodeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -206,11 +253,14 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(device.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignKey").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_KEY.intValue())))
+            .andExpect(jsonPath("$.[*].supplier").value(hasItem(DEFAULT_SUPPLIER)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].basePrice").value(hasItem(DEFAULT_BASE_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY)));
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY)))
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -242,11 +292,14 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(device.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignKey").value(DEFAULT_SUPPLIER_FOREIGN_KEY.intValue()))
+            .andExpect(jsonPath("$.supplier").value(DEFAULT_SUPPLIER))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.basePrice").value(DEFAULT_BASE_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY));
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY))
+            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
     }
 
     @Test
@@ -269,11 +322,14 @@ class DeviceResourceIT {
         // Disconnect from session so that the updates on updatedDevice are not directly saved in db
         em.detach(updatedDevice);
         updatedDevice
+            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .basePrice(UPDATED_BASE_PRICE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .active(UPDATED_ACTIVE);
 
         restDeviceMockMvc
             .perform(
@@ -349,7 +405,14 @@ class DeviceResourceIT {
         Device partialUpdatedDevice = new Device();
         partialUpdatedDevice.setId(device.getId());
 
-        partialUpdatedDevice.code(UPDATED_CODE).name(UPDATED_NAME).description(UPDATED_DESCRIPTION).basePrice(UPDATED_BASE_PRICE);
+        partialUpdatedDevice
+            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplier(UPDATED_SUPPLIER)
+            .code(UPDATED_CODE)
+            .name(UPDATED_NAME)
+            .basePrice(UPDATED_BASE_PRICE)
+            .currency(UPDATED_CURRENCY)
+            .active(UPDATED_ACTIVE);
 
         restDeviceMockMvc
             .perform(
@@ -378,11 +441,14 @@ class DeviceResourceIT {
         partialUpdatedDevice.setId(device.getId());
 
         partialUpdatedDevice
+            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .basePrice(UPDATED_BASE_PRICE)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .active(UPDATED_ACTIVE);
 
         restDeviceMockMvc
             .perform(

@@ -49,10 +49,10 @@ describe('Sale Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Device query and add missing value', () => {
       const sale: ISale = { id: 456 };
-      const device: IDevice = { id: 4057 };
+      const device: IDevice = { id: 24359 };
       sale.device = device;
 
-      const deviceCollection: IDevice[] = [{ id: 23657 }];
+      const deviceCollection: IDevice[] = [{ id: 5252 }];
       jest.spyOn(deviceService, 'query').mockReturnValue(of(new HttpResponse({ body: deviceCollection })));
       const additionalDevices = [device];
       const expectedCollection: IDevice[] = [...additionalDevices, ...deviceCollection];
@@ -71,7 +71,7 @@ describe('Sale Management Update Component', () => {
 
     it('Should update editForm', () => {
       const sale: ISale = { id: 456 };
-      const device: IDevice = { id: 1074 };
+      const device: IDevice = { id: 7904 };
       sale.device = device;
 
       activatedRoute.data = of({ sale });

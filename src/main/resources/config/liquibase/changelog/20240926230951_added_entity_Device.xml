@@ -14,6 +14,12 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="supplier_foreign_key" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="supplier" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="code" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -27,6 +33,9 @@
                 <constraints nullable="false" />
             </column>
             <column name="currency" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="active" type="boolean">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -86,11 +95,14 @@
                   tableName="device"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="supplier_foreign_key" type="numeric"/>
+            <column name="supplier" type="string"/>
             <column name="code" type="string"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
             <column name="base_price" type="numeric"/>
             <column name="currency" type="string"/>
+            <column name="active" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

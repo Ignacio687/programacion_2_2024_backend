@@ -7,6 +7,7 @@ export interface ISale {
   finalPrice?: number | null;
   saleDate?: dayjs.Dayjs | null;
   currency?: string | null;
+  finalized?: boolean | null;
   device?: IDevice | null;
 }
 

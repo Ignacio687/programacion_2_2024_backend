@@ -41,6 +41,9 @@ public class Sale implements Serializable {
     @Column(name = "currency")
     private String currency;
 
+    @Column(name = "finalized")
+    private Boolean finalized;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "option", "extra", "sale" }, allowSetters = true)
@@ -117,6 +120,19 @@ public class Sale implements Serializable {
         this.currency = currency;
     }
 
+    public Boolean getFinalized() {
+        return this.finalized;
+    }
+
+    public Sale finalized(Boolean finalized) {
+        this.setFinalized(finalized);
+        return this;
+    }
+
+    public void setFinalized(Boolean finalized) {
+        this.finalized = finalized;
+    }
+
     public Set<SaleItem> getSaleItems() {
         return this.saleItems;
     }
@@ -189,6 +205,7 @@ public class Sale implements Serializable {
             ", finalPrice=" + getFinalPrice() +
             ", saleDate='" + getSaleDate() + "'" +
             ", currency='" + getCurrency() + "'" +
+            ", finalized='" + getFinalized() + "'" +
             "}";
     }
 }

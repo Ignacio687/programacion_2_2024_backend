@@ -1,11 +1,11 @@
-id;device_price;final_price;sale_date;currency
-1;7369.23;3217.55;2024-09-26T04:16:59;worth
-2;2055.57;27122.63;2024-09-26T16:38:50;gracefully solemnly
-3;14970.35;27321.51;2024-09-26T04:09:46;times interestingly
-4;25734.11;12166.65;2024-09-26T10:22:12;sometimes characterise
-5;31661.7;12408.11;2024-09-26T02:04:21;ashamed
-6;32181.91;28856.32;2024-09-26T08:12:52;whoever dreary cage
-7;12361.17;32039.88;2024-09-26T11:24:33;absent zowie gaming
-8;11397.31;7665.56;2024-09-26T11:11:34;knottily snap
-9;18350.76;24887;2024-09-26T12:05:08;kill pride deconsecrate
-10;28418.08;2613.45;2024-09-26T06:35:45;thirsty phew
+id;device_price;final_price;sale_date;currency;finalized
+1;7369.23;3217.55;2024-09-26T04:16:59;worth;true
+2;27122.63;8899.01;2024-09-26T13:32:45;to nor;false
+3;25943.95;20467.16;2024-09-25T23:24:20;meager fundraising;false
+4;12889.82;16114.9;2024-09-26T04:16:10;complain upright;true
+5;6138.84;31202.32;2024-09-26T02:31:31;pro whoever dreary;false
+6;7356.93;12633.41;2024-09-26T02:21:51;lest sandbag why;true
+7;24076.71;9672.12;2024-09-26T15:32:02;upon purr;false
+8;14046.12;5731.97;2024-09-26T19:14:23;feline because grizzle;false
+9;9197.46;6570.13;2024-09-26T18:04:37;plagiarise politicize righteously;false
+10;2949.98;17073.86;2024-09-26T00:23:50;past till;false

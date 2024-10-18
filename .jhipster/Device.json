@@ -5,6 +5,16 @@
   "applications": "*",
   "fields": [
     {
+      "fieldName": "supplierForeignKey",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "supplier",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "code",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -25,6 +35,10 @@
     {
       "fieldName": "currency",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean"
     }
   ],
   "name": "Device",

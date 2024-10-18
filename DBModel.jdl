@@ -1,9 +1,12 @@
 entity Device {
-  code String required
+  supplierForeignKey Long required
+  supplier String required
+  code String required //unique
   name String
   description String
   basePrice Double required
   currency String
+  active Boolean
 }
 
 entity Characteristic {
@@ -35,6 +38,7 @@ entity Sale {
   finalPrice Double required
   saleDate Instant required
   currency String
+  finalized Boolean
 }
 
 entity SaleItem {

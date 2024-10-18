@@ -70,6 +70,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="finalized">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.finalized">Finalized</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="device.id">
               <div class="d-flex">
                 <span jhiTranslate="computechApp.sale.device">Device</span>
@@ -89,6 +96,7 @@
               <td>{{ sale.finalPrice }}</td>
               <td>{{ sale.saleDate | formatMediumDatetime }}</td>
               <td>{{ sale.currency }}</td>
+              <td>{{ sale.finalized }}</td>
               <td>
                 @if (sale.device) {
                   <div>

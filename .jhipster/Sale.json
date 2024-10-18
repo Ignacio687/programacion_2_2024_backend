@@ -22,6 +22,10 @@
     {
       "fieldName": "currency",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "finalized",
+      "fieldType": "Boolean"
     }
   ],
   "name": "Sale",

@@ -109,3 +109,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+cliente-web:
+  rootUrl: 192.168.194.254:8080
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdiJhZGoxNzI0MDIxNzg4fQ.J1YxyYH4thqYxNlR3RU3ZOAxYj8-8mPOZ05VPKQw

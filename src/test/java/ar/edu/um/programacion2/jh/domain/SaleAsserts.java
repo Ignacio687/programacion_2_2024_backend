@@ -50,7 +50,8 @@ public class SaleAsserts {
             .satisfies(e -> assertThat(e.getDevicePrice()).as("check devicePrice").isEqualTo(actual.getDevicePrice()))
             .satisfies(e -> assertThat(e.getFinalPrice()).as("check finalPrice").isEqualTo(actual.getFinalPrice()))
             .satisfies(e -> assertThat(e.getSaleDate()).as("check saleDate").isEqualTo(actual.getSaleDate()))
-            .satisfies(e -> assertThat(e.getCurrency()).as("check currency").isEqualTo(actual.getCurrency()));
+            .satisfies(e -> assertThat(e.getCurrency()).as("check currency").isEqualTo(actual.getCurrency()))
+            .satisfies(e -> assertThat(e.getFinalized()).as("check finalized").isEqualTo(actual.getFinalized()));
     }
 
     /**

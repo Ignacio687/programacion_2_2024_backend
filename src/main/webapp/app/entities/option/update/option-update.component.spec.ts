@@ -75,10 +75,10 @@ describe('Option Management Update Component', () => {
 
     it('Should call Device query and add missing value', () => {
       const option: IOption = { id: 456 };
-      const devices: IDevice[] = [{ id: 4800 }];
+      const devices: IDevice[] = [{ id: 26851 }];
       option.devices = devices;
 
-      const deviceCollection: IDevice[] = [{ id: 15415 }];
+      const deviceCollection: IDevice[] = [{ id: 12171 }];
       jest.spyOn(deviceService, 'query').mockReturnValue(of(new HttpResponse({ body: deviceCollection })));
       const additionalDevices = [...devices];
       const expectedCollection: IDevice[] = [...additionalDevices, ...deviceCollection];
@@ -99,7 +99,7 @@ describe('Option Management Update Component', () => {
       const option: IOption = { id: 456 };
       const customization: ICustomization = { id: 18739 };
       option.customization = customization;
-      const devices: IDevice = { id: 29584 };
+      const devices: IDevice = { id: 285 };
       option.devices = [devices];
 
       activatedRoute.data = of({ option });

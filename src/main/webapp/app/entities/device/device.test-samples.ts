@@ -1,30 +1,40 @@
 import { IDevice, NewDevice } from './device.model';
 
 export const sampleWithRequiredData: IDevice = {
-  id: 15139,
-  code: 'fooey',
-  basePrice: 32655.99,
+  id: 23054,
+  supplierForeignKey: 30699,
+  supplier: 'that',
+  code: 'indeed for',
+  basePrice: 21738.25,
 };
 
 export const sampleWithPartialData: IDevice = {
-  id: 18289,
-  code: 'end',
-  name: 'sniveling below',
-  basePrice: 31708.62,
+  id: 10944,
+  supplierForeignKey: 22344,
+  supplier: 'apse fork',
+  code: 'uh-huh geez',
+  basePrice: 15433.94,
+  currency: 'ruddy cringe',
+  active: true,
 };
 
 export const sampleWithFullData: IDevice = {
-  id: 24117,
-  code: 'doll huzzah',
-  name: 'duh without',
-  description: 'carefree',
-  basePrice: 10042.41,
-  currency: 'geez tide',
+  id: 1624,
+  supplierForeignKey: 11957,
+  supplier: 'aw rudely ex-husband',
+  code: 'gah',
+  name: 'well behind elegantly',
+  description: 'ptarmigan',
+  basePrice: 17777.84,
+  currency: 'noted',
+  active: false,
 };
 
 export const sampleWithNewData: NewDevice = {
-  code: 'order kiddingly',
-  basePrice: 25775.08,
+  supplierForeignKey: 3697,
+  supplier: 'on researches since',
+  code: 'book apud',
+  basePrice: 30062.72,
   id: null,
 };
 

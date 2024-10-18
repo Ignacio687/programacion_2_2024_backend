@@ -15,6 +15,47 @@
           </div>
         }
 
+        @let supplierForeignKeyRef = editForm.get('supplierForeignKey')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_supplierForeignKey" jhiTranslate="computechApp.device.supplierForeignKey"
+            >Supplier Foreign Key</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="supplierForeignKey"
+            id="field_supplierForeignKey"
+            data-cy="supplierForeignKey"
+            formControlName="supplierForeignKey"
+          />
+          @if (supplierForeignKeyRef.invalid && (supplierForeignKeyRef.dirty || supplierForeignKeyRef.touched)) {
+            <div>
+              @if (editForm.get('supplierForeignKey')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('supplierForeignKey')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let supplierRef = editForm.get('supplier')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_supplier" jhiTranslate="computechApp.device.supplier">Supplier</label>
+          <input type="text" class="form-control" name="supplier" id="field_supplier" data-cy="supplier" formControlName="supplier" />
+          @if (supplierRef.invalid && (supplierRef.dirty || supplierRef.touched)) {
+            <div>
+              @if (editForm.get('supplier')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
         @let codeRef = editForm.get('code')!;
         <div class="mb-3">
           <label class="form-label" for="field_code" jhiTranslate="computechApp.device.code">Code</label>
@@ -67,6 +108,11 @@
         <div class="mb-3">
           <label class="form-label" for="field_currency" jhiTranslate="computechApp.device.currency">Currency</label>
           <input type="text" class="form-control" name="currency" id="field_currency" data-cy="currency" formControlName="currency" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_active" jhiTranslate="computechApp.device.active">Active</label>
+          <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
         </div>
 
         <div class="mb-3">

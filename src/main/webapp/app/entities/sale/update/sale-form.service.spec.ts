@@ -24,6 +24,7 @@ describe('Sale Form Service', () => {
             finalPrice: expect.any(Object),
             saleDate: expect.any(Object),
             currency: expect.any(Object),
+            finalized: expect.any(Object),
             device: expect.any(Object),
           }),
         );
@@ -39,6 +40,7 @@ describe('Sale Form Service', () => {
             finalPrice: expect.any(Object),
             saleDate: expect.any(Object),
             currency: expect.any(Object),
+            finalized: expect.any(Object),
             device: expect.any(Object),
           }),
         );
