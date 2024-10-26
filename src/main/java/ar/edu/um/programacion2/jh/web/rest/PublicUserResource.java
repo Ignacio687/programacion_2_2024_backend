@@ -1,7 +1,7 @@
 package ar.edu.um.programacion2.jh.web.rest;
 
-import ar.edu.um.programacion2.jh.service.UserService;
 import ar.edu.um.programacion2.jh.service.dto.UserDTO;
+import ar.edu.um.programacion2.jh.service.rest.UserService;
 import java.util.*;
 import java.util.Collections;
 import org.slf4j.Logger;

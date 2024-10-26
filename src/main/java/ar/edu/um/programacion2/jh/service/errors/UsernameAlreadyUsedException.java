@@ -1,4 +1,4 @@
-package ar.edu.um.programacion2.jh.service;
+package ar.edu.um.programacion2.jh.service.errors;
 
 public class UsernameAlreadyUsedException extends RuntimeException {
 

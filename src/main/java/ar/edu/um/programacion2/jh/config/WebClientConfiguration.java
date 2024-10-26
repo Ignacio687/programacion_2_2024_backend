@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientewebConfiguration {
+public class WebClientConfiguration {
 
     protected String rootUrl;
     protected String token;

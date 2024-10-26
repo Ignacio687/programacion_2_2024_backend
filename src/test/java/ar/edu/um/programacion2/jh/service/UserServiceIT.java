@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import ar.edu.um.programacion2.jh.IntegrationTest;
 import ar.edu.um.programacion2.jh.domain.User;
 import ar.edu.um.programacion2.jh.repository.UserRepository;
+import ar.edu.um.programacion2.jh.service.rest.UserService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

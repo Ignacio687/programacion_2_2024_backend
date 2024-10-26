@@ -8,7 +8,7 @@ import ar.edu.um.programacion2.jh.IntegrationTest;
 import ar.edu.um.programacion2.jh.domain.User;
 import ar.edu.um.programacion2.jh.repository.UserRepository;
 import ar.edu.um.programacion2.jh.security.AuthoritiesConstants;
-import ar.edu.um.programacion2.jh.service.UserService;
+import ar.edu.um.programacion2.jh.service.rest.UserService;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;

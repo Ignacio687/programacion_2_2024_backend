@@ -1,4 +1,4 @@
-package ar.edu.um.programacion2.jh.service;
+package ar.edu.um.programacion2.jh.service.rest;
 
 import ar.edu.um.programacion2.jh.config.Constants;
 import ar.edu.um.programacion2.jh.domain.Authority;
@@ -9,6 +9,9 @@ import ar.edu.um.programacion2.jh.security.AuthoritiesConstants;
 import ar.edu.um.programacion2.jh.security.SecurityUtils;
 import ar.edu.um.programacion2.jh.service.dto.AdminUserDTO;
 import ar.edu.um.programacion2.jh.service.dto.UserDTO;
+import ar.edu.um.programacion2.jh.service.errors.EmailAlreadyUsedException;
+import ar.edu.um.programacion2.jh.service.errors.InvalidPasswordException;
+import ar.edu.um.programacion2.jh.service.errors.UsernameAlreadyUsedException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;

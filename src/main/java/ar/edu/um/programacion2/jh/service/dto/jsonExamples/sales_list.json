@@ -1,0 +1,18 @@
+[
+  {
+    "idVenta": 200,
+    "id": 2,
+    "codigo": "NTB02",
+    "nombre": "Notebook 2",
+    "descripcion": "Descripción detallada de la Notebook",
+    "precio": 2250.0
+  },
+  {
+    "idVenta": 201,
+    "id": 3,
+    "codigo": "NTB10",
+    "nombre": "Notebook 10",
+    "descripcion": "Descripción detallada de la Notebook",
+    "precio": 3050.0
+  }
+]
