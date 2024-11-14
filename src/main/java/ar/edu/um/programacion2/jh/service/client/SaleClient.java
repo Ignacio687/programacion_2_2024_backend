@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "sale", url = "$(cliente-web.rootUrl)")
+@FeignClient(name = "sale", url = "${cliente-web.rootUrl}")
 public interface SaleClient {
     @PostMapping("/api/catedra/vender")
     SaleDTO createSale(@RequestBody SaleRequestDTO saleRequest);

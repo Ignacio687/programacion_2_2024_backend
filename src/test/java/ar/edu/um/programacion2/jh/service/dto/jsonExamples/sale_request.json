@@ -1,0 +1,15 @@
+{
+  "idDispositivo": 2,
+  "personalizaciones": [
+    { "id": 3, "precio": 0.0 },
+    { "id": 8, "precio": 330.0 },
+    { "id": 12, "precio": 0.0 }
+  ],
+  "adicionales": [
+    { "id": 1, "precio": 0.0 },
+    { "id": 2, "precio": 78.0 },
+    { "id": 4, "precio": 0.0 }
+  ],
+  "precioFinal": 2847,
+  "fechaVenta": "2024-08-10T20:15:00z"
+}

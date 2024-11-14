@@ -1,5 +1,6 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
+import ar.edu.um.programacion2.jh.domain.Option;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +25,14 @@ public class OptionDTO {
 
     @JsonProperty("precioAdicional")
     private Double additionalPrice;
+
+    public static Option toOption(OptionDTO dto) {
+        Option option = new Option();
+        option.setId(dto.getId());
+        option.setCode(dto.getCode());
+        option.setName(dto.getName());
+        option.setDescription(dto.getDescription());
+        option.setAdditionalPrice(dto.getAdditionalPrice());
+        return option;
+    }
 }

@@ -1,5 +1,6 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
+import ar.edu.um.programacion2.jh.domain.Characteristic;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +19,12 @@ public class CharacteristicDTO {
 
     @JsonProperty("descripcion")
     private String description;
+
+    public static Characteristic toCharacteristic(CharacteristicDTO dto) {
+        Characteristic characteristic = new Characteristic();
+        characteristic.setId(dto.getId());
+        characteristic.setName(dto.getName());
+        characteristic.setDescription(dto.getDescription());
+        return characteristic;
+    }
 }

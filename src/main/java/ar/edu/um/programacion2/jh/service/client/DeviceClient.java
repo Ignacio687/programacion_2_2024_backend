@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "device", url = "$(cliente-web.rootUrl)")
+@FeignClient(name = "device", url = "${cliente-web.rootUrl}")
 public interface DeviceClient {
     @GetMapping("/api/catedra/dispositivos")
     List<DeviceDTO> getDevices();

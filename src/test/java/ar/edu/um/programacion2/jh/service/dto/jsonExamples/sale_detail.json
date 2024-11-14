@@ -1,0 +1,46 @@
+{
+  "idVenta": 200,
+  "idDispositivo": 2,
+  "codigo": "NTB02",
+  "nombre": "Notebook 2",
+  "descripcion": "Descripción detallada de la Notebook",
+  "precioBase": 2250.0,
+  "moneda": "USD",
+  "caracteristicas": [
+    { "id": 4, "nombre": "Pantalla", "descripcion": "Pantalla OLED 16\"" },
+    { "id": 5, "nombre": "Camara", "descripcion": "Camara Web 1080p" },
+    { "id": 6, "nombre": "Batería", "descripcion": "Batería 80Wh" },
+    { "id": 7, "nombre": "Adicional", "descripcion": "Lector de memoria múltiple" }
+  ],
+  "personalizaciones": [
+    {
+      "id": 3,
+      "nombre": "CPU",
+      "descripcion": "Procesadores Disponibles",
+      "opcion": { "id": 3, "codigo": "PROC03", "nombre": "Core Y1", "descripcion": "Procesador 1.2 GHz- 10 Cores", "precioAdicional": 0.0 }
+    },
+    {
+      "id": 4,
+      "nombre": "Memoria",
+      "descripcion": "Memorias Disponibles",
+      "opcion": { "id": 8, "codigo": "MEM04", "nombre": "DDR4-16", "descripcion": "Memoria DDR4- 16GB", "precioAdicional": 300.0 }
+    },
+    {
+      "id": 6,
+      "nombre": "Video",
+      "descripcion": "Video Disponible",
+      "opcion": {
+        "id": 12,
+        "codigo": "VID01",
+        "nombre": "Integrado",
+        "descripcion": "Video Integrado Memoria Compartida",
+        "precioAdicional": 0.0
+      }
+    }
+  ],
+  "adicionales": [
+    { "id": 1, "nombre": "Mouse", "descripcion": "Mouse Bluetooth 3 teclas", "precio": 0.0 },
+    { "id": 2, "nombre": "Teclado", "descripcion": "Teclado bluetooth", "precio": 78.0 },
+    { "id": 4, "nombre": "Cargador", "descripcion": "Cargador rápido", "precio": 0.0 }
+  ]
+}

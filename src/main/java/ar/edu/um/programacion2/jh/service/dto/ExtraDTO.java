@@ -1,5 +1,6 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
+import ar.edu.um.programacion2.jh.domain.Extra;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +25,14 @@ public class ExtraDTO {
 
     @JsonProperty("precioGratis")
     private Double freePrice;
+
+    public static Extra toExtra(ExtraDTO dto) {
+        Extra extra = new Extra();
+        extra.setId(dto.getId());
+        extra.setName(dto.getName());
+        extra.setDescription(dto.getDescription());
+        extra.setPrice(dto.getPrice());
+        extra.setFreePrice(dto.getFreePrice());
+        return extra;
+    }
 }
