@@ -123,6 +123,9 @@ public class CustomizationResource {
         Optional<Customization> result = customizationRepository
             .findById(customization.getId())
             .map(existingCustomization -> {
+                if (customization.getSupplierForeignId() != null) {
+                    existingCustomization.setSupplierForeignId(customization.getSupplierForeignId());
+                }
                 if (customization.getName() != null) {
                     existingCustomization.setName(customization.getName());
                 }

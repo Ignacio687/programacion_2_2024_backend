@@ -4,7 +4,7 @@ import { IExtra } from 'app/entities/extra/extra.model';
 
 export interface IDevice {
   id: number;
-  supplierForeignKey?: number | null;
+  supplierForeignId?: number | null;
   supplier?: string | null;
   code?: string | null;
   name?: string | null;

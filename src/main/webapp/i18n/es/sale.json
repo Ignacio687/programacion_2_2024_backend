@@ -18,6 +18,7 @@
         "title": "Sale"
       },
       "id": "ID",
+      "supplierForeignId": "Supplier Foreign Id",
       "devicePrice": "Device Price",
       "finalPrice": "Final Price",
       "saleDate": "Sale Date",

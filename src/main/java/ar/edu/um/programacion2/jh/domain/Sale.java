@@ -26,6 +26,9 @@ public class Sale implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "supplier_foreign_id")
+    private Long supplierForeignId;
+
     @NotNull
     @Column(name = "device_price", nullable = false)
     private Double devicePrice;
@@ -66,6 +69,19 @@ public class Sale implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSupplierForeignId() {
+        return this.supplierForeignId;
+    }
+
+    public Sale supplierForeignId(Long supplierForeignId) {
+        this.setSupplierForeignId(supplierForeignId);
+        return this;
+    }
+
+    public void setSupplierForeignId(Long supplierForeignId) {
+        this.supplierForeignId = supplierForeignId;
     }
 
     public Double getDevicePrice() {
@@ -201,6 +217,7 @@ public class Sale implements Serializable {
     public String toString() {
         return "Sale{" +
             "id=" + getId() +
+            ", supplierForeignId=" + getSupplierForeignId() +
             ", devicePrice=" + getDevicePrice() +
             ", finalPrice=" + getFinalPrice() +
             ", saleDate='" + getSaleDate() + "'" +

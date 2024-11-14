@@ -14,6 +14,9 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="supplier_foreign_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -47,6 +50,7 @@
                   tableName="extra"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="supplier_foreign_id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
             <column name="price" type="numeric"/>

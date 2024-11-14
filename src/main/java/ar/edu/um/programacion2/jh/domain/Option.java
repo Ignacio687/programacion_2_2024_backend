@@ -26,6 +26,10 @@ public class Option implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "supplier_foreign_id", nullable = false)
+    private Long supplierForeignId;
+
+    @NotNull
     @Column(name = "code", nullable = false)
     private String code;
 
@@ -61,6 +65,19 @@ public class Option implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSupplierForeignId() {
+        return this.supplierForeignId;
+    }
+
+    public Option supplierForeignId(Long supplierForeignId) {
+        this.setSupplierForeignId(supplierForeignId);
+        return this;
+    }
+
+    public void setSupplierForeignId(Long supplierForeignId) {
+        this.supplierForeignId = supplierForeignId;
     }
 
     public String getCode() {
@@ -183,6 +200,7 @@ public class Option implements Serializable {
     public String toString() {
         return "Option{" +
             "id=" + getId() +
+            ", supplierForeignId=" + getSupplierForeignId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +

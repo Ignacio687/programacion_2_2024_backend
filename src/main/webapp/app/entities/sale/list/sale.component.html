@@ -42,6 +42,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="supplierForeignId">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.sale.supplierForeignId">Supplier Foreign Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="devicePrice">
               <div class="d-flex">
                 <span jhiTranslate="computechApp.sale.devicePrice">Device Price</span>
@@ -92,6 +99,7 @@
               <td>
                 <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
               </td>
+              <td>{{ sale.supplierForeignId }}</td>
               <td>{{ sale.devicePrice }}</td>
               <td>{{ sale.finalPrice }}</td>
               <td>{{ sale.saleDate | formatMediumDatetime }}</td>

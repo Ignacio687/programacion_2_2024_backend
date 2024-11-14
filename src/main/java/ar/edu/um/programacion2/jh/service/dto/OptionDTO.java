@@ -14,6 +14,8 @@ public class OptionDTO {
     @JsonProperty("id")
     private Long id;
 
+    private Long supplierForeignId;
+
     @JsonProperty("codigo")
     private String code;
 
@@ -29,6 +31,7 @@ public class OptionDTO {
     public static Option toOption(OptionDTO dto) {
         Option option = new Option();
         option.setId(dto.getId());
+        option.setSupplierForeignId(dto.getSupplierForeignId());
         option.setCode(dto.getCode());
         option.setName(dto.getName());
         option.setDescription(dto.getDescription());

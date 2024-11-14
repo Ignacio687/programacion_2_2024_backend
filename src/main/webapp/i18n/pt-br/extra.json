@@ -18,6 +18,7 @@
         "title": "Extra"
       },
       "id": "ID",
+      "supplierForeignId": "Supplier Foreign Id",
       "name": "Name",
       "description": "Description",
       "price": "Price",

@@ -26,8 +26,8 @@ public class Device implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "supplier_foreign_key", nullable = false)
-    private Long supplierForeignKey;
+    @Column(name = "supplier_foreign_id", nullable = false)
+    private Long supplierForeignId;
 
     @NotNull
     @Column(name = "supplier", nullable = false)
@@ -103,17 +103,17 @@ public class Device implements Serializable {
         this.id = id;
     }
 
-    public Long getSupplierForeignKey() {
-        return this.supplierForeignKey;
+    public Long getSupplierForeignId() {
+        return this.supplierForeignId;
     }
 
-    public Device supplierForeignKey(Long supplierForeignKey) {
-        this.setSupplierForeignKey(supplierForeignKey);
+    public Device supplierForeignId(Long supplierForeignId) {
+        this.setSupplierForeignId(supplierForeignId);
         return this;
     }
 
-    public void setSupplierForeignKey(Long supplierForeignKey) {
-        this.supplierForeignKey = supplierForeignKey;
+    public void setSupplierForeignId(Long supplierForeignId) {
+        this.supplierForeignId = supplierForeignId;
     }
 
     public String getSupplier() {
@@ -331,7 +331,7 @@ public class Device implements Serializable {
     public String toString() {
         return "Device{" +
             "id=" + getId() +
-            ", supplierForeignKey=" + getSupplierForeignKey() +
+            ", supplierForeignId=" + getSupplierForeignId() +
             ", supplier='" + getSupplier() + "'" +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +

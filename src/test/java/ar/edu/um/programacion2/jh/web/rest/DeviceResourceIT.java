@@ -40,8 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DeviceResourceIT {
 
-    private static final Long DEFAULT_SUPPLIER_FOREIGN_KEY = 1L;
-    private static final Long UPDATED_SUPPLIER_FOREIGN_KEY = 2L;
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
 
     private static final String DEFAULT_SUPPLIER = "AAAAAAAAAA";
     private static final String UPDATED_SUPPLIER = "BBBBBBBBBB";
@@ -97,7 +97,7 @@ class DeviceResourceIT {
      */
     public static Device createEntity() {
         return new Device()
-            .supplierForeignKey(DEFAULT_SUPPLIER_FOREIGN_KEY)
+            .supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID)
             .supplier(DEFAULT_SUPPLIER)
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
@@ -115,7 +115,7 @@ class DeviceResourceIT {
      */
     public static Device createUpdatedEntity() {
         return new Device()
-            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
@@ -179,10 +179,10 @@ class DeviceResourceIT {
 
     @Test
     @Transactional
-    void checkSupplierForeignKeyIsRequired() throws Exception {
+    void checkSupplierForeignIdIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
-        device.setSupplierForeignKey(null);
+        device.setSupplierForeignId(null);
 
         // Create the Device, which fails.
 
@@ -253,7 +253,7 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(device.getId().intValue())))
-            .andExpect(jsonPath("$.[*].supplierForeignKey").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_KEY.intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].supplier").value(hasItem(DEFAULT_SUPPLIER)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
@@ -292,7 +292,7 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(device.getId().intValue()))
-            .andExpect(jsonPath("$.supplierForeignKey").value(DEFAULT_SUPPLIER_FOREIGN_KEY.intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.supplier").value(DEFAULT_SUPPLIER))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
@@ -322,7 +322,7 @@ class DeviceResourceIT {
         // Disconnect from session so that the updates on updatedDevice are not directly saved in db
         em.detach(updatedDevice);
         updatedDevice
-            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
@@ -406,7 +406,7 @@ class DeviceResourceIT {
         partialUpdatedDevice.setId(device.getId());
 
         partialUpdatedDevice
-            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
@@ -441,7 +441,7 @@ class DeviceResourceIT {
         partialUpdatedDevice.setId(device.getId());
 
         partialUpdatedDevice
-            .supplierForeignKey(UPDATED_SUPPLIER_FOREIGN_KEY)
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .supplier(UPDATED_SUPPLIER)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)

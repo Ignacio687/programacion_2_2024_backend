@@ -42,6 +42,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="supplierForeignId">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.extra.supplierForeignId">Supplier Foreign Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="name">
               <div class="d-flex">
                 <span jhiTranslate="computechApp.extra.name">Name</span>
@@ -79,6 +86,7 @@
               <td>
                 <a [routerLink]="['/extra', extra.id, 'view']">{{ extra.id }}</a>
               </td>
+              <td>{{ extra.supplierForeignId }}</td>
               <td>{{ extra.name }}</td>
               <td>{{ extra.description }}</td>
               <td>{{ extra.price }}</td>

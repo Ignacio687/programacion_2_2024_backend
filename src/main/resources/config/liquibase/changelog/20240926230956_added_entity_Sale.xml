@@ -14,6 +14,9 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="supplier_foreign_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="device_price" type="double">
                 <constraints nullable="false" />
             </column>
@@ -54,6 +57,7 @@
                   tableName="sale"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="supplier_foreign_id" type="numeric"/>
             <column name="device_price" type="numeric"/>
             <column name="final_price" type="numeric"/>
             <column name="sale_date" type="date"/>

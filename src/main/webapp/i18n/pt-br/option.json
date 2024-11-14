@@ -18,6 +18,7 @@
         "title": "Option"
       },
       "id": "ID",
+      "supplierForeignId": "Supplier Foreign Id",
       "code": "Code",
       "name": "Name",
       "description": "Description",

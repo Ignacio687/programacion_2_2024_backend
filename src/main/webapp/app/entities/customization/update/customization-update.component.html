@@ -19,6 +19,34 @@
           </div>
         }
 
+        @let supplierForeignIdRef = editForm.get('supplierForeignId')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_supplierForeignId" jhiTranslate="computechApp.customization.supplierForeignId"
+            >Supplier Foreign Id</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="supplierForeignId"
+            id="field_supplierForeignId"
+            data-cy="supplierForeignId"
+            formControlName="supplierForeignId"
+          />
+          @if (supplierForeignIdRef.invalid && (supplierForeignIdRef.dirty || supplierForeignIdRef.touched)) {
+            <div>
+              @if (editForm.get('supplierForeignId')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('supplierForeignId')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
         @let nameRef = editForm.get('name')!;
         <div class="mb-3">
           <label class="form-label" for="field_name" jhiTranslate="computechApp.customization.name">Name</label>

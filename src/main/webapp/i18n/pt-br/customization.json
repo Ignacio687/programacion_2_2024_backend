@@ -18,6 +18,7 @@
         "title": "Customization"
       },
       "id": "ID",
+      "supplierForeignId": "Supplier Foreign Id",
       "name": "Name",
       "description": "Description",
       "options": "Options"

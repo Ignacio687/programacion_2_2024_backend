@@ -26,6 +26,10 @@ public class Extra implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "supplier_foreign_id", nullable = false)
+    private Long supplierForeignId;
+
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -58,6 +62,19 @@ public class Extra implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSupplierForeignId() {
+        return this.supplierForeignId;
+    }
+
+    public Extra supplierForeignId(Long supplierForeignId) {
+        this.setSupplierForeignId(supplierForeignId);
+        return this;
+    }
+
+    public void setSupplierForeignId(Long supplierForeignId) {
+        this.supplierForeignId = supplierForeignId;
     }
 
     public String getName() {
@@ -167,6 +184,7 @@ public class Extra implements Serializable {
     public String toString() {
         return "Extra{" +
             "id=" + getId() +
+            ", supplierForeignId=" + getSupplierForeignId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", price=" + getPrice() +

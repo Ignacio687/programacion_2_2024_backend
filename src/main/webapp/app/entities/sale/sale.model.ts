@@ -3,6 +3,7 @@ import { IDevice } from 'app/entities/device/device.model';
 
 export interface ISale {
   id: number;
+  supplierForeignId?: number | null;
   devicePrice?: number | null;
   finalPrice?: number | null;
   saleDate?: dayjs.Dayjs | null;

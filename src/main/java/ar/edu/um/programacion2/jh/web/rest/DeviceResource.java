@@ -128,8 +128,8 @@ public class DeviceResource {
         Optional<Device> result = deviceRepository
             .findById(device.getId())
             .map(existingDevice -> {
-                if (device.getSupplierForeignKey() != null) {
-                    existingDevice.setSupplierForeignKey(device.getSupplierForeignKey());
+                if (device.getSupplierForeignId() != null) {
+                    existingDevice.setSupplierForeignId(device.getSupplierForeignId());
                 }
                 if (device.getSupplier() != null) {
                     existingDevice.setSupplier(device.getSupplier());

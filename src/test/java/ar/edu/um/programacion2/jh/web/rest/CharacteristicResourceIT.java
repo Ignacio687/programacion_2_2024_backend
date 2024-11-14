@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class CharacteristicResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -67,7 +70,7 @@ class CharacteristicResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Characteristic createEntity() {
-        return new Characteristic().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION);
+        return new Characteristic().supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID).name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION);
     }
 
     /**
@@ -77,7 +80,7 @@ class CharacteristicResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Characteristic createUpdatedEntity() {
-        return new Characteristic().name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        return new Characteristic().supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
     }
 
     @BeforeEach
@@ -134,6 +137,22 @@ class CharacteristicResourceIT {
 
     @Test
     @Transactional
+    void checkSupplierForeignIdIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        characteristic.setSupplierForeignId(null);
+
+        // Create the Characteristic, which fails.
+
+        restCharacteristicMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(characteristic)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -160,6 +179,7 @@ class CharacteristicResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(characteristic.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
@@ -176,6 +196,7 @@ class CharacteristicResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(characteristic.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
@@ -199,7 +220,7 @@ class CharacteristicResourceIT {
         Characteristic updatedCharacteristic = characteristicRepository.findById(characteristic.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedCharacteristic are not directly saved in db
         em.detach(updatedCharacteristic);
-        updatedCharacteristic.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        updatedCharacteristic.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restCharacteristicMockMvc
             .perform(
@@ -279,7 +300,7 @@ class CharacteristicResourceIT {
         Characteristic partialUpdatedCharacteristic = new Characteristic();
         partialUpdatedCharacteristic.setId(characteristic.getId());
 
-        partialUpdatedCharacteristic.description(UPDATED_DESCRIPTION);
+        partialUpdatedCharacteristic.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restCharacteristicMockMvc
             .perform(
@@ -310,7 +331,7 @@ class CharacteristicResourceIT {
         Characteristic partialUpdatedCharacteristic = new Characteristic();
         partialUpdatedCharacteristic.setId(characteristic.getId());
 
-        partialUpdatedCharacteristic.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        partialUpdatedCharacteristic.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restCharacteristicMockMvc
             .perform(

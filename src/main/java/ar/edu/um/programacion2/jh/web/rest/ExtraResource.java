@@ -126,6 +126,9 @@ public class ExtraResource {
         Optional<Extra> result = extraRepository
             .findById(extra.getId())
             .map(existingExtra -> {
+                if (extra.getSupplierForeignId() != null) {
+                    existingExtra.setSupplierForeignId(extra.getSupplierForeignId());
+                }
                 if (extra.getName() != null) {
                     existingExtra.setName(extra.getName());
                 }

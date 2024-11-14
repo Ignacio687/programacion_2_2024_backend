@@ -1,32 +1,35 @@
 import { IExtra, NewExtra } from './extra.model';
 
 export const sampleWithRequiredData: IExtra = {
-  id: 9242,
-  name: 'oof towards',
-  price: 24954.86,
-  freePrice: 13329.99,
+  id: 17165,
+  supplierForeignId: 2084,
+  name: 'past aha',
+  price: 9208.35,
+  freePrice: 28433.73,
 };
 
 export const sampleWithPartialData: IExtra = {
-  id: 28434,
-  name: 'how donkey',
-  description: 'pro chairman',
-  price: 4124.19,
-  freePrice: 348.57,
+  id: 28860,
+  supplierForeignId: 26328,
+  name: 'mmm indeed',
+  price: 1563.4,
+  freePrice: 1403.9,
 };
 
 export const sampleWithFullData: IExtra = {
-  id: 27869,
-  name: 'huzzah',
-  description: 'grumble',
-  price: 31021.34,
-  freePrice: 15593.89,
+  id: 14634,
+  supplierForeignId: 1047,
+  name: 'chairman kindheartedly furthermore',
+  description: 'boohoo sustenance',
+  price: 21403.29,
+  freePrice: 24224.66,
 };
 
 export const sampleWithNewData: NewExtra = {
-  name: 'sustenance',
-  price: 21403.29,
-  freePrice: 24224.66,
+  supplierForeignId: 10294,
+  name: 'boastfully phooey',
+  price: 20969.71,
+  freePrice: 5188.01,
   id: null,
 };
 

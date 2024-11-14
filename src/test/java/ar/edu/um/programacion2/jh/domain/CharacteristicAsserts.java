@@ -47,6 +47,7 @@ public class CharacteristicAsserts {
     public static void assertCharacteristicUpdatableFieldsEquals(Characteristic expected, Characteristic actual) {
         assertThat(expected)
             .as("Verify Characteristic relevant properties")
+            .satisfies(e -> assertThat(e.getSupplierForeignId()).as("check supplierForeignId").isEqualTo(actual.getSupplierForeignId()))
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()));
     }

@@ -126,6 +126,9 @@ public class SaleResource {
         Optional<Sale> result = saleRepository
             .findById(sale.getId())
             .map(existingSale -> {
+                if (sale.getSupplierForeignId() != null) {
+                    existingSale.setSupplierForeignId(sale.getSupplierForeignId());
+                }
                 if (sale.getDevicePrice() != null) {
                     existingSale.setDevicePrice(sale.getDevicePrice());
                 }

@@ -1,23 +1,28 @@
 import { ICustomization, NewCustomization } from './customization.model';
 
 export const sampleWithRequiredData: ICustomization = {
-  id: 8165,
-  name: 'inasmuch suddenly',
+  id: 12583,
+  supplierForeignId: 24486,
+  name: 'gee cosset',
 };
 
 export const sampleWithPartialData: ICustomization = {
-  id: 6881,
-  name: 'craw',
+  id: 24905,
+  supplierForeignId: 14003,
+  name: 'coolly when',
+  description: 'searchingly',
 };
 
 export const sampleWithFullData: ICustomization = {
-  id: 23687,
-  name: 'besides',
-  description: 'beautiful afore drink',
+  id: 4578,
+  supplierForeignId: 16070,
+  name: 'rudely miserable yellow',
+  description: 'woot if concerning',
 };
 
 export const sampleWithNewData: NewCustomization = {
-  name: 'jovial why',
+  supplierForeignId: 13630,
+  name: 'lively geez',
   id: null,
 };
 

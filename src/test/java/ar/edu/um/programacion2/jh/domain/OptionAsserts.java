@@ -47,6 +47,7 @@ public class OptionAsserts {
     public static void assertOptionUpdatableFieldsEquals(Option expected, Option actual) {
         assertThat(expected)
             .as("Verify Option relevant properties")
+            .satisfies(e -> assertThat(e.getSupplierForeignId()).as("check supplierForeignId").isEqualTo(actual.getSupplierForeignId()))
             .satisfies(e -> assertThat(e.getCode()).as("check code").isEqualTo(actual.getCode()))
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))

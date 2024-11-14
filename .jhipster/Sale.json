@@ -5,6 +5,10 @@
   "applications": "*",
   "fields": [
     {
+      "fieldName": "supplierForeignId",
+      "fieldType": "Long"
+    },
+    {
       "fieldName": "devicePrice",
       "fieldType": "Double",
       "fieldValidateRules": ["required"]

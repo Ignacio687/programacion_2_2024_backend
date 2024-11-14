@@ -53,10 +53,10 @@ describe('Option Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Customization query and add missing value', () => {
       const option: IOption = { id: 456 };
-      const customization: ICustomization = { id: 3637 };
+      const customization: ICustomization = { id: 30432 };
       option.customization = customization;
 
-      const customizationCollection: ICustomization[] = [{ id: 27345 }];
+      const customizationCollection: ICustomization[] = [{ id: 22869 }];
       jest.spyOn(customizationService, 'query').mockReturnValue(of(new HttpResponse({ body: customizationCollection })));
       const additionalCustomizations = [customization];
       const expectedCollection: ICustomization[] = [...additionalCustomizations, ...customizationCollection];
@@ -97,7 +97,7 @@ describe('Option Management Update Component', () => {
 
     it('Should update editForm', () => {
       const option: IOption = { id: 456 };
-      const customization: ICustomization = { id: 18739 };
+      const customization: ICustomization = { id: 4040 };
       option.customization = customization;
       const devices: IDevice = { id: 285 };
       option.devices = [devices];

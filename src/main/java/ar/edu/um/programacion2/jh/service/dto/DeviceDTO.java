@@ -17,7 +17,7 @@ public class DeviceDTO {
     @JsonProperty("id")
     private Long id;
 
-    private Long supplierForeignKey;
+    private Long supplierForeignId;
 
     private String supplier;
 
@@ -50,7 +50,7 @@ public class DeviceDTO {
     public static Device toDevice(DeviceDTO dto) {
         Device device = new Device();
         device.setId(dto.getId());
-        device.setSupplierForeignKey(dto.getSupplierForeignKey());
+        device.setSupplierForeignId(dto.getSupplierForeignId());
         device.setSupplier(dto.getSupplier());
         device.setCode(dto.getCode());
         device.setName(dto.getName());

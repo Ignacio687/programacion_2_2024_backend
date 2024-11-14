@@ -10,14 +10,17 @@ public class SaleTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static Sale getSaleSample1() {
-        return new Sale().id(1L).currency("currency1");
+        return new Sale().id(1L).supplierForeignId(1L).currency("currency1");
     }
 
     public static Sale getSaleSample2() {
-        return new Sale().id(2L).currency("currency2");
+        return new Sale().id(2L).supplierForeignId(2L).currency("currency2");
     }
 
     public static Sale getSaleRandomSampleGenerator() {
-        return new Sale().id(longCount.incrementAndGet()).currency(UUID.randomUUID().toString());
+        return new Sale()
+            .id(longCount.incrementAndGet())
+            .supplierForeignId(longCount.incrementAndGet())
+            .currency(UUID.randomUUID().toString());
     }
 }

@@ -124,6 +124,9 @@ public class CharacteristicResource {
         Optional<Characteristic> result = characteristicRepository
             .findById(characteristic.getId())
             .map(existingCharacteristic -> {
+                if (characteristic.getSupplierForeignId() != null) {
+                    existingCharacteristic.setSupplierForeignId(characteristic.getSupplierForeignId());
+                }
                 if (characteristic.getName() != null) {
                     existingCharacteristic.setName(characteristic.getName());
                 }

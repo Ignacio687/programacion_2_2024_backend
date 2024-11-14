@@ -57,10 +57,10 @@ describe('SaleItem Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Option query and add missing value', () => {
       const saleItem: ISaleItem = { id: 456 };
-      const option: IOption = { id: 25546 };
+      const option: IOption = { id: 27979 };
       saleItem.option = option;
 
-      const optionCollection: IOption[] = [{ id: 30783 }];
+      const optionCollection: IOption[] = [{ id: 27473 }];
       jest.spyOn(optionService, 'query').mockReturnValue(of(new HttpResponse({ body: optionCollection })));
       const additionalOptions = [option];
       const expectedCollection: IOption[] = [...additionalOptions, ...optionCollection];
@@ -79,10 +79,10 @@ describe('SaleItem Management Update Component', () => {
 
     it('Should call Extra query and add missing value', () => {
       const saleItem: ISaleItem = { id: 456 };
-      const extra: IExtra = { id: 10294 };
+      const extra: IExtra = { id: 21818 };
       saleItem.extra = extra;
 
-      const extraCollection: IExtra[] = [{ id: 16872 }];
+      const extraCollection: IExtra[] = [{ id: 24059 }];
       jest.spyOn(extraService, 'query').mockReturnValue(of(new HttpResponse({ body: extraCollection })));
       const additionalExtras = [extra];
       const expectedCollection: IExtra[] = [...additionalExtras, ...extraCollection];
@@ -101,10 +101,10 @@ describe('SaleItem Management Update Component', () => {
 
     it('Should call Sale query and add missing value', () => {
       const saleItem: ISaleItem = { id: 456 };
-      const sale: ISale = { id: 17188 };
+      const sale: ISale = { id: 16794 };
       saleItem.sale = sale;
 
-      const saleCollection: ISale[] = [{ id: 14344 }];
+      const saleCollection: ISale[] = [{ id: 6069 }];
       jest.spyOn(saleService, 'query').mockReturnValue(of(new HttpResponse({ body: saleCollection })));
       const additionalSales = [sale];
       const expectedCollection: ISale[] = [...additionalSales, ...saleCollection];
@@ -123,11 +123,11 @@ describe('SaleItem Management Update Component', () => {
 
     it('Should update editForm', () => {
       const saleItem: ISaleItem = { id: 456 };
-      const option: IOption = { id: 7549 };
+      const option: IOption = { id: 2645 };
       saleItem.option = option;
-      const extra: IExtra = { id: 21428 };
+      const extra: IExtra = { id: 12093 };
       saleItem.extra = extra;
-      const sale: ISale = { id: 9677 };
+      const sale: ISale = { id: 17023 };
       saleItem.sale = sale;
 
       activatedRoute.data = of({ saleItem });

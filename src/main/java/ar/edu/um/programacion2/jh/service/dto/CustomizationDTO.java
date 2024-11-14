@@ -17,6 +17,8 @@ public class CustomizationDTO {
     @JsonProperty("id")
     private Long id;
 
+    private Long supplierForeignId;
+
     @JsonProperty("nombre")
     private String name;
 
@@ -29,6 +31,7 @@ public class CustomizationDTO {
     public static Customization toCustomization(CustomizationDTO dto) {
         Customization customization = new Customization();
         customization.setId(dto.getId());
+        customization.setSupplierForeignId(dto.getSupplierForeignId());
         customization.setName(dto.getName());
         customization.setDescription(dto.getDescription());
         customization.setOptions(

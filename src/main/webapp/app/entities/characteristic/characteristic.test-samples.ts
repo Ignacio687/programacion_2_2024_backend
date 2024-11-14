@@ -1,24 +1,28 @@
 import { ICharacteristic, NewCharacteristic } from './characteristic.model';
 
 export const sampleWithRequiredData: ICharacteristic = {
-  id: 28038,
-  name: 'and likewise aha',
+  id: 27966,
+  supplierForeignId: 26657,
+  name: 'geez hm mmm',
 };
 
 export const sampleWithPartialData: ICharacteristic = {
-  id: 23579,
-  name: 'teleport',
-  description: 'aside hasty hmph',
+  id: 2214,
+  supplierForeignId: 31332,
+  name: 'celebrated or yum',
+  description: 'about brightly intensely',
 };
 
 export const sampleWithFullData: ICharacteristic = {
-  id: 27541,
-  name: 'an',
-  description: 'intensely',
+  id: 19110,
+  supplierForeignId: 26186,
+  name: 'edit devise eek',
+  description: 'mechanically',
 };
 
 export const sampleWithNewData: NewCharacteristic = {
-  name: 'deficit of',
+  supplierForeignId: 28723,
+  name: 'phooey buying',
   id: null,
 };
 

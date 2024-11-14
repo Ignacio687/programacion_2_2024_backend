@@ -3,33 +3,35 @@ import dayjs from 'dayjs/esm';
 import { ISale, NewSale } from './sale.model';
 
 export const sampleWithRequiredData: ISale = {
-  id: 18976,
-  devicePrice: 13175.97,
-  finalPrice: 19464.72,
-  saleDate: dayjs('2024-09-26T00:57'),
+  id: 13176,
+  devicePrice: 19464.72,
+  finalPrice: 30311.23,
+  saleDate: dayjs('2024-09-26T05:39'),
 };
 
 export const sampleWithPartialData: ISale = {
-  id: 20057,
-  devicePrice: 7434.69,
-  finalPrice: 13348.77,
-  saleDate: dayjs('2024-09-26T02:35'),
+  id: 13349,
+  supplierForeignId: 28090,
+  devicePrice: 15563.07,
+  finalPrice: 20855,
+  saleDate: dayjs('2024-09-26T01:55'),
   finalized: true,
 };
 
 export const sampleWithFullData: ISale = {
-  id: 20855,
-  devicePrice: 29004.18,
-  finalPrice: 11880.48,
-  saleDate: dayjs('2024-09-26T22:08'),
-  currency: 'righteously',
+  id: 1403,
+  supplierForeignId: 10216,
+  devicePrice: 24154.26,
+  finalPrice: 1153.06,
+  saleDate: dayjs('2024-09-26T10:24'),
+  currency: 'room crystallize',
   finalized: true,
 };
 
 export const sampleWithNewData: NewSale = {
-  devicePrice: 402.53,
-  finalPrice: 6953.06,
-  saleDate: dayjs('2024-09-26T05:04'),
+  devicePrice: 5572.53,
+  finalPrice: 13539.72,
+  saleDate: dayjs('2024-09-26T06:20'),
   id: null,
 };
 

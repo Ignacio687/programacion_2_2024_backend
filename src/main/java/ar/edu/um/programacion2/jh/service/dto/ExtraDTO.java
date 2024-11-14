@@ -14,6 +14,8 @@ public class ExtraDTO {
     @JsonProperty("id")
     private Long id;
 
+    private Long supplierForeignId;
+
     @JsonProperty("nombre")
     private String name;
 
@@ -29,6 +31,7 @@ public class ExtraDTO {
     public static Extra toExtra(ExtraDTO dto) {
         Extra extra = new Extra();
         extra.setId(dto.getId());
+        extra.setSupplierForeignId(dto.getSupplierForeignId());
         extra.setName(dto.getName());
         extra.setDescription(dto.getDescription());
         extra.setPrice(dto.getPrice());

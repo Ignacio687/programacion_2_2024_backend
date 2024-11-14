@@ -20,6 +20,7 @@ describe('Option Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignId: expect.any(Object),
             code: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
@@ -36,6 +37,7 @@ describe('Option Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignId: expect.any(Object),
             code: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),

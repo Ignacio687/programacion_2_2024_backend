@@ -12,7 +12,7 @@ public class DeviceTestSamples {
     public static Device getDeviceSample1() {
         return new Device()
             .id(1L)
-            .supplierForeignKey(1L)
+            .supplierForeignId(1L)
             .supplier("supplier1")
             .code("code1")
             .name("name1")
@@ -23,7 +23,7 @@ public class DeviceTestSamples {
     public static Device getDeviceSample2() {
         return new Device()
             .id(2L)
-            .supplierForeignKey(2L)
+            .supplierForeignId(2L)
             .supplier("supplier2")
             .code("code2")
             .name("name2")
@@ -34,7 +34,7 @@ public class DeviceTestSamples {
     public static Device getDeviceRandomSampleGenerator() {
         return new Device()
             .id(longCount.incrementAndGet())
-            .supplierForeignKey(longCount.incrementAndGet())
+            .supplierForeignId(longCount.incrementAndGet())
             .supplier(UUID.randomUUID().toString())
             .code(UUID.randomUUID().toString())
             .name(UUID.randomUUID().toString())

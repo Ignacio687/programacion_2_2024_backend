@@ -18,6 +18,7 @@
         "title": "Characteristic"
       },
       "id": "ID",
+      "supplierForeignId": "Supplier Foreign Id",
       "name": "Name",
       "description": "Description",
       "devices": "Devices"

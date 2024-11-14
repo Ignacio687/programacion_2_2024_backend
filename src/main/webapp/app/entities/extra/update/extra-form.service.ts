@@ -18,6 +18,7 @@ type ExtraFormDefaults = Pick<NewExtra, 'id' | 'devices'>;
 
 type ExtraFormGroupContent = {
   id: FormControl<IExtra['id'] | NewExtra['id']>;
+  supplierForeignId: FormControl<IExtra['supplierForeignId']>;
   name: FormControl<IExtra['name']>;
   description: FormControl<IExtra['description']>;
   price: FormControl<IExtra['price']>;
@@ -42,6 +43,9 @@ export class ExtraFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignId: new FormControl(extraRawValue.supplierForeignId, {
+        validators: [Validators.required],
+      }),
       name: new FormControl(extraRawValue.name, {
         validators: [Validators.required],
       }),

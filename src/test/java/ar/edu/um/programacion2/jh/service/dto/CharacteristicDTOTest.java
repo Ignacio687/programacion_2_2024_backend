@@ -9,30 +9,33 @@ public class CharacteristicDTOTest {
 
     @Test
     void toCharacteristicConvertsCorrectly() {
-        CharacteristicDTO dto = new CharacteristicDTO(1L, "Screen", "OLED Screen");
+        CharacteristicDTO dto = new CharacteristicDTO(1L, 10L, "Screen", "OLED Screen");
         Characteristic characteristic = CharacteristicDTO.toCharacteristic(dto);
 
         assertEquals(1L, characteristic.getId());
+        assertEquals(10L, characteristic.getSupplierForeignId());
         assertEquals("Screen", characteristic.getName());
         assertEquals("OLED Screen", characteristic.getDescription());
     }
 
     @Test
     void toCharacteristicHandlesNullValues() {
-        CharacteristicDTO dto = new CharacteristicDTO(null, null, null);
+        CharacteristicDTO dto = new CharacteristicDTO(null, null, null, null);
         Characteristic characteristic = CharacteristicDTO.toCharacteristic(dto);
 
         assertNull(characteristic.getId());
+        assertNull(characteristic.getSupplierForeignId());
         assertNull(characteristic.getName());
         assertNull(characteristic.getDescription());
     }
 
     @Test
     void toCharacteristicHandlesEmptyStrings() {
-        CharacteristicDTO dto = new CharacteristicDTO(1L, "", "");
+        CharacteristicDTO dto = new CharacteristicDTO(1L, 10L, "", "");
         Characteristic characteristic = CharacteristicDTO.toCharacteristic(dto);
 
         assertEquals(1L, characteristic.getId());
+        assertEquals(10L, characteristic.getSupplierForeignId());
         assertEquals("", characteristic.getName());
         assertEquals("", characteristic.getDescription());
     }

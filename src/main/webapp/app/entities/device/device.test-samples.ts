@@ -2,7 +2,7 @@ import { IDevice, NewDevice } from './device.model';
 
 export const sampleWithRequiredData: IDevice = {
   id: 23054,
-  supplierForeignKey: 30699,
+  supplierForeignId: 30699,
   supplier: 'that',
   code: 'indeed for',
   basePrice: 21738.25,
@@ -10,7 +10,7 @@ export const sampleWithRequiredData: IDevice = {
 
 export const sampleWithPartialData: IDevice = {
   id: 10944,
-  supplierForeignKey: 22344,
+  supplierForeignId: 22344,
   supplier: 'apse fork',
   code: 'uh-huh geez',
   basePrice: 15433.94,
@@ -20,7 +20,7 @@ export const sampleWithPartialData: IDevice = {
 
 export const sampleWithFullData: IDevice = {
   id: 1624,
-  supplierForeignKey: 11957,
+  supplierForeignId: 11957,
   supplier: 'aw rudely ex-husband',
   code: 'gah',
   name: 'well behind elegantly',
@@ -31,7 +31,7 @@ export const sampleWithFullData: IDevice = {
 };
 
 export const sampleWithNewData: NewDevice = {
-  supplierForeignKey: 3697,
+  supplierForeignId: 3697,
   supplier: 'on researches since',
   code: 'book apud',
   basePrice: 30062.72,

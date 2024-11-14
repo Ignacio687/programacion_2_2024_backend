@@ -18,6 +18,7 @@ type CharacteristicFormDefaults = Pick<NewCharacteristic, 'id' | 'devices'>;
 
 type CharacteristicFormGroupContent = {
   id: FormControl<ICharacteristic['id'] | NewCharacteristic['id']>;
+  supplierForeignId: FormControl<ICharacteristic['supplierForeignId']>;
   name: FormControl<ICharacteristic['name']>;
   description: FormControl<ICharacteristic['description']>;
   devices: FormControl<ICharacteristic['devices']>;
@@ -40,6 +41,9 @@ export class CharacteristicFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignId: new FormControl(characteristicRawValue.supplierForeignId, {
+        validators: [Validators.required],
+      }),
       name: new FormControl(characteristicRawValue.name, {
         validators: [Validators.required],
       }),

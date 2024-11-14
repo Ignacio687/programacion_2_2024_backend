@@ -34,6 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SaleResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
+
     private static final Double DEFAULT_DEVICE_PRICE = 1D;
     private static final Double UPDATED_DEVICE_PRICE = 2D;
 
@@ -79,6 +82,7 @@ class SaleResourceIT {
      */
     public static Sale createEntity() {
         return new Sale()
+            .supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID)
             .devicePrice(DEFAULT_DEVICE_PRICE)
             .finalPrice(DEFAULT_FINAL_PRICE)
             .saleDate(DEFAULT_SALE_DATE)
@@ -94,6 +98,7 @@ class SaleResourceIT {
      */
     public static Sale createUpdatedEntity() {
         return new Sale()
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)
@@ -213,6 +218,7 @@ class SaleResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(sale.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].devicePrice").value(hasItem(DEFAULT_DEVICE_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].finalPrice").value(hasItem(DEFAULT_FINAL_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].saleDate").value(hasItem(DEFAULT_SALE_DATE.toString())))
@@ -232,6 +238,7 @@ class SaleResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(sale.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.devicePrice").value(DEFAULT_DEVICE_PRICE.doubleValue()))
             .andExpect(jsonPath("$.finalPrice").value(DEFAULT_FINAL_PRICE.doubleValue()))
             .andExpect(jsonPath("$.saleDate").value(DEFAULT_SALE_DATE.toString()))
@@ -259,6 +266,7 @@ class SaleResourceIT {
         // Disconnect from session so that the updates on updatedSale are not directly saved in db
         em.detach(updatedSale);
         updatedSale
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)
@@ -339,7 +347,7 @@ class SaleResourceIT {
         Sale partialUpdatedSale = new Sale();
         partialUpdatedSale.setId(sale.getId());
 
-        partialUpdatedSale.devicePrice(UPDATED_DEVICE_PRICE).finalPrice(UPDATED_FINAL_PRICE).saleDate(UPDATED_SALE_DATE);
+        partialUpdatedSale.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).devicePrice(UPDATED_DEVICE_PRICE).finalPrice(UPDATED_FINAL_PRICE);
 
         restSaleMockMvc
             .perform(
@@ -368,6 +376,7 @@ class SaleResourceIT {
         partialUpdatedSale.setId(sale.getId());
 
         partialUpdatedSale
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .devicePrice(UPDATED_DEVICE_PRICE)
             .finalPrice(UPDATED_FINAL_PRICE)
             .saleDate(UPDATED_SALE_DATE)

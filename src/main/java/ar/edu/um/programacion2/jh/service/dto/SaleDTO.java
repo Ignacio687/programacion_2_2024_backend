@@ -17,6 +17,8 @@ public class SaleDTO {
     @JsonProperty("idDispositivo")
     private Long deviceId;
 
+    private Long supplierForeignId;
+
     @JsonProperty("codigo")
     private String code;
 

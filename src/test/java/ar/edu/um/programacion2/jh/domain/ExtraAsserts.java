@@ -47,6 +47,7 @@ public class ExtraAsserts {
     public static void assertExtraUpdatableFieldsEquals(Extra expected, Extra actual) {
         assertThat(expected)
             .as("Verify Extra relevant properties")
+            .satisfies(e -> assertThat(e.getSupplierForeignId()).as("check supplierForeignId").isEqualTo(actual.getSupplierForeignId()))
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
             .satisfies(e -> assertThat(e.getPrice()).as("check price").isEqualTo(actual.getPrice()))

@@ -5,6 +5,11 @@
   "applications": "*",
   "fields": [
     {
+      "fieldName": "supplierForeignId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "name",
       "fieldType": "String",
       "fieldValidateRules": ["required"]

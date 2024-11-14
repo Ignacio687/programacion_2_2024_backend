@@ -15,6 +15,20 @@
           </div>
         }
 
+        <div class="mb-3">
+          <label class="form-label" for="field_supplierForeignId" jhiTranslate="computechApp.sale.supplierForeignId"
+            >Supplier Foreign Id</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="supplierForeignId"
+            id="field_supplierForeignId"
+            data-cy="supplierForeignId"
+            formControlName="supplierForeignId"
+          />
+        </div>
+
         @let devicePriceRef = editForm.get('devicePrice')!;
         <div class="mb-3">
           <label class="form-label" for="field_devicePrice" jhiTranslate="computechApp.sale.devicePrice">Device Price</label>

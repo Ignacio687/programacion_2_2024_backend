@@ -14,6 +14,8 @@ public class CharacteristicDTO {
     @JsonProperty("id")
     private Long id;
 
+    private Long supplierForeignId;
+
     @JsonProperty("nombre")
     private String name;
 
@@ -23,6 +25,7 @@ public class CharacteristicDTO {
     public static Characteristic toCharacteristic(CharacteristicDTO dto) {
         Characteristic characteristic = new Characteristic();
         characteristic.setId(dto.getId());
+        characteristic.setSupplierForeignId(dto.getSupplierForeignId());
         characteristic.setName(dto.getName());
         characteristic.setDescription(dto.getDescription());
         return characteristic;

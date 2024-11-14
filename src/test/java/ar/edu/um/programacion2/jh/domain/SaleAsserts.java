@@ -47,6 +47,7 @@ public class SaleAsserts {
     public static void assertSaleUpdatableFieldsEquals(Sale expected, Sale actual) {
         assertThat(expected)
             .as("Verify Sale relevant properties")
+            .satisfies(e -> assertThat(e.getSupplierForeignId()).as("check supplierForeignId").isEqualTo(actual.getSupplierForeignId()))
             .satisfies(e -> assertThat(e.getDevicePrice()).as("check devicePrice").isEqualTo(actual.getDevicePrice()))
             .satisfies(e -> assertThat(e.getFinalPrice()).as("check finalPrice").isEqualTo(actual.getFinalPrice()))
             .satisfies(e -> assertThat(e.getSaleDate()).as("check saleDate").isEqualTo(actual.getSaleDate()))

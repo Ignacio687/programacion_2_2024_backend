@@ -1,5 +1,5 @@
 entity Device {
-  supplierForeignKey Long required
+  supplierForeignId Long required
   supplier String required
   code String required //unique
   name String
@@ -10,16 +10,19 @@ entity Device {
 }
 
 entity Characteristic {
+  supplierForeignId Long required
   name String required
   description String
 }
 
 entity Customization {
+  supplierForeignId Long required
   name String required
   description String
 }
 
 entity Option {
+  supplierForeignId Long required
   code String required
   name String
   description String
@@ -27,6 +30,7 @@ entity Option {
 }
 
 entity Extra {
+  supplierForeignId Long required
   name String required
   description String
   price Double required
@@ -34,6 +38,7 @@ entity Extra {
 }
 
 entity Sale {
+  supplierForeignId Long
   devicePrice Double required
   finalPrice Double required
   saleDate Instant required

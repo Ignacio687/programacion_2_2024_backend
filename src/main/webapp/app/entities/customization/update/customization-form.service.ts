@@ -18,6 +18,7 @@ type CustomizationFormDefaults = Pick<NewCustomization, 'id'>;
 
 type CustomizationFormGroupContent = {
   id: FormControl<ICustomization['id'] | NewCustomization['id']>;
+  supplierForeignId: FormControl<ICustomization['supplierForeignId']>;
   name: FormControl<ICustomization['name']>;
   description: FormControl<ICustomization['description']>;
 };
@@ -39,6 +40,9 @@ export class CustomizationFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignId: new FormControl(customizationRawValue.supplierForeignId, {
+        validators: [Validators.required],
+      }),
       name: new FormControl(customizationRawValue.name, {
         validators: [Validators.required],
       }),

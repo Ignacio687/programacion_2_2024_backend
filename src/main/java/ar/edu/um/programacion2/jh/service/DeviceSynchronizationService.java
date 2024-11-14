@@ -45,7 +45,7 @@ public class DeviceSynchronizationService {
         for (Device localDevice : localDevices) {
             Optional<DeviceDTO> matchingDevice = externalDevices
                 .stream()
-                .filter(externalDevice -> externalDevice.getId().equals(localDevice.getSupplierForeignKey()))
+                .filter(externalDevice -> externalDevice.getId().equals(localDevice.getSupplierForeignId()))
                 .findFirst();
             if (matchingDevice.isPresent()) {
                 this.updateDevice(localDevice, matchingDevice.get());
@@ -57,7 +57,7 @@ public class DeviceSynchronizationService {
         for (DeviceDTO externalDevice : externalDevices) {
             Device newDevice = new Device();
             newDevice.setId(null);
-            newDevice.setSupplierForeignKey(externalDevice.getId());
+            newDevice.setSupplierForeignId(externalDevice.getId());
             newDevice.setSupplier("APICatedraProgramacion2_2024");
             this.updateDevice(newDevice, externalDevice);
         }
@@ -67,7 +67,7 @@ public class DeviceSynchronizationService {
     private void updateDevice(Device localDevice, DeviceDTO externalDevice) {
         Device updatedDevice = DeviceDTO.toDevice(externalDevice);
         updatedDevice.setId(localDevice.getId());
-        updatedDevice.setSupplierForeignKey(localDevice.getSupplierForeignKey());
+        updatedDevice.setSupplierForeignId(localDevice.getSupplierForeignId());
         updatedDevice.setSupplier(localDevice.getSupplier());
         updatedDevice.setActive(true);
         this.saveDeviceDependencies(updatedDevice, externalDevice.getCustomizations());

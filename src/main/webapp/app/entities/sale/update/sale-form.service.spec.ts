@@ -20,6 +20,7 @@ describe('Sale Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignId: expect.any(Object),
             devicePrice: expect.any(Object),
             finalPrice: expect.any(Object),
             saleDate: expect.any(Object),
@@ -36,6 +37,7 @@ describe('Sale Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            supplierForeignId: expect.any(Object),
             devicePrice: expect.any(Object),
             finalPrice: expect.any(Object),
             saleDate: expect.any(Object),

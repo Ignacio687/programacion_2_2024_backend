@@ -18,6 +18,7 @@ type OptionFormDefaults = Pick<NewOption, 'id' | 'devices'>;
 
 type OptionFormGroupContent = {
   id: FormControl<IOption['id'] | NewOption['id']>;
+  supplierForeignId: FormControl<IOption['supplierForeignId']>;
   code: FormControl<IOption['code']>;
   name: FormControl<IOption['name']>;
   description: FormControl<IOption['description']>;
@@ -43,6 +44,9 @@ export class OptionFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignId: new FormControl(optionRawValue.supplierForeignId, {
+        validators: [Validators.required],
+      }),
       code: new FormControl(optionRawValue.code, {
         validators: [Validators.required],
       }),

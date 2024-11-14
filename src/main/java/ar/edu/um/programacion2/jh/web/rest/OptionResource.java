@@ -123,6 +123,9 @@ public class OptionResource {
         Optional<Option> result = optionRepository
             .findById(option.getId())
             .map(existingOption -> {
+                if (option.getSupplierForeignId() != null) {
+                    existingOption.setSupplierForeignId(option.getSupplierForeignId());
+                }
                 if (option.getCode() != null) {
                     existingOption.setCode(option.getCode());
                 }

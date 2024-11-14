@@ -6,6 +6,11 @@
   "entityTableName": "jhi_option",
   "fields": [
     {
+      "fieldName": "supplierForeignId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "code",
       "fieldType": "String",
       "fieldValidateRules": ["required"]

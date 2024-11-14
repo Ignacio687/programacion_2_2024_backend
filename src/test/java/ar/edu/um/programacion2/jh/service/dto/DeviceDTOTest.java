@@ -31,7 +31,7 @@ public class DeviceDTOTest {
         Device device = DeviceDTO.toDevice(dto);
 
         assertEquals(dto.getId(), device.getId());
-        assertEquals(dto.getSupplierForeignKey(), device.getSupplierForeignKey());
+        assertEquals(dto.getSupplierForeignId(), device.getSupplierForeignId());
         assertEquals(dto.getSupplier(), device.getSupplier());
         assertEquals(dto.getCode(), device.getCode());
         assertEquals(dto.getName(), device.getName());
@@ -96,8 +96,8 @@ public class DeviceDTOTest {
             true,
             List.of(new CharacteristicDTO()),
             List.of(
-                new CustomizationDTO(1L, "Name", "Description", List.of(new OptionDTO())),
-                new CustomizationDTO(2L, "Name2", "Description2", List.of(new OptionDTO()))
+                new CustomizationDTO(1L, 10L, "Name", "Description", List.of(new OptionDTO())),
+                new CustomizationDTO(2L, 10L, "Name2", "Description2", List.of(new OptionDTO()))
             ),
             List.of(new ExtraDTO())
         );

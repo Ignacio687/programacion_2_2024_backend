@@ -18,7 +18,7 @@ type DeviceFormDefaults = Pick<NewDevice, 'id' | 'active' | 'characteristics' | 
 
 type DeviceFormGroupContent = {
   id: FormControl<IDevice['id'] | NewDevice['id']>;
-  supplierForeignKey: FormControl<IDevice['supplierForeignKey']>;
+  supplierForeignId: FormControl<IDevice['supplierForeignId']>;
   supplier: FormControl<IDevice['supplier']>;
   code: FormControl<IDevice['code']>;
   name: FormControl<IDevice['name']>;
@@ -48,7 +48,7 @@ export class DeviceFormService {
           validators: [Validators.required],
         },
       ),
-      supplierForeignKey: new FormControl(deviceRawValue.supplierForeignKey, {
+      supplierForeignId: new FormControl(deviceRawValue.supplierForeignId, {
         validators: [Validators.required],
       }),
       supplier: new FormControl(deviceRawValue.supplier, {

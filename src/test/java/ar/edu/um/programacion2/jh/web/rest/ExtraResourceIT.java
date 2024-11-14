@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ExtraResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -73,7 +76,12 @@ class ExtraResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Extra createEntity() {
-        return new Extra().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).price(DEFAULT_PRICE).freePrice(DEFAULT_FREE_PRICE);
+        return new Extra()
+            .supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID)
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .price(DEFAULT_PRICE)
+            .freePrice(DEFAULT_FREE_PRICE);
     }
 
     /**
@@ -83,7 +91,12 @@ class ExtraResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Extra createUpdatedEntity() {
-        return new Extra().name(UPDATED_NAME).description(UPDATED_DESCRIPTION).price(UPDATED_PRICE).freePrice(UPDATED_FREE_PRICE);
+        return new Extra()
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .price(UPDATED_PRICE)
+            .freePrice(UPDATED_FREE_PRICE);
     }
 
     @BeforeEach
@@ -136,6 +149,22 @@ class ExtraResourceIT {
 
         // Validate the Extra in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkSupplierForeignIdIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        extra.setSupplierForeignId(null);
+
+        // Create the Extra, which fails.
+
+        restExtraMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(extra)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -198,6 +227,7 @@ class ExtraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(extra.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
@@ -216,6 +246,7 @@ class ExtraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(extra.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
@@ -241,7 +272,12 @@ class ExtraResourceIT {
         Extra updatedExtra = extraRepository.findById(extra.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedExtra are not directly saved in db
         em.detach(updatedExtra);
-        updatedExtra.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).price(UPDATED_PRICE).freePrice(UPDATED_FREE_PRICE);
+        updatedExtra
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .price(UPDATED_PRICE)
+            .freePrice(UPDATED_FREE_PRICE);
 
         restExtraMockMvc
             .perform(
@@ -317,7 +353,7 @@ class ExtraResourceIT {
         Extra partialUpdatedExtra = new Extra();
         partialUpdatedExtra.setId(extra.getId());
 
-        partialUpdatedExtra.name(UPDATED_NAME).price(UPDATED_PRICE);
+        partialUpdatedExtra.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).description(UPDATED_DESCRIPTION).freePrice(UPDATED_FREE_PRICE);
 
         restExtraMockMvc
             .perform(
@@ -345,7 +381,12 @@ class ExtraResourceIT {
         Extra partialUpdatedExtra = new Extra();
         partialUpdatedExtra.setId(extra.getId());
 
-        partialUpdatedExtra.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).price(UPDATED_PRICE).freePrice(UPDATED_FREE_PRICE);
+        partialUpdatedExtra
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .price(UPDATED_PRICE)
+            .freePrice(UPDATED_FREE_PRICE);
 
         restExtraMockMvc
             .perform(

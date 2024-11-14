@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class OptionResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
+
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
@@ -74,6 +77,7 @@ class OptionResourceIT {
      */
     public static Option createEntity() {
         return new Option()
+            .supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID)
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
@@ -88,6 +92,7 @@ class OptionResourceIT {
      */
     public static Option createUpdatedEntity() {
         return new Option()
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
@@ -148,6 +153,22 @@ class OptionResourceIT {
 
     @Test
     @Transactional
+    void checkSupplierForeignIdIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        option.setSupplierForeignId(null);
+
+        // Create the Option, which fails.
+
+        restOptionMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(option)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkCodeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -190,6 +211,7 @@ class OptionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(option.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
@@ -208,6 +230,7 @@ class OptionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(option.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
@@ -233,7 +256,12 @@ class OptionResourceIT {
         Option updatedOption = optionRepository.findById(option.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedOption are not directly saved in db
         em.detach(updatedOption);
-        updatedOption.code(UPDATED_CODE).name(UPDATED_NAME).description(UPDATED_DESCRIPTION).additionalPrice(UPDATED_ADDITIONAL_PRICE);
+        updatedOption
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
+            .code(UPDATED_CODE)
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .additionalPrice(UPDATED_ADDITIONAL_PRICE);
 
         restOptionMockMvc
             .perform(
@@ -309,7 +337,7 @@ class OptionResourceIT {
         Option partialUpdatedOption = new Option();
         partialUpdatedOption.setId(option.getId());
 
-        partialUpdatedOption.code(UPDATED_CODE).description(UPDATED_DESCRIPTION);
+        partialUpdatedOption.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).additionalPrice(UPDATED_ADDITIONAL_PRICE);
 
         restOptionMockMvc
             .perform(
@@ -338,6 +366,7 @@ class OptionResourceIT {
         partialUpdatedOption.setId(option.getId());
 
         partialUpdatedOption
+            .supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID)
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)

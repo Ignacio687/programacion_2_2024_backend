@@ -31,6 +31,7 @@ type SaleFormDefaults = Pick<NewSale, 'id' | 'saleDate' | 'finalized'>;
 
 type SaleFormGroupContent = {
   id: FormControl<SaleFormRawValue['id'] | NewSale['id']>;
+  supplierForeignId: FormControl<SaleFormRawValue['supplierForeignId']>;
   devicePrice: FormControl<SaleFormRawValue['devicePrice']>;
   finalPrice: FormControl<SaleFormRawValue['finalPrice']>;
   saleDate: FormControl<SaleFormRawValue['saleDate']>;
@@ -56,6 +57,7 @@ export class SaleFormService {
           validators: [Validators.required],
         },
       ),
+      supplierForeignId: new FormControl(saleRawValue.supplierForeignId),
       devicePrice: new FormControl(saleRawValue.devicePrice, {
         validators: [Validators.required],
       }),

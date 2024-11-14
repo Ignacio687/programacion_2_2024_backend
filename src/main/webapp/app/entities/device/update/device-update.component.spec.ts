@@ -57,10 +57,10 @@ describe('Device Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Characteristic query and add missing value', () => {
       const device: IDevice = { id: 456 };
-      const characteristics: ICharacteristic[] = [{ id: 15763 }];
+      const characteristics: ICharacteristic[] = [{ id: 23672 }];
       device.characteristics = characteristics;
 
-      const characteristicCollection: ICharacteristic[] = [{ id: 23672 }];
+      const characteristicCollection: ICharacteristic[] = [{ id: 2357 }];
       jest.spyOn(characteristicService, 'query').mockReturnValue(of(new HttpResponse({ body: characteristicCollection })));
       const additionalCharacteristics = [...characteristics];
       const expectedCollection: ICharacteristic[] = [...additionalCharacteristics, ...characteristicCollection];
@@ -79,10 +79,10 @@ describe('Device Management Update Component', () => {
 
     it('Should call Option query and add missing value', () => {
       const device: IDevice = { id: 456 };
-      const options: IOption[] = [{ id: 10910 }];
+      const options: IOption[] = [{ id: 22381 }];
       device.options = options;
 
-      const optionCollection: IOption[] = [{ id: 22381 }];
+      const optionCollection: IOption[] = [{ id: 24871 }];
       jest.spyOn(optionService, 'query').mockReturnValue(of(new HttpResponse({ body: optionCollection })));
       const additionalOptions = [...options];
       const expectedCollection: IOption[] = [...additionalOptions, ...optionCollection];
@@ -101,10 +101,10 @@ describe('Device Management Update Component', () => {
 
     it('Should call Extra query and add missing value', () => {
       const device: IDevice = { id: 456 };
-      const extras: IExtra[] = [{ id: 10293 }];
+      const extras: IExtra[] = [{ id: 9612 }];
       device.extras = extras;
 
-      const extraCollection: IExtra[] = [{ id: 9612 }];
+      const extraCollection: IExtra[] = [{ id: 3463 }];
       jest.spyOn(extraService, 'query').mockReturnValue(of(new HttpResponse({ body: extraCollection })));
       const additionalExtras = [...extras];
       const expectedCollection: IExtra[] = [...additionalExtras, ...extraCollection];
@@ -123,11 +123,11 @@ describe('Device Management Update Component', () => {
 
     it('Should update editForm', () => {
       const device: IDevice = { id: 456 };
-      const characteristics: ICharacteristic = { id: 2357 };
+      const characteristics: ICharacteristic = { id: 28038 };
       device.characteristics = [characteristics];
-      const options: IOption = { id: 24871 };
+      const options: IOption = { id: 13507 };
       device.options = [options];
-      const extras: IExtra = { id: 3463 };
+      const extras: IExtra = { id: 9242 };
       device.extras = [extras];
 
       activatedRoute.data = of({ device });

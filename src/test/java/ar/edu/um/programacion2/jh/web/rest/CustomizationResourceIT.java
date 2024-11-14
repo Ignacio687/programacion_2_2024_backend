@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class CustomizationResourceIT {
 
+    private static final Long DEFAULT_SUPPLIER_FOREIGN_ID = 1L;
+    private static final Long UPDATED_SUPPLIER_FOREIGN_ID = 2L;
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -67,7 +70,7 @@ class CustomizationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Customization createEntity() {
-        return new Customization().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION);
+        return new Customization().supplierForeignId(DEFAULT_SUPPLIER_FOREIGN_ID).name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION);
     }
 
     /**
@@ -77,7 +80,7 @@ class CustomizationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Customization createUpdatedEntity() {
-        return new Customization().name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        return new Customization().supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
     }
 
     @BeforeEach
@@ -134,6 +137,22 @@ class CustomizationResourceIT {
 
     @Test
     @Transactional
+    void checkSupplierForeignIdIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        customization.setSupplierForeignId(null);
+
+        // Create the Customization, which fails.
+
+        restCustomizationMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(customization)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -160,6 +179,7 @@ class CustomizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customization.getId().intValue())))
+            .andExpect(jsonPath("$.[*].supplierForeignId").value(hasItem(DEFAULT_SUPPLIER_FOREIGN_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
@@ -176,6 +196,7 @@ class CustomizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(customization.getId().intValue()))
+            .andExpect(jsonPath("$.supplierForeignId").value(DEFAULT_SUPPLIER_FOREIGN_ID.intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
@@ -199,7 +220,7 @@ class CustomizationResourceIT {
         Customization updatedCustomization = customizationRepository.findById(customization.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedCustomization are not directly saved in db
         em.detach(updatedCustomization);
-        updatedCustomization.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        updatedCustomization.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restCustomizationMockMvc
             .perform(
@@ -279,7 +300,7 @@ class CustomizationResourceIT {
         Customization partialUpdatedCustomization = new Customization();
         partialUpdatedCustomization.setId(customization.getId());
 
-        partialUpdatedCustomization.name(UPDATED_NAME);
+        partialUpdatedCustomization.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).description(UPDATED_DESCRIPTION);
 
         restCustomizationMockMvc
             .perform(
@@ -310,7 +331,7 @@ class CustomizationResourceIT {
         Customization partialUpdatedCustomization = new Customization();
         partialUpdatedCustomization.setId(customization.getId());
 
-        partialUpdatedCustomization.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        partialUpdatedCustomization.supplierForeignId(UPDATED_SUPPLIER_FOREIGN_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restCustomizationMockMvc
             .perform(

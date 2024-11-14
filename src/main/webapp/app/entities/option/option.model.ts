@@ -3,6 +3,7 @@ import { IDevice } from 'app/entities/device/device.model';
 
 export interface IOption {
   id: number;
+  supplierForeignId?: number | null;
   code?: string | null;
   name?: string | null;
   description?: string | null;
