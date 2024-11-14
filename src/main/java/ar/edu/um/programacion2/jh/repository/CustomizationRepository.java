@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.jh.repository;
 
 import ar.edu.um.programacion2.jh.domain.Customization;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CustomizationRepository extends JpaRepository<Customization, Long> {}
+public interface CustomizationRepository extends JpaRepository<Customization, Long> {
+    Optional<Customization> findBySupplierForeignId(Long supplierForeignId);
+}

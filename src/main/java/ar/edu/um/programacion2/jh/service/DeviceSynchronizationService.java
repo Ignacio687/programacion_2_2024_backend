@@ -1,13 +1,15 @@
 package ar.edu.um.programacion2.jh.service;
 
-import ar.edu.um.programacion2.jh.domain.Customization;
-import ar.edu.um.programacion2.jh.domain.Device;
+import ar.edu.um.programacion2.jh.domain.*;
 import ar.edu.um.programacion2.jh.repository.*;
 import ar.edu.um.programacion2.jh.service.client.DeviceClient;
 import ar.edu.um.programacion2.jh.service.dto.CustomizationDTO;
 import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +77,53 @@ public class DeviceSynchronizationService {
     }
 
     private void saveDeviceDependencies(Device device, List<CustomizationDTO> customizations) {
-        this.characteristicRepository.saveAll(device.getCharacteristics());
-        this.extraRepository.saveAll(device.getExtras());
-        this.optionRepository.saveAll(device.getOptions());
+        device
+            .getCharacteristics()
+            .forEach(characteristic -> {
+                characteristic.setSupplierForeignId(characteristic.getId());
+                Optional<Characteristic> existingCharacteristic = characteristicRepository.findBySupplierForeignId(
+                    characteristic.getSupplierForeignId()
+                );
+                existingCharacteristic.ifPresent(value -> characteristic.setId(value.getId()));
+            });
+        device.setCharacteristics(new HashSet<>(this.characteristicRepository.saveAll(device.getCharacteristics())));
+
+        device
+            .getExtras()
+            .forEach(extra -> {
+                extra.setSupplierForeignId(extra.getId());
+                Optional<Extra> existingExtra = extraRepository.findBySupplierForeignId(extra.getSupplierForeignId());
+                existingExtra.ifPresent(value -> extra.setId(value.getId()));
+            });
+        device.setExtras(new HashSet<>(this.extraRepository.saveAll(device.getExtras())));
+
+        device
+            .getOptions()
+            .forEach(option -> {
+                option.setSupplierForeignId(option.getId());
+                Optional<Option> existingOption = optionRepository.findBySupplierForeignId(option.getSupplierForeignId());
+                existingOption.ifPresent(value -> option.setId(value.getId()));
+            });
+        device.setOptions(new HashSet<>(this.optionRepository.saveAll(device.getOptions())));
+
         for (CustomizationDTO customizationDTO : customizations) {
             Customization customization = CustomizationDTO.toCustomization(customizationDTO);
+            customization.setSupplierForeignId(customization.getId());
+            Optional<Customization> existingCustomization = customizationRepository.findBySupplierForeignId(
+                customization.getSupplierForeignId()
+            );
+            existingCustomization.ifPresent(value -> customization.setId(value.getId()));
+            Set<Option> newOptions = device
+                .getOptions()
+                .stream()
+                .filter(option ->
+                    customization
+                        .getOptions()
+                        .stream()
+                        .anyMatch(existingOption -> existingOption.getId().equals(option.getSupplierForeignId()))
+                )
+                .collect(Collectors.toSet());
+            customization.setOptions(newOptions);
             this.customizationRepository.save(customization);
         }
     }
@@ -98,7 +142,7 @@ public class DeviceSynchronizationService {
             while (this.running) {
                 this.synchronize();
                 try {
-                    Thread.sleep(syncTimeLapse);
+                    Thread.sleep(syncTimeLapse * 1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     this.log.info("Device synchronization was interrupted");
