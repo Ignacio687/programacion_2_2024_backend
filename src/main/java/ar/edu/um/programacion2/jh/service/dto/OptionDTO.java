@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.service.dto;
 
 import ar.edu.um.programacion2.jh.domain.Option;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,28 @@ public class OptionDTO {
         option.setDescription(dto.getDescription());
         option.setAdditionalPrice(dto.getAdditionalPrice());
         return option;
+    }
+
+    public static OptionDTO fromOption(Option option) {
+        OptionDTO dto = new OptionDTO();
+        dto.setId(option.getId());
+        dto.setSupplierForeignId(option.getSupplierForeignId());
+        dto.setCode(option.getCode());
+        dto.setName(option.getName());
+        dto.setDescription(option.getDescription());
+        dto.setAdditionalPrice(option.getAdditionalPrice());
+        return dto;
+    }
+
+    public boolean equalsExternal(OptionDTO externalOption) {
+        if (this == externalOption) return true;
+        if (externalOption == null || getClass() != externalOption.getClass()) return false;
+        return (
+            Objects.equals(this.supplierForeignId, externalOption.getId()) &&
+            Objects.equals(this.code, externalOption.getCode()) &&
+            Objects.equals(this.name, externalOption.getName()) &&
+            Objects.equals(this.description, externalOption.getDescription()) &&
+            Objects.equals(this.additionalPrice, externalOption.getAdditionalPrice())
+        );
     }
 }

@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh;
 
 import ar.edu.um.programacion2.jh.config.ApplicationProperties;
 import ar.edu.um.programacion2.jh.config.CRLFLogConverter;
+import ar.edu.um.programacion2.jh.service.DeviceSynchronizationService;
 import jakarta.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -29,8 +31,11 @@ public class ComputechApp {
 
     private final Environment env;
 
-    public ComputechApp(Environment env) {
+    private final DeviceSynchronizationService deviceSynchronizationService;
+
+    public ComputechApp(Environment env, DeviceSynchronizationService deviceSynchronizationService) {
         this.env = env;
+        this.deviceSynchronizationService = deviceSynchronizationService;
     }
 
     /**
@@ -59,6 +64,7 @@ public class ComputechApp {
                 "You have misconfigured your application! It should not " + "run with both the 'dev' and 'cloud' profiles at the same time."
             );
         }
+        //deviceSynchronizationService.startThread(300L);
     }
 
     /**

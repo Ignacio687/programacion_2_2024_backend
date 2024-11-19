@@ -5,15 +5,14 @@ import ar.edu.um.programacion2.jh.repository.*;
 import ar.edu.um.programacion2.jh.service.client.DeviceClient;
 import ar.edu.um.programacion2.jh.service.dto.CustomizationDTO;
 import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DeviceSynchronizationService {
@@ -43,7 +42,11 @@ public class DeviceSynchronizationService {
     public void synchronize() {
         this.log.info("Synchronizing devices...");
         List<DeviceDTO> externalDevices = this.deviceClient.getDevices();
-        List<Device> localDevices = this.deviceRepository.findAll();
+        List<Device> localDevices = this.deviceRepository.findAllWithEagerRelationshipsCustom();
+        if (hasChanges(externalDevices, localDevices)) {
+            this.log.info("No changes detected between local and external devices.");
+            return;
+        }
         for (Device localDevice : localDevices) {
             Optional<DeviceDTO> matchingDevice = externalDevices
                 .stream()
@@ -64,6 +67,29 @@ public class DeviceSynchronizationService {
             this.updateDevice(newDevice, externalDevice);
         }
         this.log.info("Device synchronization completed.");
+    }
+
+    private boolean hasChanges(List<DeviceDTO> externalDevices, List<Device> localDevices) {
+        TreeSet<DeviceDTO> sortedExternalDevices = new TreeSet<>(Comparator.comparing(DeviceDTO::getId));
+        sortedExternalDevices.addAll(externalDevices);
+        TreeSet<DeviceDTO> sortedLocalDevices = localDevices
+            .stream()
+            .filter(Device::getActive)
+            .map(device -> DeviceDTO.fromDevice(device, customizationRepository))
+            .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(DeviceDTO::getSupplierForeignId))));
+        if (sortedExternalDevices.size() != sortedLocalDevices.size()) {
+            return false;
+        }
+        Iterator<DeviceDTO> externalIterator = sortedExternalDevices.iterator();
+        Iterator<DeviceDTO> localIterator = sortedLocalDevices.iterator();
+        while (externalIterator.hasNext() && localIterator.hasNext()) {
+            DeviceDTO externalDevice = externalIterator.next();
+            DeviceDTO localDevice = localIterator.next();
+            if (!localDevice.equalsExternal(externalDevice)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updateDevice(Device localDevice, DeviceDTO externalDevice) {
@@ -134,21 +160,22 @@ public class DeviceSynchronizationService {
     }
 
     public void startThread(Long syncTimeLapse) {
-        if (thread != null && thread.isAlive()) {
+        if (thread != null) {
             this.stopThread();
         }
         this.running = true;
         thread = new Thread(() -> {
             while (this.running) {
-                this.synchronize();
                 try {
+                    this.synchronize();
                     Thread.sleep(syncTimeLapse * 1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    this.log.info("Device synchronization was interrupted");
+                    this.log.debug("Device synchronization was interrupted");
+                    break;
                 } catch (Exception e) {
                     this.log.error("An unexpected error occurred during device synchronization", e);
                     this.log.trace("An unexpected error occurred during device synchronization", e);
+                    break;
                 }
             }
             this.log.info("Device synchronization has stopped.");
@@ -160,6 +187,11 @@ public class DeviceSynchronizationService {
         this.running = false;
         if (thread != null) {
             this.thread.interrupt();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                this.log.debug("Thread join was interrupted", e);
+            }
         }
     }
 }
