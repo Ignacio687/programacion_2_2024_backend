@@ -144,54 +144,58 @@ public class DeviceDTO {
             externalDevice.getExtras() == null
         ) return true;
         if (
-            this.characteristics == null ||
-            externalDevice.getCharacteristics() == null ||
-            this.customizations == null ||
-            externalDevice.getCustomizations() == null ||
-            this.extras == null ||
-            externalDevice.getExtras() == null
+            (this.characteristics == null) != (externalDevice.getCharacteristics() == null) ||
+            (this.customizations == null) != (externalDevice.getCustomizations() == null) ||
+            (this.extras == null) != (externalDevice.getExtras() == null)
         ) return false;
         if (
-            this.characteristics.size() != externalDevice.getCharacteristics().size() ||
-            this.customizations.size() != externalDevice.getCustomizations().size() ||
-            this.extras.size() != externalDevice.getExtras().size()
+            (this.characteristics != null && this.characteristics.size() != externalDevice.getCharacteristics().size()) ||
+            (this.customizations != null && this.customizations.size() != externalDevice.getCustomizations().size()) ||
+            (this.extras != null && this.extras.size() != externalDevice.getExtras().size())
         ) return false;
-        for (CharacteristicDTO localCharacteristic : this.characteristics) {
-            boolean matchFound = externalDevice
-                .getCharacteristics()
-                .stream()
-                .anyMatch(
-                    externalCharacteristic ->
-                        localCharacteristic.getSupplierForeignId().equals(externalCharacteristic.getId()) &&
-                        localCharacteristic.equalsExternal(externalCharacteristic)
-                );
-            if (!matchFound) {
-                return false;
+        if (this.characteristics != null) {
+            for (CharacteristicDTO localCharacteristic : this.characteristics) {
+                boolean matchFound = externalDevice
+                    .getCharacteristics()
+                    .stream()
+                    .anyMatch(
+                        externalCharacteristic ->
+                            Objects.equals(localCharacteristic.getSupplierForeignId(), externalCharacteristic.getId()) &&
+                            localCharacteristic.equalsExternal(externalCharacteristic)
+                    );
+                if (!matchFound) {
+                    return false;
+                }
             }
         }
-        for (CustomizationDTO localCustomization : this.customizations) {
-            boolean matchFound = externalDevice
-                .getCustomizations()
-                .stream()
-                .anyMatch(
-                    externalCustomization ->
-                        localCustomization.getSupplierForeignId().equals(externalCustomization.getId()) &&
-                        localCustomization.equalsExternal(externalCustomization)
-                );
-            if (!matchFound) {
-                return false;
+        if (this.customizations != null) {
+            for (CustomizationDTO localCustomization : this.customizations) {
+                boolean matchFound = externalDevice
+                    .getCustomizations()
+                    .stream()
+                    .anyMatch(
+                        externalCustomization ->
+                            Objects.equals(localCustomization.getSupplierForeignId(), externalCustomization.getId()) &&
+                            localCustomization.equalsExternal(externalCustomization)
+                    );
+                if (!matchFound) {
+                    return false;
+                }
             }
         }
-        for (ExtraDTO localExtra : this.extras) {
-            boolean matchFound = externalDevice
-                .getExtras()
-                .stream()
-                .anyMatch(
-                    externalExtra ->
-                        localExtra.getSupplierForeignId().equals(externalExtra.getId()) && localExtra.equalsExternal(externalExtra)
-                );
-            if (!matchFound) {
-                return false;
+        if (this.extras != null) {
+            for (ExtraDTO localExtra : this.extras) {
+                boolean matchFound = externalDevice
+                    .getExtras()
+                    .stream()
+                    .anyMatch(
+                        externalExtra ->
+                            Objects.equals(localExtra.getSupplierForeignId(), externalExtra.getId()) &&
+                            localExtra.equalsExternal(externalExtra)
+                    );
+                if (!matchFound) {
+                    return false;
+                }
             }
         }
         return true;

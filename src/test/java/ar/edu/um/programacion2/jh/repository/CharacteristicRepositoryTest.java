@@ -3,9 +3,11 @@ package ar.edu.um.programacion2.jh.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ar.edu.um.programacion2.jh.domain.Characteristic;
+import ar.edu.um.programacion2.jh.service.DeviceSynchronizationService;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -15,7 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
-@DataJpaTest(excludeAutoConfiguration = { FeignClientsConfiguration.class, FeignAutoConfiguration.class, LiquibaseAutoConfiguration.class })
+@ImportAutoConfiguration(DeviceSynchronizationService.class)
+@DataJpaTest(excludeAutoConfiguration = { LiquibaseAutoConfiguration.class })
 @ActiveProfiles("test")
 public class CharacteristicRepositoryTest {
 

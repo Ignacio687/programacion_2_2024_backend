@@ -76,7 +76,8 @@ public class CustomizationDTO {
                 .stream()
                 .anyMatch(
                     externalOption ->
-                        localOption.getSupplierForeignId().equals(externalOption.getId()) && localOption.equalsExternal(externalOption)
+                        Objects.equals(localOption.getSupplierForeignId(), externalOption.getId()) &&
+                        localOption.equalsExternal(externalOption)
                 );
             if (!matchFound) {
                 return false;

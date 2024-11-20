@@ -3,6 +3,18 @@
     <span jhiTranslate="computechApp.device.home.title">Devices</span>
 
     <div class="d-flex justify-content-end">
+      <input type="number" [(ngModel)]="syncTimeLaps" placeholder="Sync Time (seconds)" class="form-control me-2" style="width: 200px" />
+
+      <button class="btn btn-success me-2" (click)="startDeviceSync(syncTimeLaps)">
+        <fa-icon icon="play"></fa-icon>
+        <span>Start Sync</span>
+      </button>
+
+      <button class="btn btn-danger me-2" (click)="stopDeviceSync()">
+        <fa-icon icon="stop"></fa-icon>
+        <span>Stop Sync</span>
+      </button>
+
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="computechApp.device.home.refreshListLabel">Refrescar lista</span>

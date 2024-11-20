@@ -15,6 +15,7 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IDevice } from '../device.model';
 import { DeviceService, EntityArrayResponseType } from '../service/device.service';
 import { DeviceDeleteDialogComponent } from '../delete/device-delete-dialog.component';
+import { DeviceSynchronizationService } from '../service/device-synchronization.service';
 
 @Component({
   standalone: true,
@@ -36,6 +37,7 @@ export class DeviceComponent implements OnInit {
   subscription: Subscription | null = null;
   devices?: IDevice[];
   isLoading = false;
+  syncTimeLaps = 300; // Default sync time lapse
 
   sortState = sortStateSignal({});
 
@@ -49,6 +51,7 @@ export class DeviceComponent implements OnInit {
   protected sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected deviceSynchronizationService = inject(DeviceSynchronizationService); // Inject the service
 
   trackId = (_index: number, item: IDevice): number => this.deviceService.getDeviceIdentifier(item);
 
@@ -87,6 +90,28 @@ export class DeviceComponent implements OnInit {
 
   navigateToPage(page: number): void {
     this.handleNavigation(page, this.sortState());
+  }
+
+  startDeviceSync(syncTimeLaps: number): void {
+    this.deviceSynchronizationService.startDeviceSync(syncTimeLaps).subscribe({
+      next() {
+        // Handle success
+      },
+      error(err) {
+        // Handle error
+      },
+    });
+  }
+
+  stopDeviceSync(): void {
+    this.deviceSynchronizationService.stopDeviceSync().subscribe({
+      next() {
+        // Handle success
+      },
+      error(err) {
+        // Handle error
+      },
+    });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
