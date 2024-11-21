@@ -5,6 +5,7 @@ import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.domain.Option;
 import ar.edu.um.programacion2.jh.repository.CustomizationRepository;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceDTO {
+public class DeviceDTO implements Serializable {
 
     @JsonProperty("id")
     private Long id;

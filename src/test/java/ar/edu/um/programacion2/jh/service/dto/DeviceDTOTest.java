@@ -214,6 +214,8 @@ public class DeviceDTOTest {
         Option option2 = new Option();
         option2.setId(2L);
 
+        customization1.addOptions(option1);
+
         Mockito.when(customizationRepository.findByOptionsContains(option1)).thenReturn(customization1);
         Mockito.when(customizationRepository.findByOptionsContains(option2)).thenReturn(customization2);
 

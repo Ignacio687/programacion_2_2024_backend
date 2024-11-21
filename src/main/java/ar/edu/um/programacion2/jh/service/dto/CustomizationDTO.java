@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.service.dto;
 
 import ar.edu.um.programacion2.jh.domain.Customization;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomizationDTO {
+public class CustomizationDTO implements Serializable {
 
     @JsonProperty("id")
     private Long id;

@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.service.dto;
 
 import ar.edu.um.programacion2.jh.domain.Option;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OptionDTO {
+public class OptionDTO implements Serializable {
 
     @JsonProperty("id")
     private Long id;
