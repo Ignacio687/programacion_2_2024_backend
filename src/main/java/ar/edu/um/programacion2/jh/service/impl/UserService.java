@@ -1,4 +1,4 @@
-package ar.edu.um.programacion2.jh.service.rest;
+package ar.edu.um.programacion2.jh.service.impl;
 
 import ar.edu.um.programacion2.jh.config.Constants;
 import ar.edu.um.programacion2.jh.domain.Authority;

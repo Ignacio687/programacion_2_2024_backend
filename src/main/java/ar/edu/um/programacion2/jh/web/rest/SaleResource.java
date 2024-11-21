@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Sale;
 import ar.edu.um.programacion2.jh.repository.SaleRepository;
+import ar.edu.um.programacion2.jh.service.SaleService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -29,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/sales")
-@Transactional
 public class SaleResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(SaleResource.class);
@@ -39,9 +38,12 @@ public class SaleResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final SaleService saleService;
+
     private final SaleRepository saleRepository;
 
-    public SaleResource(SaleRepository saleRepository) {
+    public SaleResource(SaleService saleService, SaleRepository saleRepository) {
+        this.saleService = saleService;
         this.saleRepository = saleRepository;
     }
 
@@ -58,7 +60,7 @@ public class SaleResource {
         if (sale.getId() != null) {
             throw new BadRequestAlertException("A new sale cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        sale = saleRepository.save(sale);
+        sale = saleService.save(sale);
         return ResponseEntity.created(new URI("/api/sales/" + sale.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, sale.getId().toString()))
             .body(sale);
@@ -89,7 +91,7 @@ public class SaleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        sale = saleRepository.save(sale);
+        sale = saleService.update(sale);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sale.getId().toString()))
             .body(sale);
@@ -123,31 +125,7 @@ public class SaleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Sale> result = saleRepository
-            .findById(sale.getId())
-            .map(existingSale -> {
-                if (sale.getSupplierForeignId() != null) {
-                    existingSale.setSupplierForeignId(sale.getSupplierForeignId());
-                }
-                if (sale.getDevicePrice() != null) {
-                    existingSale.setDevicePrice(sale.getDevicePrice());
-                }
-                if (sale.getFinalPrice() != null) {
-                    existingSale.setFinalPrice(sale.getFinalPrice());
-                }
-                if (sale.getSaleDate() != null) {
-                    existingSale.setSaleDate(sale.getSaleDate());
-                }
-                if (sale.getCurrency() != null) {
-                    existingSale.setCurrency(sale.getCurrency());
-                }
-                if (sale.getFinalized() != null) {
-                    existingSale.setFinalized(sale.getFinalized());
-                }
-
-                return existingSale;
-            })
-            .map(saleRepository::save);
+        Optional<Sale> result = saleService.partialUpdate(sale);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -164,7 +142,7 @@ public class SaleResource {
     @GetMapping("")
     public ResponseEntity<List<Sale>> getAllSales(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Sales");
-        Page<Sale> page = saleRepository.findAll(pageable);
+        Page<Sale> page = saleService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -178,7 +156,7 @@ public class SaleResource {
     @GetMapping("/{id}")
     public ResponseEntity<Sale> getSale(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Sale : {}", id);
-        Optional<Sale> sale = saleRepository.findById(id);
+        Optional<Sale> sale = saleService.findOne(id);
         return ResponseUtil.wrapOrNotFound(sale);
     }
 
@@ -191,7 +169,7 @@ public class SaleResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSale(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Sale : {}", id);
-        saleRepository.deleteById(id);
+        saleService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

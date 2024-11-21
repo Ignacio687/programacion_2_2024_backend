@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Characteristic;
 import ar.edu.um.programacion2.jh.repository.CharacteristicRepository;
+import ar.edu.um.programacion2.jh.service.CharacteristicService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/characteristics")
-@Transactional
 public class CharacteristicResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(CharacteristicResource.class);
@@ -34,9 +33,12 @@ public class CharacteristicResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final CharacteristicService characteristicService;
+
     private final CharacteristicRepository characteristicRepository;
 
-    public CharacteristicResource(CharacteristicRepository characteristicRepository) {
+    public CharacteristicResource(CharacteristicService characteristicService, CharacteristicRepository characteristicRepository) {
+        this.characteristicService = characteristicService;
         this.characteristicRepository = characteristicRepository;
     }
 
@@ -54,7 +56,7 @@ public class CharacteristicResource {
         if (characteristic.getId() != null) {
             throw new BadRequestAlertException("A new characteristic cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        characteristic = characteristicRepository.save(characteristic);
+        characteristic = characteristicService.save(characteristic);
         return ResponseEntity.created(new URI("/api/characteristics/" + characteristic.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, characteristic.getId().toString()))
             .body(characteristic);
@@ -87,7 +89,7 @@ public class CharacteristicResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        characteristic = characteristicRepository.save(characteristic);
+        characteristic = characteristicService.update(characteristic);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, characteristic.getId().toString()))
             .body(characteristic);
@@ -121,22 +123,7 @@ public class CharacteristicResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Characteristic> result = characteristicRepository
-            .findById(characteristic.getId())
-            .map(existingCharacteristic -> {
-                if (characteristic.getSupplierForeignId() != null) {
-                    existingCharacteristic.setSupplierForeignId(characteristic.getSupplierForeignId());
-                }
-                if (characteristic.getName() != null) {
-                    existingCharacteristic.setName(characteristic.getName());
-                }
-                if (characteristic.getDescription() != null) {
-                    existingCharacteristic.setDescription(characteristic.getDescription());
-                }
-
-                return existingCharacteristic;
-            })
-            .map(characteristicRepository::save);
+        Optional<Characteristic> result = characteristicService.partialUpdate(characteristic);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -152,7 +139,7 @@ public class CharacteristicResource {
     @GetMapping("")
     public List<Characteristic> getAllCharacteristics() {
         LOG.debug("REST request to get all Characteristics");
-        return characteristicRepository.findAll();
+        return characteristicService.findAll();
     }
 
     /**
@@ -164,7 +151,7 @@ public class CharacteristicResource {
     @GetMapping("/{id}")
     public ResponseEntity<Characteristic> getCharacteristic(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Characteristic : {}", id);
-        Optional<Characteristic> characteristic = characteristicRepository.findById(id);
+        Optional<Characteristic> characteristic = characteristicService.findOne(id);
         return ResponseUtil.wrapOrNotFound(characteristic);
     }
 
@@ -177,7 +164,7 @@ public class CharacteristicResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCharacteristic(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Characteristic : {}", id);
-        characteristicRepository.deleteById(id);
+        characteristicService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

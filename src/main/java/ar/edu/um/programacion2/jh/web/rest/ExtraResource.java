@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Extra;
 import ar.edu.um.programacion2.jh.repository.ExtraRepository;
+import ar.edu.um.programacion2.jh.service.ExtraService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -29,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/extras")
-@Transactional
 public class ExtraResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExtraResource.class);
@@ -39,9 +38,12 @@ public class ExtraResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ExtraService extraService;
+
     private final ExtraRepository extraRepository;
 
-    public ExtraResource(ExtraRepository extraRepository) {
+    public ExtraResource(ExtraService extraService, ExtraRepository extraRepository) {
+        this.extraService = extraService;
         this.extraRepository = extraRepository;
     }
 
@@ -58,7 +60,7 @@ public class ExtraResource {
         if (extra.getId() != null) {
             throw new BadRequestAlertException("A new extra cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        extra = extraRepository.save(extra);
+        extra = extraService.save(extra);
         return ResponseEntity.created(new URI("/api/extras/" + extra.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, extra.getId().toString()))
             .body(extra);
@@ -89,7 +91,7 @@ public class ExtraResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        extra = extraRepository.save(extra);
+        extra = extraService.update(extra);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, extra.getId().toString()))
             .body(extra);
@@ -123,28 +125,7 @@ public class ExtraResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Extra> result = extraRepository
-            .findById(extra.getId())
-            .map(existingExtra -> {
-                if (extra.getSupplierForeignId() != null) {
-                    existingExtra.setSupplierForeignId(extra.getSupplierForeignId());
-                }
-                if (extra.getName() != null) {
-                    existingExtra.setName(extra.getName());
-                }
-                if (extra.getDescription() != null) {
-                    existingExtra.setDescription(extra.getDescription());
-                }
-                if (extra.getPrice() != null) {
-                    existingExtra.setPrice(extra.getPrice());
-                }
-                if (extra.getFreePrice() != null) {
-                    existingExtra.setFreePrice(extra.getFreePrice());
-                }
-
-                return existingExtra;
-            })
-            .map(extraRepository::save);
+        Optional<Extra> result = extraService.partialUpdate(extra);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -161,7 +142,7 @@ public class ExtraResource {
     @GetMapping("")
     public ResponseEntity<List<Extra>> getAllExtras(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Extras");
-        Page<Extra> page = extraRepository.findAll(pageable);
+        Page<Extra> page = extraService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -175,7 +156,7 @@ public class ExtraResource {
     @GetMapping("/{id}")
     public ResponseEntity<Extra> getExtra(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Extra : {}", id);
-        Optional<Extra> extra = extraRepository.findById(id);
+        Optional<Extra> extra = extraService.findOne(id);
         return ResponseUtil.wrapOrNotFound(extra);
     }
 
@@ -188,7 +169,7 @@ public class ExtraResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExtra(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Extra : {}", id);
-        extraRepository.deleteById(id);
+        extraService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

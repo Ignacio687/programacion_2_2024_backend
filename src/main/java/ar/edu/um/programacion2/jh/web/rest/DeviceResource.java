@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.repository.DeviceRepository;
+import ar.edu.um.programacion2.jh.service.DeviceService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -29,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/devices")
-@Transactional
 public class DeviceResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceResource.class);
@@ -39,9 +38,12 @@ public class DeviceResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DeviceService deviceService;
+
     private final DeviceRepository deviceRepository;
 
-    public DeviceResource(DeviceRepository deviceRepository) {
+    public DeviceResource(DeviceService deviceService, DeviceRepository deviceRepository) {
+        this.deviceService = deviceService;
         this.deviceRepository = deviceRepository;
     }
 
@@ -58,7 +60,7 @@ public class DeviceResource {
         if (device.getId() != null) {
             throw new BadRequestAlertException("A new device cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        device = deviceRepository.save(device);
+        device = deviceService.save(device);
         return ResponseEntity.created(new URI("/api/devices/" + device.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, device.getId().toString()))
             .body(device);
@@ -91,7 +93,7 @@ public class DeviceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        device = deviceRepository.save(device);
+        device = deviceService.update(device);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, device.getId().toString()))
             .body(device);
@@ -125,37 +127,7 @@ public class DeviceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Device> result = deviceRepository
-            .findById(device.getId())
-            .map(existingDevice -> {
-                if (device.getSupplierForeignId() != null) {
-                    existingDevice.setSupplierForeignId(device.getSupplierForeignId());
-                }
-                if (device.getSupplier() != null) {
-                    existingDevice.setSupplier(device.getSupplier());
-                }
-                if (device.getCode() != null) {
-                    existingDevice.setCode(device.getCode());
-                }
-                if (device.getName() != null) {
-                    existingDevice.setName(device.getName());
-                }
-                if (device.getDescription() != null) {
-                    existingDevice.setDescription(device.getDescription());
-                }
-                if (device.getBasePrice() != null) {
-                    existingDevice.setBasePrice(device.getBasePrice());
-                }
-                if (device.getCurrency() != null) {
-                    existingDevice.setCurrency(device.getCurrency());
-                }
-                if (device.getActive() != null) {
-                    existingDevice.setActive(device.getActive());
-                }
-
-                return existingDevice;
-            })
-            .map(deviceRepository::save);
+        Optional<Device> result = deviceService.partialUpdate(device);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -178,9 +150,9 @@ public class DeviceResource {
         LOG.debug("REST request to get a page of Devices");
         Page<Device> page;
         if (eagerload) {
-            page = deviceRepository.findAllWithEagerRelationships(pageable);
+            page = deviceService.findAllWithEagerRelationships(pageable);
         } else {
-            page = deviceRepository.findAll(pageable);
+            page = deviceService.findAll(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -195,7 +167,7 @@ public class DeviceResource {
     @GetMapping("/{id}")
     public ResponseEntity<Device> getDevice(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Device : {}", id);
-        Optional<Device> device = deviceRepository.findOneWithEagerRelationships(id);
+        Optional<Device> device = deviceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(device);
     }
 
@@ -208,7 +180,7 @@ public class DeviceResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDevice(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Device : {}", id);
-        deviceRepository.deleteById(id);
+        deviceService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

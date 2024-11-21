@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Customization;
 import ar.edu.um.programacion2.jh.repository.CustomizationRepository;
+import ar.edu.um.programacion2.jh.service.CustomizationService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/customizations")
-@Transactional
 public class CustomizationResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomizationResource.class);
@@ -34,9 +33,12 @@ public class CustomizationResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final CustomizationService customizationService;
+
     private final CustomizationRepository customizationRepository;
 
-    public CustomizationResource(CustomizationRepository customizationRepository) {
+    public CustomizationResource(CustomizationService customizationService, CustomizationRepository customizationRepository) {
+        this.customizationService = customizationService;
         this.customizationRepository = customizationRepository;
     }
 
@@ -53,7 +55,7 @@ public class CustomizationResource {
         if (customization.getId() != null) {
             throw new BadRequestAlertException("A new customization cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        customization = customizationRepository.save(customization);
+        customization = customizationService.save(customization);
         return ResponseEntity.created(new URI("/api/customizations/" + customization.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, customization.getId().toString()))
             .body(customization);
@@ -86,7 +88,7 @@ public class CustomizationResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        customization = customizationRepository.save(customization);
+        customization = customizationService.update(customization);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, customization.getId().toString()))
             .body(customization);
@@ -120,22 +122,7 @@ public class CustomizationResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Customization> result = customizationRepository
-            .findById(customization.getId())
-            .map(existingCustomization -> {
-                if (customization.getSupplierForeignId() != null) {
-                    existingCustomization.setSupplierForeignId(customization.getSupplierForeignId());
-                }
-                if (customization.getName() != null) {
-                    existingCustomization.setName(customization.getName());
-                }
-                if (customization.getDescription() != null) {
-                    existingCustomization.setDescription(customization.getDescription());
-                }
-
-                return existingCustomization;
-            })
-            .map(customizationRepository::save);
+        Optional<Customization> result = customizationService.partialUpdate(customization);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -151,7 +138,7 @@ public class CustomizationResource {
     @GetMapping("")
     public List<Customization> getAllCustomizations() {
         LOG.debug("REST request to get all Customizations");
-        return customizationRepository.findAll();
+        return customizationService.findAll();
     }
 
     /**
@@ -163,7 +150,7 @@ public class CustomizationResource {
     @GetMapping("/{id}")
     public ResponseEntity<Customization> getCustomization(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Customization : {}", id);
-        Optional<Customization> customization = customizationRepository.findById(id);
+        Optional<Customization> customization = customizationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(customization);
     }
 
@@ -176,7 +163,7 @@ public class CustomizationResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomization(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Customization : {}", id);
-        customizationRepository.deleteById(id);
+        customizationService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

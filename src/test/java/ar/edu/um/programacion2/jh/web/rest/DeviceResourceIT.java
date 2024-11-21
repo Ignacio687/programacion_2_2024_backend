@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ar.edu.um.programacion2.jh.IntegrationTest;
 import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.repository.DeviceRepository;
+import ar.edu.um.programacion2.jh.service.DeviceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -78,6 +79,9 @@ class DeviceResourceIT {
 
     @Mock
     private DeviceRepository deviceRepositoryMock;
+
+    @Mock
+    private DeviceService deviceServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -265,16 +269,16 @@ class DeviceResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllDevicesWithEagerRelationshipsIsEnabled() throws Exception {
-        when(deviceRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(deviceServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDeviceMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(deviceRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(deviceServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllDevicesWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(deviceRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(deviceServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDeviceMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(deviceRepositoryMock, times(1)).findAll(any(Pageable.class));

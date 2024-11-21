@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import ar.edu.um.programacion2.jh.IntegrationTest;
 import ar.edu.um.programacion2.jh.domain.User;
 import ar.edu.um.programacion2.jh.repository.UserRepository;
-import ar.edu.um.programacion2.jh.service.rest.UserService;
+import ar.edu.um.programacion2.jh.service.impl.UserService;
 import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;

@@ -70,3 +70,5 @@ relationship ManyToOne {
 paginate Device with pagination
 paginate Extra with pagination
 paginate Sale with pagination
+
+service all with serviceImpl

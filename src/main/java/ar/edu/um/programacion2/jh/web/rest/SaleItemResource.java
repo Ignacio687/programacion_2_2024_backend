@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.SaleItem;
 import ar.edu.um.programacion2.jh.repository.SaleItemRepository;
+import ar.edu.um.programacion2.jh.service.SaleItemService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/sale-items")
-@Transactional
 public class SaleItemResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(SaleItemResource.class);
@@ -34,9 +33,12 @@ public class SaleItemResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final SaleItemService saleItemService;
+
     private final SaleItemRepository saleItemRepository;
 
-    public SaleItemResource(SaleItemRepository saleItemRepository) {
+    public SaleItemResource(SaleItemService saleItemService, SaleItemRepository saleItemRepository) {
+        this.saleItemService = saleItemService;
         this.saleItemRepository = saleItemRepository;
     }
 
@@ -53,7 +55,7 @@ public class SaleItemResource {
         if (saleItem.getId() != null) {
             throw new BadRequestAlertException("A new saleItem cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        saleItem = saleItemRepository.save(saleItem);
+        saleItem = saleItemService.save(saleItem);
         return ResponseEntity.created(new URI("/api/sale-items/" + saleItem.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, saleItem.getId().toString()))
             .body(saleItem);
@@ -86,7 +88,7 @@ public class SaleItemResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        saleItem = saleItemRepository.save(saleItem);
+        saleItem = saleItemService.update(saleItem);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, saleItem.getId().toString()))
             .body(saleItem);
@@ -120,16 +122,7 @@ public class SaleItemResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<SaleItem> result = saleItemRepository
-            .findById(saleItem.getId())
-            .map(existingSaleItem -> {
-                if (saleItem.getPrice() != null) {
-                    existingSaleItem.setPrice(saleItem.getPrice());
-                }
-
-                return existingSaleItem;
-            })
-            .map(saleItemRepository::save);
+        Optional<SaleItem> result = saleItemService.partialUpdate(saleItem);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,7 +138,7 @@ public class SaleItemResource {
     @GetMapping("")
     public List<SaleItem> getAllSaleItems() {
         LOG.debug("REST request to get all SaleItems");
-        return saleItemRepository.findAll();
+        return saleItemService.findAll();
     }
 
     /**
@@ -157,7 +150,7 @@ public class SaleItemResource {
     @GetMapping("/{id}")
     public ResponseEntity<SaleItem> getSaleItem(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SaleItem : {}", id);
-        Optional<SaleItem> saleItem = saleItemRepository.findById(id);
+        Optional<SaleItem> saleItem = saleItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(saleItem);
     }
 
@@ -170,7 +163,7 @@ public class SaleItemResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSaleItem(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SaleItem : {}", id);
-        saleItemRepository.deleteById(id);
+        saleItemService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

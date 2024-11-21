@@ -6,7 +6,7 @@ import ar.edu.um.programacion2.jh.security.SecurityUtils;
 import ar.edu.um.programacion2.jh.service.MailService;
 import ar.edu.um.programacion2.jh.service.dto.AdminUserDTO;
 import ar.edu.um.programacion2.jh.service.dto.PasswordChangeDTO;
-import ar.edu.um.programacion2.jh.service.rest.UserService;
+import ar.edu.um.programacion2.jh.service.impl.UserService;
 import ar.edu.um.programacion2.jh.web.rest.errors.*;
 import ar.edu.um.programacion2.jh.web.rest.vm.KeyAndPasswordVM;
 import ar.edu.um.programacion2.jh.web.rest.vm.ManagedUserVM;

@@ -6,7 +6,7 @@ import ar.edu.um.programacion2.jh.repository.UserRepository;
 import ar.edu.um.programacion2.jh.security.AuthoritiesConstants;
 import ar.edu.um.programacion2.jh.service.MailService;
 import ar.edu.um.programacion2.jh.service.dto.AdminUserDTO;
-import ar.edu.um.programacion2.jh.service.rest.UserService;
+import ar.edu.um.programacion2.jh.service.impl.UserService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import ar.edu.um.programacion2.jh.web.rest.errors.EmailAlreadyUsedException;
 import ar.edu.um.programacion2.jh.web.rest.errors.LoginAlreadyUsedException;

@@ -2,6 +2,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 
 import ar.edu.um.programacion2.jh.domain.Option;
 import ar.edu.um.programacion2.jh.repository.OptionRepository;
+import ar.edu.um.programacion2.jh.service.OptionService;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/options")
-@Transactional
 public class OptionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(OptionResource.class);
@@ -34,9 +33,12 @@ public class OptionResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final OptionService optionService;
+
     private final OptionRepository optionRepository;
 
-    public OptionResource(OptionRepository optionRepository) {
+    public OptionResource(OptionService optionService, OptionRepository optionRepository) {
+        this.optionService = optionService;
         this.optionRepository = optionRepository;
     }
 
@@ -53,7 +55,7 @@ public class OptionResource {
         if (option.getId() != null) {
             throw new BadRequestAlertException("A new option cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        option = optionRepository.save(option);
+        option = optionService.save(option);
         return ResponseEntity.created(new URI("/api/options/" + option.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, option.getId().toString()))
             .body(option);
@@ -86,7 +88,7 @@ public class OptionResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        option = optionRepository.save(option);
+        option = optionService.update(option);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, option.getId().toString()))
             .body(option);
@@ -120,28 +122,7 @@ public class OptionResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Option> result = optionRepository
-            .findById(option.getId())
-            .map(existingOption -> {
-                if (option.getSupplierForeignId() != null) {
-                    existingOption.setSupplierForeignId(option.getSupplierForeignId());
-                }
-                if (option.getCode() != null) {
-                    existingOption.setCode(option.getCode());
-                }
-                if (option.getName() != null) {
-                    existingOption.setName(option.getName());
-                }
-                if (option.getDescription() != null) {
-                    existingOption.setDescription(option.getDescription());
-                }
-                if (option.getAdditionalPrice() != null) {
-                    existingOption.setAdditionalPrice(option.getAdditionalPrice());
-                }
-
-                return existingOption;
-            })
-            .map(optionRepository::save);
+        Optional<Option> result = optionService.partialUpdate(option);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -157,7 +138,7 @@ public class OptionResource {
     @GetMapping("")
     public List<Option> getAllOptions() {
         LOG.debug("REST request to get all Options");
-        return optionRepository.findAll();
+        return optionService.findAll();
     }
 
     /**
@@ -169,7 +150,7 @@ public class OptionResource {
     @GetMapping("/{id}")
     public ResponseEntity<Option> getOption(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Option : {}", id);
-        Optional<Option> option = optionRepository.findById(id);
+        Optional<Option> option = optionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(option);
     }
 
@@ -182,7 +163,7 @@ public class OptionResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOption(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Option : {}", id);
-        optionRepository.deleteById(id);
+        optionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
