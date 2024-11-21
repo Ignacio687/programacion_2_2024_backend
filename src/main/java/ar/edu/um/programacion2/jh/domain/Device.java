@@ -58,7 +58,7 @@ public class Device implements Serializable {
     @JsonIgnoreProperties(value = { "saleItems", "device" }, allowSetters = true)
     private Set<Sale> sales = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_device__characteristics",
         joinColumns = @JoinColumn(name = "device_id"),
@@ -68,7 +68,7 @@ public class Device implements Serializable {
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private Set<Characteristic> characteristics = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_device__options",
         joinColumns = @JoinColumn(name = "device_id"),
@@ -78,7 +78,7 @@ public class Device implements Serializable {
     @JsonIgnoreProperties(value = { "customization", "devices" }, allowSetters = true)
     private Set<Option> options = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_device__extras",
         joinColumns = @JoinColumn(name = "device_id"),

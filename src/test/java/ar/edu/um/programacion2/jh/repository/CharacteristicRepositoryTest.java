@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
@@ -16,10 +17,10 @@ import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
-@ImportAutoConfiguration(DeviceSynchronizationService.class)
-@DataJpaTest(excludeAutoConfiguration = { LiquibaseAutoConfiguration.class })
 @ActiveProfiles("test")
+@TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
+@ImportAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class, LiquibaseProperties.class })
+@DataJpaTest
 public class CharacteristicRepositoryTest {
 
     @Autowired

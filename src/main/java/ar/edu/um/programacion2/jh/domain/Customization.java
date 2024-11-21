@@ -36,7 +36,7 @@ public class Customization implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customization")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customization")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "customization", "devices" }, allowSetters = true)
     private Set<Option> options = new HashSet<>();

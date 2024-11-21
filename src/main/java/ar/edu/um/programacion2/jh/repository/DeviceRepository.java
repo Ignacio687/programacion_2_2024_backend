@@ -24,10 +24,6 @@ public interface DeviceRepository extends DeviceRepositoryWithBagRelationships, 
         return this.fetchBagRelationships(this.findAll());
     }
 
-    @Query("select d from Device d")
-    @EntityGraph(attributePaths = { "characteristics", "extras", "options" })
-    List<Device> findAllWithEagerRelationshipsCustom();
-
     default Page<Device> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }

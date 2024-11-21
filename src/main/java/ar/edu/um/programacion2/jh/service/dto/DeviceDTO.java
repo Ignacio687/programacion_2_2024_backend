@@ -109,6 +109,7 @@ public class DeviceDTO {
             for (Option option : device.getOptions()) {
                 Customization customization = customizationRepository.findByOptionsContains(option);
                 if (customization != null) {
+                    customization.setOptions(Collections.emptySet());
                     CustomizationDTO customizationDTO = customizationMap.computeIfAbsent(customization.getId(), id ->
                         CustomizationDTO.fromCustomization(customization)
                     );

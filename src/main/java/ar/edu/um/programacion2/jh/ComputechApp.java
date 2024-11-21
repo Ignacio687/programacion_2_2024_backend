@@ -33,7 +33,7 @@ public class ComputechApp {
 
     private final DeviceSynchronizationService deviceSynchronizationService;
 
-    public ComputechApp(Environment env, DeviceSynchronizationService deviceSynchronizationService) {
+    public ComputechApp(Environment env, @Autowired(required = false) DeviceSynchronizationService deviceSynchronizationService) {
         this.env = env;
         this.deviceSynchronizationService = deviceSynchronizationService;
     }
@@ -64,7 +64,9 @@ public class ComputechApp {
                 "You have misconfigured your application! It should not " + "run with both the 'dev' and 'cloud' profiles at the same time."
             );
         }
-        //deviceSynchronizationService.startThread(300L);
+        if (deviceSynchronizationService != null) {
+            deviceSynchronizationService.startThread(300L);
+        }
     }
 
     /**

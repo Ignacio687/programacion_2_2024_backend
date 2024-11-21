@@ -9,17 +9,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Service
 public class DeviceSynchronizationService {
 
@@ -27,29 +23,35 @@ public class DeviceSynchronizationService {
     private volatile boolean running = true;
     private final Logger log = LoggerFactory.getLogger(DeviceSynchronizationService.class);
 
-    @Autowired
-    protected DeviceClient deviceClient;
+    private final DeviceClient deviceClient;
+    private final DeviceRepository deviceRepository;
+    private final CharacteristicRepository characteristicRepository;
+    private final ExtraRepository extraRepository;
+    private final OptionRepository optionRepository;
+    private final CustomizationRepository customizationRepository;
 
     @Autowired
-    protected DeviceRepository deviceRepository;
-
-    @Autowired
-    protected CharacteristicRepository characteristicRepository;
-
-    @Autowired
-    protected ExtraRepository extraRepository;
-
-    @Autowired
-    protected OptionRepository optionRepository;
-
-    @Autowired
-    protected CustomizationRepository customizationRepository;
+    public DeviceSynchronizationService(
+        DeviceClient deviceClient,
+        DeviceRepository deviceRepository,
+        CharacteristicRepository characteristicRepository,
+        ExtraRepository extraRepository,
+        OptionRepository optionRepository,
+        CustomizationRepository customizationRepository
+    ) {
+        this.deviceClient = deviceClient;
+        this.deviceRepository = deviceRepository;
+        this.characteristicRepository = characteristicRepository;
+        this.extraRepository = extraRepository;
+        this.optionRepository = optionRepository;
+        this.customizationRepository = customizationRepository;
+    }
 
     public void synchronize() {
         this.log.info("Synchronizing devices...");
         List<DeviceDTO> externalDevices = this.deviceClient.getDevices();
-        List<Device> localDevices = this.deviceRepository.findAllWithEagerRelationshipsCustom();
-        if (hasChanges(externalDevices, localDevices)) {
+        List<Device> localDevices = this.deviceRepository.findAll();
+        if (!hasChanges(externalDevices, localDevices)) {
             this.log.info("No changes detected between local and external devices.");
             return;
         }
@@ -84,7 +86,7 @@ public class DeviceSynchronizationService {
             .map(device -> DeviceDTO.fromDevice(device, customizationRepository))
             .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(DeviceDTO::getSupplierForeignId))));
         if (sortedExternalDevices.size() != sortedLocalDevices.size()) {
-            return false;
+            return true;
         }
         Iterator<DeviceDTO> externalIterator = sortedExternalDevices.iterator();
         Iterator<DeviceDTO> localIterator = sortedLocalDevices.iterator();
@@ -92,10 +94,10 @@ public class DeviceSynchronizationService {
             DeviceDTO externalDevice = externalIterator.next();
             DeviceDTO localDevice = localIterator.next();
             if (!localDevice.equalsExternal(externalDevice)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void updateDevice(Device localDevice, DeviceDTO externalDevice) {
@@ -138,6 +140,7 @@ public class DeviceSynchronizationService {
             });
         device.setOptions(new HashSet<>(this.optionRepository.saveAll(device.getOptions())));
 
+        Set<Option> updatedOptions = new TreeSet<>(Comparator.comparing(Option::getId));
         for (CustomizationDTO customizationDTO : customizations) {
             Customization customization = CustomizationDTO.toCustomization(customizationDTO);
             customization.setSupplierForeignId(customization.getId());
@@ -155,9 +158,13 @@ public class DeviceSynchronizationService {
                         .anyMatch(existingOption -> existingOption.getId().equals(option.getSupplierForeignId()))
                 )
                 .collect(Collectors.toSet());
-            customization.setOptions(newOptions);
-            this.customizationRepository.save(customization);
+            customization.setOptions(null);
+            Customization updatedCustomization = this.customizationRepository.save(customization);
+            updatedCustomization.setOptions(newOptions);
+            updatedOptions.addAll(newOptions);
+            this.customizationRepository.save(updatedCustomization);
         }
+        device.setOptions(new HashSet<>(this.optionRepository.saveAll(updatedOptions)));
     }
 
     private void deactivateDevice(Device localDevice) {
