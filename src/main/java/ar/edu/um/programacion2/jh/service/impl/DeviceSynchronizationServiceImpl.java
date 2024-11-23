@@ -45,17 +45,20 @@ public class DeviceSynchronizationServiceImpl implements DeviceSynchronizationSe
     public void synchronize() {
         this.log.info("Synchronizing devices...");
         List<DeviceDTO> externalDevices = this.deviceClient.getDevices();
-        List<Device> localDevices = this.deviceRepository.findAll();
-        if (!this.externalDevicesChangeChecker.hasChanges(externalDevices, localDevices)) {
-            this.log.info("No changes detected between local and external devices.");
-            return;
-        }
-        localDevices.forEach(device -> {
+        List<Device> localDevices = this.deviceRepository.findByActiveTrue();
+        Iterator<Device> iterator = localDevices.iterator();
+        while (iterator.hasNext()) {
+            Device device = iterator.next();
             if (externalDevices.stream().noneMatch(externalDevice -> externalDevice.getId().equals(device.getSupplierForeignId()))) {
                 this.log.info("Device with id {} was deactivated.", device.getId());
                 this.deactivateDevice(device);
+                iterator.remove();
             }
-        });
+        }
+        if (!this.externalDevicesChangeChecker.hasChanges(externalDevices, localDevices)) {
+            this.log.info("No changes detected between local and external devices, except for deactivations.");
+            return;
+        }
         externalDevices.forEach(device -> this.localToExternalObjectUpdater.updateAndSaveDevice(device, "APICatedraProgramacion2_2024"));
         this.log.info("Device synchronization completed.");
     }

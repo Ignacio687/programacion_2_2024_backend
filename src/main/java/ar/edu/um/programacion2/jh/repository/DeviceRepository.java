@@ -30,4 +30,6 @@ public interface DeviceRepository extends DeviceRepositoryWithBagRelationships, 
     }
 
     Optional<Device> findBySupplierForeignId(Long supplierForeignId);
+
+    List<Device> findByActiveTrue();
 }

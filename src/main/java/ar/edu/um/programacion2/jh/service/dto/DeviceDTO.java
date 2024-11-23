@@ -69,21 +69,15 @@ public class DeviceDTO implements Serializable {
         device.setExtras(
             dto.getExtras() != null ? dto.getExtras().stream().map(ExtraDTO::toExtra).collect(Collectors.toSet()) : Collections.emptySet()
         );
-        // Collect options from customizations
-        device.setOptions(
+        device.setCustomizations(
             dto.getCustomizations() != null
-                ? dto
-                    .getCustomizations()
-                    .stream()
-                    .flatMap(customization -> customization.getOptions().stream())
-                    .map(OptionDTO::toOption)
-                    .collect(Collectors.toSet())
+                ? dto.getCustomizations().stream().map(CustomizationDTO::toCustomization).collect(Collectors.toSet())
                 : Collections.emptySet()
         );
         return device;
     }
 
-    public static DeviceDTO fromDevice(Device device, CustomizationRepository customizationRepository) {
+    public static DeviceDTO fromDevice(Device device) {
         DeviceDTO dto = new DeviceDTO();
         dto.setId(device.getId());
         dto.setSupplierForeignId(device.getSupplierForeignId());
@@ -104,23 +98,11 @@ public class DeviceDTO implements Serializable {
                 ? device.getExtras().stream().map(ExtraDTO::fromExtra).collect(Collectors.toList())
                 : Collections.emptyList()
         );
-        // Group options by their customizations
-        if (device.getOptions() != null) {
-            Map<Long, CustomizationDTO> customizationMap = new HashMap<>();
-            for (Option option : device.getOptions()) {
-                Customization customization = customizationRepository.findByOptionsContains(option);
-                if (customization != null) {
-                    customization.setOptions(Collections.emptySet());
-                    CustomizationDTO customizationDTO = customizationMap.computeIfAbsent(customization.getId(), id ->
-                        CustomizationDTO.fromCustomization(customization)
-                    );
-                    customizationDTO.getOptions().add(OptionDTO.fromOption(option));
-                }
-            }
-            dto.setCustomizations(new ArrayList<>(customizationMap.values()));
-        } else {
-            dto.setCustomizations(Collections.emptyList());
-        }
+        dto.setCustomizations(
+            device.getCustomizations() != null
+                ? device.getCustomizations().stream().map(CustomizationDTO::fromCustomization).collect(Collectors.toList())
+                : Collections.emptyList()
+        );
         return dto;
     }
 

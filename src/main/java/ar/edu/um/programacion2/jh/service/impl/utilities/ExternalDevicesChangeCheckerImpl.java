@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +31,7 @@ public class ExternalDevicesChangeCheckerImpl implements ExternalDevicesChangeCh
         TreeSet<DeviceDTO> sortedLocalDevices = localDevices
             .stream()
             .filter(Device::getActive)
-            .map(device -> DeviceDTO.fromDevice(device, customizationRepository))
+            .map(DeviceDTO::fromDevice)
             .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(DeviceDTO::getSupplierForeignId))));
         if (sortedExternalDevices.size() != sortedLocalDevices.size()) {
             return true;

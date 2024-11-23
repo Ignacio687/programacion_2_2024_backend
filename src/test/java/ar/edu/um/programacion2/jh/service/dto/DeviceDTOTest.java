@@ -16,6 +16,12 @@ public class DeviceDTOTest {
 
     @Test
     void toDeviceMapsAllFieldsCorrectly() {
+        CharacteristicDTO characteristicDTO = new CharacteristicDTO();
+        characteristicDTO.setId(1L);
+        CustomizationDTO customizationDTO = new CustomizationDTO();
+        customizationDTO.setId(1L);
+        ExtraDTO extraDTO = new ExtraDTO();
+        extraDTO.setId(1L);
         DeviceDTO dto = new DeviceDTO(
             1L,
             2L,
@@ -26,11 +32,13 @@ public class DeviceDTOTest {
             100.0,
             "USD",
             true,
-            List.of(new CharacteristicDTO()),
-            List.of(new CustomizationDTO(1L, 10L, "Name", "Description", List.of(new OptionDTO()))),
-            List.of(new ExtraDTO())
+            List.of(characteristicDTO),
+            List.of(customizationDTO),
+            List.of(extraDTO)
         );
+
         Device device = DeviceDTO.toDevice(dto);
+
         assertEquals(dto.getId(), device.getId());
         assertEquals(dto.getSupplierForeignId(), device.getSupplierForeignId());
         assertEquals(dto.getSupplier(), device.getSupplier());
@@ -42,7 +50,12 @@ public class DeviceDTOTest {
         assertEquals(dto.getActive(), device.getActive());
         assertEquals(dto.getCharacteristics().size(), device.getCharacteristics().size());
         assertEquals(dto.getExtras().size(), device.getExtras().size());
-        assertEquals(dto.getCustomizations().get(0).getOptions().size(), device.getOptions().size());
+        assertEquals(dto.getCustomizations().size(), device.getCustomizations().size());
+
+        // Verify IDs of the objects in the lists
+        assertEquals(dto.getCharacteristics().get(0).getId(), device.getCharacteristics().iterator().next().getId());
+        assertEquals(dto.getExtras().get(0).getId(), device.getExtras().iterator().next().getId());
+        assertEquals(dto.getCustomizations().get(0).getId(), device.getCustomizations().iterator().next().getId());
     }
 
     @Test
@@ -64,7 +77,7 @@ public class DeviceDTOTest {
         Device device = DeviceDTO.toDevice(dto);
         assertTrue(device.getCharacteristics().isEmpty());
         assertTrue(device.getExtras().isEmpty());
-        assertTrue(device.getOptions().isEmpty());
+        assertTrue(device.getCustomizations().isEmpty());
     }
 
     @Test
@@ -75,12 +88,25 @@ public class DeviceDTOTest {
         assertTrue(device.getCharacteristics().isEmpty());
         assertNotNull(device.getExtras());
         assertTrue(device.getExtras().isEmpty());
-        assertNotNull(device.getOptions());
-        assertTrue(device.getOptions().isEmpty());
+        assertNotNull(device.getCustomizations());
+        assertTrue(device.getCustomizations().isEmpty());
     }
 
     @Test
     void toDeviceHandlesMultipleEntries() {
+        CharacteristicDTO characteristicDTO1 = new CharacteristicDTO();
+        characteristicDTO1.setId(1L);
+        CharacteristicDTO characteristicDTO2 = new CharacteristicDTO();
+        characteristicDTO2.setId(2L);
+        CustomizationDTO customizationDTO1 = new CustomizationDTO();
+        customizationDTO1.setId(1L);
+        CustomizationDTO customizationDTO2 = new CustomizationDTO();
+        customizationDTO2.setId(2L);
+        ExtraDTO extraDTO1 = new ExtraDTO();
+        extraDTO1.setId(1L);
+        ExtraDTO extraDTO2 = new ExtraDTO();
+        extraDTO2.setId(2L);
+
         DeviceDTO dto = new DeviceDTO(
             1L,
             2L,
@@ -91,17 +117,23 @@ public class DeviceDTOTest {
             100.0,
             "USD",
             true,
-            List.of(new CharacteristicDTO(), new CharacteristicDTO()),
-            List.of(
-                new CustomizationDTO(1L, 10L, "Name", "Description", List.of(new OptionDTO())),
-                new CustomizationDTO(2L, 10L, "Name2", "Description2", List.of(new OptionDTO()))
-            ),
-            List.of(new ExtraDTO(), new ExtraDTO())
+            List.of(characteristicDTO1, characteristicDTO2),
+            List.of(customizationDTO1, customizationDTO2),
+            List.of(extraDTO1, extraDTO2)
         );
+
         Device device = DeviceDTO.toDevice(dto);
+
         assertEquals(2, device.getCharacteristics().size());
         assertEquals(2, device.getExtras().size());
-        assertEquals(2, device.getOptions().size());
+        assertEquals(2, device.getCustomizations().size());
+
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(1L)));
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(2L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(1L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(2L)));
+        assertTrue(device.getCustomizations().stream().anyMatch(c -> c.getId().equals(1L)));
+        assertTrue(device.getCustomizations().stream().anyMatch(c -> c.getId().equals(2L)));
     }
 
     @Test
@@ -165,28 +197,6 @@ public class DeviceDTOTest {
 
         Device device = DeviceDTO.toDevice(dto);
 
-        assertEquals(4, device.getCharacteristics().size());
-        assertEquals(4, device.getExtras().size());
-        assertEquals(7, device.getOptions().size());
-    }
-
-    @Test
-    void toDeviceHandlesNoCustomizations() {
-        DeviceDTO dto = new DeviceDTO(
-            1L,
-            2L,
-            "Supplier",
-            "Code",
-            "Name",
-            "Description",
-            100.0,
-            "USD",
-            true,
-            List.of(new CharacteristicDTO()),
-            Collections.emptyList(),
-            List.of(new ExtraDTO())
-        );
-        Device device = DeviceDTO.toDevice(dto);
         assertEquals(dto.getId(), device.getId());
         assertEquals(dto.getSupplierForeignId(), device.getSupplierForeignId());
         assertEquals(dto.getSupplier(), device.getSupplier());
@@ -198,27 +208,39 @@ public class DeviceDTOTest {
         assertEquals(dto.getActive(), device.getActive());
         assertEquals(dto.getCharacteristics().size(), device.getCharacteristics().size());
         assertEquals(dto.getExtras().size(), device.getExtras().size());
-        assertTrue(device.getOptions().isEmpty());
+        assertEquals(dto.getCustomizations().size(), device.getCustomizations().size());
+
+        // Verify IDs of the objects in the lists
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(4L)));
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(5L)));
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(6L)));
+        assertTrue(device.getCharacteristics().stream().anyMatch(c -> c.getId().equals(7L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(1L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(2L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(3L)));
+        assertTrue(device.getExtras().stream().anyMatch(e -> e.getId().equals(4L)));
+        assertTrue(device.getCustomizations().stream().anyMatch(c -> c.getId().equals(3L)));
+        assertTrue(device.getCustomizations().stream().anyMatch(c -> c.getId().equals(4L)));
+        assertTrue(device.getCustomizations().stream().anyMatch(c -> c.getId().equals(6L)));
     }
 
     @Test
     void fromDeviceMapsAllFieldsCorrectly() {
-        CustomizationRepository customizationRepository = Mockito.mock(CustomizationRepository.class);
+        Characteristic characteristic1 = new Characteristic();
+        characteristic1.setId(1L);
+        Characteristic characteristic2 = new Characteristic();
+        characteristic2.setId(2L);
+
+        Extra extra1 = new Extra();
+        extra1.setId(1L);
+        Extra extra2 = new Extra();
+        extra2.setId(2L);
+
         Customization customization1 = new Customization();
         customization1.setId(1L);
         Customization customization2 = new Customization();
         customization2.setId(2L);
 
-        Option option1 = new Option();
-        option1.setId(1L);
-        Option option2 = new Option();
-        option2.setId(2L);
-
-        customization1.addOptions(option1);
-
-        Mockito.when(customizationRepository.findByOptionsContains(option1)).thenReturn(customization1);
-        Mockito.when(customizationRepository.findByOptionsContains(option2)).thenReturn(customization2);
-
         Device device = new Device();
         device.setId(1L);
         device.setSupplierForeignId(2L);
@@ -229,11 +251,11 @@ public class DeviceDTOTest {
         device.setBasePrice(100.0);
         device.setCurrency("USD");
         device.setActive(true);
-        device.setCharacteristics(Set.of(new Characteristic(), new Characteristic()));
-        device.setExtras(Set.of(new Extra(), new Extra()));
-        device.setOptions(Set.of(option1, option2));
+        device.setCharacteristics(Set.of(characteristic1, characteristic2));
+        device.setExtras(Set.of(extra1, extra2));
+        device.setCustomizations(Set.of(customization1, customization2));
 
-        DeviceDTO dto = DeviceDTO.fromDevice(device, customizationRepository);
+        DeviceDTO dto = DeviceDTO.fromDevice(device);
 
         assertEquals(device.getId(), dto.getId());
         assertEquals(device.getSupplierForeignId(), dto.getSupplierForeignId());
@@ -246,30 +268,19 @@ public class DeviceDTOTest {
         assertEquals(device.getActive(), dto.getActive());
         assertEquals(device.getCharacteristics().size(), dto.getCharacteristics().size());
         assertEquals(device.getExtras().size(), dto.getExtras().size());
-        assertEquals(device.getOptions().size(), dto.getCustomizations().stream().mapToInt(c -> c.getOptions().size()).sum());
+        assertEquals(device.getCustomizations().size(), dto.getCustomizations().size());
 
-        // Verify that the options are assigned to the correct customizations using IDs
-        assertTrue(
-            dto
-                .getCustomizations()
-                .stream()
-                .anyMatch(c -> c.getId().equals(1L) && c.getOptions().stream().allMatch(o -> o.getId().equals(1L)))
-        );
-        assertTrue(
-            dto
-                .getCustomizations()
-                .stream()
-                .anyMatch(c -> c.getId().equals(2L) && c.getOptions().stream().allMatch(o -> o.getId().equals(2L)))
-        );
-
-        // Verify interactions with the mock
-        Mockito.verify(customizationRepository).findByOptionsContains(option1);
-        Mockito.verify(customizationRepository).findByOptionsContains(option2);
+        // Verify IDs of the objects in the lists
+        assertTrue(dto.getCharacteristics().stream().anyMatch(c -> c.getId().equals(1L)));
+        assertTrue(dto.getCharacteristics().stream().anyMatch(c -> c.getId().equals(2L)));
+        assertTrue(dto.getExtras().stream().anyMatch(e -> e.getId().equals(1L)));
+        assertTrue(dto.getExtras().stream().anyMatch(e -> e.getId().equals(2L)));
+        assertTrue(dto.getCustomizations().stream().anyMatch(c -> c.getId().equals(1L)));
+        assertTrue(dto.getCustomizations().stream().anyMatch(c -> c.getId().equals(2L)));
     }
 
     @Test
-    void fromDeviceHandlesNoOptions() {
-        CustomizationRepository customizationRepository = Mockito.mock(CustomizationRepository.class);
+    void fromDeviceHandlesEmptyLists() {
         Device device = new Device();
         device.setId(1L);
         device.setSupplierForeignId(2L);
@@ -280,11 +291,11 @@ public class DeviceDTOTest {
         device.setBasePrice(100.0);
         device.setCurrency("USD");
         device.setActive(true);
-        device.setCharacteristics(Set.of(new Characteristic(), new Characteristic()));
-        device.setExtras(Set.of(new Extra(), new Extra()));
-        device.setOptions(Collections.emptySet());
+        device.setCharacteristics(Collections.emptySet());
+        device.setExtras(Collections.emptySet());
+        device.setCustomizations(Collections.emptySet());
 
-        DeviceDTO dto = DeviceDTO.fromDevice(device, customizationRepository);
+        DeviceDTO dto = DeviceDTO.fromDevice(device);
 
         assertEquals(device.getId(), dto.getId());
         assertEquals(device.getSupplierForeignId(), dto.getSupplierForeignId());
@@ -295,8 +306,8 @@ public class DeviceDTOTest {
         assertEquals(device.getBasePrice(), dto.getBasePrice());
         assertEquals(device.getCurrency(), dto.getCurrency());
         assertEquals(device.getActive(), dto.getActive());
-        assertEquals(device.getCharacteristics().size(), dto.getCharacteristics().size());
-        assertEquals(device.getExtras().size(), dto.getExtras().size());
+        assertTrue(dto.getCharacteristics().isEmpty());
+        assertTrue(dto.getExtras().isEmpty());
         assertTrue(dto.getCustomizations().isEmpty());
     }
 

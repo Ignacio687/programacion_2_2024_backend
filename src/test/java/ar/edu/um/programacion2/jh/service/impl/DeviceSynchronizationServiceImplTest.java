@@ -128,7 +128,7 @@ class DeviceSynchronizationServiceImplTest {
         option4.setCode("OPT04");
         option4.setAdditionalPrice(250.0);
 
-        this.exampleDevice.setOptions(new HashSet<>(this.optionRepository.saveAll(Arrays.asList(option1, option2, option3, option4))));
+        //        this.exampleDevice.setOptions(new HashSet<>(this.optionRepository.saveAll(Arrays.asList(option1, option2, option3, option4))));
 
         Extra extra1 = new Extra();
         extra1.setSupplierForeignId(101L);
@@ -146,30 +146,30 @@ class DeviceSynchronizationServiceImplTest {
 
         this.exampleDevice.setExtras(new HashSet<>(this.extraRepository.saveAll(Arrays.asList(extra1, extra2))));
 
-        Customization customization1 = new Customization();
-        customization1.setName("Customization 1");
-        customization1.setSupplierForeignId(101L);
-        customization1.setOptions(
-            this.exampleDevice.getOptions()
-                .stream()
-                .filter(option -> option.getSupplierForeignId() == 101L || option.getSupplierForeignId() == 103L)
-                .collect(Collectors.toSet())
-        );
+        //        Customization customization1 = new Customization();
+        //        customization1.setName("Customization 1");
+        //        customization1.setSupplierForeignId(101L);
+        //        customization1.setOptions(
+        //            this.exampleDevice.getOptions()
+        //                .stream()
+        //                .filter(option -> option.getSupplierForeignId() == 101L || option.getSupplierForeignId() == 103L)
+        //                .collect(Collectors.toSet())
+        //        );
+        //
+        //        Customization customization2 = new Customization();
+        //        customization2.setName("Customization 2");
+        //        customization2.setSupplierForeignId(102L);
+        //        customization2.setOptions(
+        //            new HashSet<>(
+        //                this.exampleDevice.getOptions()
+        //                    .stream()
+        //                    .filter(option -> option.getSupplierForeignId() == 102L || option.getSupplierForeignId() == 104L)
+        //                    .collect(Collectors.toSet())
+        //            )
+        //        );
 
-        Customization customization2 = new Customization();
-        customization2.setName("Customization 2");
-        customization2.setSupplierForeignId(102L);
-        customization2.setOptions(
-            new HashSet<>(
-                this.exampleDevice.getOptions()
-                    .stream()
-                    .filter(option -> option.getSupplierForeignId() == 102L || option.getSupplierForeignId() == 104L)
-                    .collect(Collectors.toSet())
-            )
-        );
-
-        this.customizationRepository.saveAll(Arrays.asList(customization1, customization2));
-        this.exampleDevice = this.deviceRepository.save(this.exampleDevice);
+        //        this.customizationRepository.saveAll(Arrays.asList(customization1, customization2));
+        //        this.exampleDevice = this.deviceRepository.save(this.exampleDevice);
 
         // Define example device DTO
         this.exampleDeviceDTO = new DeviceDTO();

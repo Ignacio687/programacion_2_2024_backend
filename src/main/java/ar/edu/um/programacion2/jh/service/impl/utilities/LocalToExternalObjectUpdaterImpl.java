@@ -7,9 +7,7 @@ import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
 import ar.edu.um.programacion2.jh.service.utilities.LocalToExternalObjectUpdater;
 import java.util.*;
 import java.util.stream.Collectors;
-import liquibase.command.core.MarkNextChangesetRanCommandStep;
 import lombok.Data;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +38,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
 
     @Override
     public Device updateAndSaveDevice(DeviceDTO externalDevice, String supplier) {
-        Optional<Device> localDevice = this.deviceRepository.findBySupplierForeignId(externalDevice.getSupplierForeignId());
+        Optional<Device> localDevice = this.deviceRepository.findBySupplierForeignId(externalDevice.getId());
         if (localDevice.isPresent()) {
             return this.updateAndSaveDevice(localDevice.get(), externalDevice);
         } else {
@@ -59,26 +57,35 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
         updatedDevice.setSupplierForeignId(localDevice.getSupplierForeignId());
         updatedDevice.setSupplier(localDevice.getSupplier());
         updatedDevice.setActive(true);
-        this.saveDeviceDependencies(updatedDevice, externalDevice.getCustomizations());
-        return this.deviceRepository.save(updatedDevice);
+        Device newDevice = this.saveDeviceDependencies(updatedDevice, externalDevice.getCustomizations());
+        return this.deviceRepository.save(newDevice);
     }
 
     private Device saveDeviceDependencies(Device device, List<CustomizationDTO> customizations) {
-        device
+        Set<Characteristic> savedCharacteristics = device
             .getCharacteristics()
-            .forEach(characteristic -> {
-                Optional<Characteristic> existingCharacteristic = characteristicRepository.findBySupplierForeignId(
-                    characteristic.getSupplierForeignId()
-                );
-                existingCharacteristic.ifPresent(value -> characteristic.setId(value.getId()));
-            });
+            .stream()
+            .map(this::updateAndSaveCharacteristic)
+            .collect(Collectors.toSet());
+        device.setCharacteristics(savedCharacteristics);
+
+        Set<Extra> savedExtras = device.getExtras().stream().map(this::updateAndSaveExtra).collect(Collectors.toSet());
+        device.setExtras(savedExtras);
+
+        Set<Customization> savedCustomizations = customizations
+            .stream()
+            .map(CustomizationDTO::toCustomization)
+            .map(this::updateAndSaveCustomization)
+            .collect(Collectors.toSet());
+        device.setCustomizations(savedCustomizations);
+
         return device;
     }
 
     @Override
     public Characteristic updateAndSaveCharacteristic(Characteristic externalCharacteristic) {
         Optional<Characteristic> localCharacteristic =
-            this.characteristicRepository.findBySupplierForeignId(externalCharacteristic.getSupplierForeignId());
+            this.characteristicRepository.findBySupplierForeignId(externalCharacteristic.getId());
         if (localCharacteristic.isPresent()) {
             return this.updateAndSaveCharacteristic(localCharacteristic.get(), externalCharacteristic);
         } else {
@@ -98,7 +105,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
 
     @Override
     public Extra updateAndSaveExtra(Extra externalExtra) {
-        Optional<Extra> localExtra = this.extraRepository.findBySupplierForeignId(externalExtra.getSupplierForeignId());
+        Optional<Extra> localExtra = this.extraRepository.findBySupplierForeignId(externalExtra.getId());
         if (localExtra.isPresent()) {
             return this.updateAndSaveExtra(localExtra.get(), externalExtra);
         } else {
@@ -118,7 +125,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
 
     @Override
     public Option updateAndSaveOption(Option externalOption) {
-        Optional<Option> localOption = this.optionRepository.findBySupplierForeignId(externalOption.getSupplierForeignId());
+        Optional<Option> localOption = this.optionRepository.findBySupplierForeignId(externalOption.getId());
         if (localOption.isPresent()) {
             return this.updateAndSaveOption(localOption.get(), externalOption);
         } else {
@@ -138,8 +145,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
 
     @Override
     public Customization updateAndSaveCustomization(Customization externalCustomization) {
-        Optional<Customization> localCustomization =
-            this.customizationRepository.findBySupplierForeignId(externalCustomization.getSupplierForeignId());
+        Optional<Customization> localCustomization = this.customizationRepository.findBySupplierForeignId(externalCustomization.getId());
         if (localCustomization.isPresent()) {
             return this.updateAndSaveCustomization(localCustomization.get(), externalCustomization);
         } else {
@@ -152,10 +158,10 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
 
     @Override
     public Customization updateAndSaveCustomization(Customization localCustomization, Customization externalCustomization) {
-        Set<Option> updatedOptions = new TreeSet<>(Comparator.comparing(Option::getId));
         externalCustomization.setSupplierForeignId(externalCustomization.getId());
         externalCustomization.setId(localCustomization.getId());
-        //Completar
-        return localCustomization;
+        Set<Option> updatedOptions = externalCustomization.getOptions().stream().map(this::updateAndSaveOption).collect(Collectors.toSet());
+        externalCustomization.setOptions(updatedOptions);
+        return this.customizationRepository.save(externalCustomization);
     }
 }

@@ -3,9 +3,55 @@ package ar.edu.um.programacion2.jh.service.dto;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ar.edu.um.programacion2.jh.domain.Characteristic;
+import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CharacteristicDTOTest {
+
+    @Test
+    void verifyMapsCharacteristicJsonCorrectly() throws IOException {
+        String jsonData =
+            """
+            [
+                { "id": 4, "nombre": "Pantalla", "descripcion": "Pantalla OLED 16\\"" },
+                { "id": 5, "nombre": "Camara", "descripcion": "Camara Web 1080p" },
+                { "id": 6, "nombre": "Batería", "descripcion": "Batería 80Wh" },
+                { "id": 7, "nombre": "Adicional", "descripcion": "Lector de memoria múltiple" }
+            ]
+            """;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<CharacteristicDTO> characteristics = objectMapper.readValue(jsonData, new TypeReference<List<CharacteristicDTO>>() {});
+
+        assertEquals(4, characteristics.size());
+
+        assertTrue(
+            characteristics
+                .stream()
+                .anyMatch(c -> c.getId().equals(4L) && c.getName().equals("Pantalla") && c.getDescription().equals("Pantalla OLED 16\""))
+        );
+        assertTrue(
+            characteristics
+                .stream()
+                .anyMatch(c -> c.getId().equals(5L) && c.getName().equals("Camara") && c.getDescription().equals("Camara Web 1080p"))
+        );
+        assertTrue(
+            characteristics
+                .stream()
+                .anyMatch(c -> c.getId().equals(6L) && c.getName().equals("Batería") && c.getDescription().equals("Batería 80Wh"))
+        );
+        assertTrue(
+            characteristics
+                .stream()
+                .anyMatch(
+                    c -> c.getId().equals(7L) && c.getName().equals("Adicional") && c.getDescription().equals("Lector de memoria múltiple")
+                )
+        );
+    }
 
     @Test
     void toCharacteristicConvertsCorrectly() {

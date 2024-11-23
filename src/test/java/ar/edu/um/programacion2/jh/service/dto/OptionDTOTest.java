@@ -3,9 +3,125 @@ package ar.edu.um.programacion2.jh.service.dto;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ar.edu.um.programacion2.jh.domain.Option;
+import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OptionDTOTest {
+
+    @Test
+    void verifyMapsOptionsJsonCorrectly() throws IOException {
+        String jsonData =
+            """
+            [
+                { "id": 3, "codigo": "PROC03", "nombre": "Core Y1", "descripcion": "Procesador 1.2 GHz- 10 Cores", "precioAdicional": 0.0 },
+                { "id": 4, "codigo": "PROC04", "nombre": "Core Y2", "descripcion": "Procesador 1.7 GHz- 24 Cores", "precioAdicional": 700.0 },
+                { "id": 7, "codigo": "MEM03", "nombre": "DDR4-8", "descripcion": "Memoria DDR4- 8GB", "precioAdicional": 0.0 },
+                { "id": 8, "codigo": "MEM04", "nombre": "DDR4-16", "descripcion": "Memoria DDR4- 16GB", "precioAdicional": 300.0 },
+                { "id": 9, "codigo": "MEM05", "nombre": "DDR4-32", "descripcion": "Memoria DDR4- 32GB", "precioAdicional": 900.0 },
+                { "id": 12, "codigo": "VID01", "nombre": "Integrado", "descripcion": "Video Integrado Memoria Compartida", "precioAdicional": 0.0 },
+                { "id": 13, "codigo": "VID02", "nombre": "Aceleradora 3D", "descripcion": "Nvidia XYZ-200 12GB", "precioAdicional": 900.0 }
+            ]
+            """;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<OptionDTO> options = objectMapper.readValue(jsonData, new TypeReference<List<OptionDTO>>() {});
+
+        assertEquals(7, options.size());
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(3L) &&
+                        o.getCode().equals("PROC03") &&
+                        o.getName().equals("Core Y1") &&
+                        o.getDescription().equals("Procesador 1.2 GHz- 10 Cores") &&
+                        o.getAdditionalPrice().equals(0.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(4L) &&
+                        o.getCode().equals("PROC04") &&
+                        o.getName().equals("Core Y2") &&
+                        o.getDescription().equals("Procesador 1.7 GHz- 24 Cores") &&
+                        o.getAdditionalPrice().equals(700.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(7L) &&
+                        o.getCode().equals("MEM03") &&
+                        o.getName().equals("DDR4-8") &&
+                        o.getDescription().equals("Memoria DDR4- 8GB") &&
+                        o.getAdditionalPrice().equals(0.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(8L) &&
+                        o.getCode().equals("MEM04") &&
+                        o.getName().equals("DDR4-16") &&
+                        o.getDescription().equals("Memoria DDR4- 16GB") &&
+                        o.getAdditionalPrice().equals(300.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(9L) &&
+                        o.getCode().equals("MEM05") &&
+                        o.getName().equals("DDR4-32") &&
+                        o.getDescription().equals("Memoria DDR4- 32GB") &&
+                        o.getAdditionalPrice().equals(900.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(12L) &&
+                        o.getCode().equals("VID01") &&
+                        o.getName().equals("Integrado") &&
+                        o.getDescription().equals("Video Integrado Memoria Compartida") &&
+                        o.getAdditionalPrice().equals(0.0)
+                )
+        );
+
+        assertTrue(
+            options
+                .stream()
+                .anyMatch(
+                    o ->
+                        o.getId().equals(13L) &&
+                        o.getCode().equals("VID02") &&
+                        o.getName().equals("Aceleradora 3D") &&
+                        o.getDescription().equals("Nvidia XYZ-200 12GB") &&
+                        o.getAdditionalPrice().equals(900.0)
+                )
+        );
+    }
 
     @Test
     void toOptionConvertsCorrectly() {
