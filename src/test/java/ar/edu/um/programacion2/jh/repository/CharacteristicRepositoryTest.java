@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 @TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
@@ -27,6 +28,7 @@ public class CharacteristicRepositoryTest {
     private CharacteristicRepository characteristicRepository;
 
     @Test
+    @Transactional
     public void findBySupplierForeignId() {
         Characteristic characteristic = new Characteristic();
         characteristic.setSupplierForeignId(123L);
@@ -39,12 +41,14 @@ public class CharacteristicRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void findBySupplierForeignId_NotFound() {
         Optional<Characteristic> found = characteristicRepository.findBySupplierForeignId(999L);
         assertThat(found).isNotPresent();
     }
 
     @Test
+    @Transactional
     public void findBySupplierForeignId_NullId() {
         Optional<Characteristic> found = characteristicRepository.findBySupplierForeignId(null);
         assertThat(found).isNotPresent();

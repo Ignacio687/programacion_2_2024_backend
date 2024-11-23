@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import ar.edu.um.programacion2.jh.repository.*;
 import ar.edu.um.programacion2.jh.service.client.DeviceClient;
-import ar.edu.um.programacion2.jh.service.impl.DeviceSynchronizationServiceImpl;
 import ar.edu.um.programacion2.jh.web.rest.DeviceSynchronizationController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -43,11 +41,11 @@ class DeviceSynchronizationServiceImplThreadTest {
     private CustomizationRepository customizationRepository;
 
     @InjectMocks
-    private DeviceSynchronizationServiceImpl deviceSynchronizationServiceImpl;
+    private DeviceSynchronizationServiceImpl deviceSynchronizationService;
 
     @BeforeEach
     void setUp() {
-        this.deviceSynchronizationServiceImpl = spy(
+        this.deviceSynchronizationService = spy(
             new DeviceSynchronizationServiceImpl(
                 deviceClient,
                 deviceRepository,
@@ -58,77 +56,77 @@ class DeviceSynchronizationServiceImplThreadTest {
             )
         );
         MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(deviceSynchronizationServiceImpl, "log", LOG);
-        doNothing().when(deviceSynchronizationServiceImpl).synchronize();
+        ReflectionTestUtils.setField(deviceSynchronizationService, "log", LOG);
+        doNothing().when(deviceSynchronizationService).synchronize();
     }
 
     @AfterEach
     void tearDown() {
-        deviceSynchronizationServiceImpl.stopThread();
+        deviceSynchronizationService.stopThread();
     }
 
     @Test
     void testStartThread() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(1500);
-        verify(deviceSynchronizationServiceImpl, atLeastOnce()).synchronize();
-        verify(deviceSynchronizationServiceImpl, never()).stopThread();
-        assertTrue(deviceSynchronizationServiceImpl.getThread().isAlive());
+        verify(deviceSynchronizationService, atLeastOnce()).synchronize();
+        verify(deviceSynchronizationService, never()).stopThread();
+        assertTrue(deviceSynchronizationService.getThread().isAlive());
     }
 
     @Test
     void testStopThread() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(500);
-        deviceSynchronizationServiceImpl.stopThread();
+        deviceSynchronizationService.stopThread();
         Thread.sleep(1500);
-        verify(deviceSynchronizationServiceImpl, atMost(1)).synchronize();
-        assertFalse(deviceSynchronizationServiceImpl.getThread().isAlive());
+        verify(deviceSynchronizationService, atMost(1)).synchronize();
+        assertFalse(deviceSynchronizationService.getThread().isAlive());
     }
 
     @Test
     void testThreadInterruption() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(500);
-        deviceSynchronizationServiceImpl.stopThread();
+        deviceSynchronizationService.stopThread();
         Thread.sleep(1500);
         verify(LOG).debug("Device synchronization was interrupted");
-        assertFalse(deviceSynchronizationServiceImpl.getThread().isAlive());
+        assertFalse(deviceSynchronizationService.getThread().isAlive());
     }
 
     @Test
     void testStopThreadLogsMessage() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(500);
-        deviceSynchronizationServiceImpl.stopThread();
+        deviceSynchronizationService.stopThread();
         Thread.sleep(1000);
         verify(LOG).info("Device synchronization has stopped.");
-        assertFalse(deviceSynchronizationServiceImpl.getThread().isAlive());
+        assertFalse(deviceSynchronizationService.getThread().isAlive());
     }
 
     @Test
     void testStopThreadAfterSettingRunningFalse() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(500);
-        deviceSynchronizationServiceImpl.setRunning(false);
+        deviceSynchronizationService.setRunning(false);
         Thread.sleep(1500);
-        assertFalse(deviceSynchronizationServiceImpl.getThread().isAlive());
+        assertFalse(deviceSynchronizationService.getThread().isAlive());
     }
 
     @Test
     void testThreadJoinCalled() throws InterruptedException {
         Thread mockThread = mock(Thread.class);
-        deviceSynchronizationServiceImpl.setThread(mockThread);
-        deviceSynchronizationServiceImpl.stopThread();
+        deviceSynchronizationService.setThread(mockThread);
+        deviceSynchronizationService.stopThread();
         verify(mockThread).join();
     }
 
     @Test
     void testStartThreadWaitsForPreviousThreadToDie() throws InterruptedException {
-        deviceSynchronizationServiceImpl.startThread(1L);
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(500);
-        Thread thread = deviceSynchronizationServiceImpl.getThread();
-        deviceSynchronizationServiceImpl.startThread(1L);
+        Thread thread = deviceSynchronizationService.getThread();
+        deviceSynchronizationService.startThread(1L);
         Thread.sleep(1500);
         assertFalse(thread.isAlive());
     }

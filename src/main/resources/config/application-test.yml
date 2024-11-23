@@ -1,10 +1,33 @@
+# application-test.yml
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MYSQL
     username: sa
-    password: password
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+  liquibase:
+    enabled: true
+    contexts: test
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.springframework: DEBUG
+
+cliente-web:
+  rootUrl: 10.145.1.1:8080
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ25hY2lvX2NoYXZlcyIsImV4cCI6MTc0MDE2OTU1NCwiYXV0aCI6IlJPTEVfVVNFUiIsImlhdCI6MTczMTUyOTU1NH0.Faw1Oie6s_OGPcUcgdE6URJSOL-y_QB7mGPtvfi49WTN0tjrKU3ooHerEBi-Q2dhQrdKmmxeDEOFPAt3x-urUg

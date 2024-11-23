@@ -64,7 +64,7 @@ public class ComputechApp {
                 "You have misconfigured your application! It should not " + "run with both the 'dev' and 'cloud' profiles at the same time."
             );
         }
-        if (deviceSynchronizationService != null) {
+        if (deviceSynchronizationService != null && !activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_TEST)) {
             deviceSynchronizationService.startThread(300L);
         }
     }

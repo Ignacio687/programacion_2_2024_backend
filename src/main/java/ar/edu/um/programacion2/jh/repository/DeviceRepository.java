@@ -3,6 +3,7 @@ package ar.edu.um.programacion2.jh.repository;
 import ar.edu.um.programacion2.jh.domain.Device;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -27,4 +28,6 @@ public interface DeviceRepository extends DeviceRepositoryWithBagRelationships, 
     default Page<Device> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    Optional<Device> findBySupplierForeignId(Long supplierForeignId);
 }
