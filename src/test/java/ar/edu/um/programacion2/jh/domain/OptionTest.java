@@ -1,7 +1,6 @@
 package ar.edu.um.programacion2.jh.domain;
 
 import static ar.edu.um.programacion2.jh.domain.CustomizationTestSamples.*;
-import static ar.edu.um.programacion2.jh.domain.DeviceTestSamples.*;
 import static ar.edu.um.programacion2.jh.domain.OptionTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,32 +30,20 @@ class OptionTest {
         Option option = getOptionRandomSampleGenerator();
         Customization customizationBack = getCustomizationRandomSampleGenerator();
 
-        option.setCustomization(customizationBack);
-        assertThat(option.getCustomization()).isEqualTo(customizationBack);
+        option.addCustomization(customizationBack);
+        assertThat(option.getCustomizations()).containsOnly(customizationBack);
+        assertThat(customizationBack.getOptions()).containsOnly(option);
 
-        option.customization(null);
-        assertThat(option.getCustomization()).isNull();
-    }
+        option.removeCustomization(customizationBack);
+        assertThat(option.getCustomizations()).doesNotContain(customizationBack);
+        assertThat(customizationBack.getOptions()).doesNotContain(option);
 
-    @Test
-    void devicesTest() {
-        Option option = getOptionRandomSampleGenerator();
-        Device deviceBack = getDeviceRandomSampleGenerator();
+        option.customizations(new HashSet<>(Set.of(customizationBack)));
+        assertThat(option.getCustomizations()).containsOnly(customizationBack);
+        assertThat(customizationBack.getOptions()).containsOnly(option);
 
-        option.addDevices(deviceBack);
-        assertThat(option.getDevices()).containsOnly(deviceBack);
-        assertThat(deviceBack.getOptions()).containsOnly(option);
-
-        option.removeDevices(deviceBack);
-        assertThat(option.getDevices()).doesNotContain(deviceBack);
-        assertThat(deviceBack.getOptions()).doesNotContain(option);
-
-        option.devices(new HashSet<>(Set.of(deviceBack)));
-        assertThat(option.getDevices()).containsOnly(deviceBack);
-        assertThat(deviceBack.getOptions()).containsOnly(option);
-
-        option.setDevices(new HashSet<>());
-        assertThat(option.getDevices()).doesNotContain(deviceBack);
-        assertThat(deviceBack.getOptions()).doesNotContain(option);
+        option.setCustomizations(new HashSet<>());
+        assertThat(option.getCustomizations()).doesNotContain(customizationBack);
+        assertThat(customizationBack.getOptions()).doesNotContain(option);
     }
 }

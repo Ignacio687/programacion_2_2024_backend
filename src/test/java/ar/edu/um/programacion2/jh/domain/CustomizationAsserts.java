@@ -59,6 +59,9 @@ public class CustomizationAsserts {
      * @param actual the actual entity
      */
     public static void assertCustomizationUpdatableRelationshipsEquals(Customization expected, Customization actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify Customization relationships")
+            .satisfies(e -> assertThat(e.getOptions()).as("check options").isEqualTo(actual.getOptions()))
+            .satisfies(e -> assertThat(e.getDevices()).as("check devices").isEqualTo(actual.getDevices()));
     }
 }

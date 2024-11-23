@@ -156,5 +156,6 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
         externalCustomization.setSupplierForeignId(externalCustomization.getId());
         externalCustomization.setId(localCustomization.getId());
         //Completar
+        return localCustomization;
     }
 }

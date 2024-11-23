@@ -43,14 +43,10 @@ public class Option implements Serializable {
     @Column(name = "additional_price", nullable = false)
     private Double additionalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "options" }, allowSetters = true)
-    private Customization customization;
-
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "options")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "sales", "characteristics", "options", "extras" }, allowSetters = true)
-    private Set<Device> devices = new HashSet<>();
+    @JsonIgnoreProperties(value = { "options", "devices" }, allowSetters = true)
+    private Set<Customization> customizations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -132,47 +128,34 @@ public class Option implements Serializable {
         this.additionalPrice = additionalPrice;
     }
 
-    public Customization getCustomization() {
-        return this.customization;
+    public Set<Customization> getCustomizations() {
+        return this.customizations;
     }
 
-    public void setCustomization(Customization customization) {
-        this.customization = customization;
-    }
-
-    public Option customization(Customization customization) {
-        this.setCustomization(customization);
-        return this;
-    }
-
-    public Set<Device> getDevices() {
-        return this.devices;
-    }
-
-    public void setDevices(Set<Device> devices) {
-        if (this.devices != null) {
-            this.devices.forEach(i -> i.removeOptions(this));
+    public void setCustomizations(Set<Customization> customizations) {
+        if (this.customizations != null) {
+            this.customizations.forEach(i -> i.removeOptions(this));
         }
-        if (devices != null) {
-            devices.forEach(i -> i.addOptions(this));
+        if (customizations != null) {
+            customizations.forEach(i -> i.addOptions(this));
         }
-        this.devices = devices;
+        this.customizations = customizations;
     }
 
-    public Option devices(Set<Device> devices) {
-        this.setDevices(devices);
+    public Option customizations(Set<Customization> customizations) {
+        this.setCustomizations(customizations);
         return this;
     }
 
-    public Option addDevices(Device device) {
-        this.devices.add(device);
-        device.getOptions().add(this);
+    public Option addCustomization(Customization customization) {
+        this.customizations.add(customization);
+        customization.getOptions().add(this);
         return this;
     }
 
-    public Option removeDevices(Device device) {
-        this.devices.remove(device);
-        device.getOptions().remove(this);
+    public Option removeCustomization(Customization customization) {
+        this.customizations.remove(customization);
+        customization.getOptions().remove(this);
         return this;
     }
 

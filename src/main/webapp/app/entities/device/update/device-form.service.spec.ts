@@ -29,8 +29,8 @@ describe('Device Form Service', () => {
             currency: expect.any(Object),
             active: expect.any(Object),
             characteristics: expect.any(Object),
-            options: expect.any(Object),
             extras: expect.any(Object),
+            customizations: expect.any(Object),
           }),
         );
       });
@@ -50,8 +50,8 @@ describe('Device Form Service', () => {
             currency: expect.any(Object),
             active: expect.any(Object),
             characteristics: expect.any(Object),
-            options: expect.any(Object),
             extras: expect.any(Object),
+            customizations: expect.any(Object),
           }),
         );
       });

@@ -36,10 +36,20 @@ public class Customization implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customization")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rel_customization__options",
+        joinColumns = @JoinColumn(name = "customization_id"),
+        inverseJoinColumns = @JoinColumn(name = "options_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "customization", "devices" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "customizations" }, allowSetters = true)
     private Set<Option> options = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "customizations")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "sales", "characteristics", "extras", "customizations" }, allowSetters = true)
+    private Set<Device> devices = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -100,12 +110,6 @@ public class Customization implements Serializable {
     }
 
     public void setOptions(Set<Option> options) {
-        if (this.options != null) {
-            this.options.forEach(i -> i.setCustomization(null));
-        }
-        if (options != null) {
-            options.forEach(i -> i.setCustomization(this));
-        }
         this.options = options;
     }
 
@@ -116,13 +120,42 @@ public class Customization implements Serializable {
 
     public Customization addOptions(Option option) {
         this.options.add(option);
-        option.setCustomization(this);
         return this;
     }
 
     public Customization removeOptions(Option option) {
         this.options.remove(option);
-        option.setCustomization(null);
+        return this;
+    }
+
+    public Set<Device> getDevices() {
+        return this.devices;
+    }
+
+    public void setDevices(Set<Device> devices) {
+        if (this.devices != null) {
+            this.devices.forEach(i -> i.removeCustomizations(this));
+        }
+        if (devices != null) {
+            devices.forEach(i -> i.addCustomizations(this));
+        }
+        this.devices = devices;
+    }
+
+    public Customization devices(Set<Device> devices) {
+        this.setDevices(devices);
+        return this;
+    }
+
+    public Customization addDevices(Device device) {
+        this.devices.add(device);
+        device.getCustomizations().add(this);
+        return this;
+    }
+
+    public Customization removeDevices(Device device) {
+        this.devices.remove(device);
+        device.getCustomizations().remove(this);
         return this;
     }
 

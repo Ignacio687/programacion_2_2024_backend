@@ -63,6 +63,18 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="options.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.customization.options">Options</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="devices.id">
+              <div class="d-flex">
+                <span jhiTranslate="computechApp.customization.devices">Devices</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -75,6 +87,22 @@
               <td>{{ customization.supplierForeignId }}</td>
               <td>{{ customization.name }}</td>
               <td>{{ customization.description }}</td>
+              <td>
+                @for (options of customization.options; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/option', options.id, 'view']">{{ options.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td>
+                @for (devices of customization.devices; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/device', devices.id, 'view']">{{ devices.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/customization', customization.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

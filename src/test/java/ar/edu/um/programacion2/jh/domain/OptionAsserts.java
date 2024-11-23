@@ -63,7 +63,6 @@ public class OptionAsserts {
     public static void assertOptionUpdatableRelationshipsEquals(Option expected, Option actual) {
         assertThat(expected)
             .as("Verify Option relationships")
-            .satisfies(e -> assertThat(e.getCustomization()).as("check customization").isEqualTo(actual.getCustomization()))
-            .satisfies(e -> assertThat(e.getDevices()).as("check devices").isEqualTo(actual.getDevices()));
+            .satisfies(e -> assertThat(e.getCustomizations()).as("check customizations").isEqualTo(actual.getCustomizations()));
     }
 }

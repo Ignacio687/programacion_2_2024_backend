@@ -9,10 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomization } from 'app/entities/customization/customization.model';
 import { CustomizationService } from 'app/entities/customization/service/customization.service';
-import { IDevice } from 'app/entities/device/device.model';
-import { DeviceService } from 'app/entities/device/service/device.service';
-import { OptionService } from '../service/option.service';
 import { IOption } from '../option.model';
+import { OptionService } from '../service/option.service';
 import { OptionFormGroup, OptionFormService } from './option-form.service';
 
 @Component({
@@ -26,12 +24,10 @@ export class OptionUpdateComponent implements OnInit {
   option: IOption | null = null;
 
   customizationsSharedCollection: ICustomization[] = [];
-  devicesSharedCollection: IDevice[] = [];
 
   protected optionService = inject(OptionService);
   protected optionFormService = inject(OptionFormService);
   protected customizationService = inject(CustomizationService);
-  protected deviceService = inject(DeviceService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -39,8 +35,6 @@ export class OptionUpdateComponent implements OnInit {
 
   compareCustomization = (o1: ICustomization | null, o2: ICustomization | null): boolean =>
     this.customizationService.compareCustomization(o1, o2);
-
-  compareDevice = (o1: IDevice | null, o2: IDevice | null): boolean => this.deviceService.compareDevice(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ option }) => {
@@ -92,11 +86,7 @@ export class OptionUpdateComponent implements OnInit {
 
     this.customizationsSharedCollection = this.customizationService.addCustomizationToCollectionIfMissing<ICustomization>(
       this.customizationsSharedCollection,
-      option.customization,
-    );
-    this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
-      this.devicesSharedCollection,
-      ...(option.devices ?? []),
+      ...(option.customizations ?? []),
     );
   }
 
@@ -106,17 +96,12 @@ export class OptionUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICustomization[]>) => res.body ?? []))
       .pipe(
         map((customizations: ICustomization[]) =>
-          this.customizationService.addCustomizationToCollectionIfMissing<ICustomization>(customizations, this.option?.customization),
+          this.customizationService.addCustomizationToCollectionIfMissing<ICustomization>(
+            customizations,
+            ...(this.option?.customizations ?? []),
+          ),
         ),
       )
       .subscribe((customizations: ICustomization[]) => (this.customizationsSharedCollection = customizations));
-
-    this.deviceService
-      .query()
-      .pipe(map((res: HttpResponse<IDevice[]>) => res.body ?? []))
-      .pipe(
-        map((devices: IDevice[]) => this.deviceService.addDeviceToCollectionIfMissing<IDevice>(devices, ...(this.option?.devices ?? []))),
-      )
-      .subscribe((devices: IDevice[]) => (this.devicesSharedCollection = devices));
   }
 }

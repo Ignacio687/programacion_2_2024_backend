@@ -1,5 +1,4 @@
 import { ICustomization } from 'app/entities/customization/customization.model';
-import { IDevice } from 'app/entities/device/device.model';
 
 export interface IOption {
   id: number;
@@ -8,8 +7,7 @@ export interface IOption {
   name?: string | null;
   description?: string | null;
   additionalPrice?: number | null;
-  customization?: ICustomization | null;
-  devices?: IDevice[] | null;
+  customizations?: ICustomization[] | null;
 }
 
 export type NewOption = Omit<IOption, 'id'> & { id: null };

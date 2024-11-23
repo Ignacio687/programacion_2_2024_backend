@@ -100,35 +100,18 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_customization" jhiTranslate="computechApp.option.customization">Customization</label>
+          <label for="field_customizations" jhiTranslate="computechApp.option.customization">Customization</label>
           <select
             class="form-control"
-            id="field_customization"
+            id="field_customizations"
             data-cy="customization"
-            name="customization"
-            formControlName="customization"
+            multiple
+            name="customizations"
+            formControlName="customizations"
             [compareWith]="compareCustomization"
           >
-            <option [ngValue]="null"></option>
             @for (customizationOption of customizationsSharedCollection; track $index) {
               <option [ngValue]="customizationOption">{{ customizationOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="field_devices" jhiTranslate="computechApp.option.devices">Devices</label>
-          <select
-            class="form-control"
-            id="field_devices"
-            data-cy="devices"
-            multiple
-            name="devices"
-            formControlName="devices"
-            [compareWith]="compareDevice"
-          >
-            @for (deviceOption of devicesSharedCollection; track $index) {
-              <option [ngValue]="deviceOption">{{ deviceOption.id }}</option>
             }
           </select>
         </div>

@@ -25,20 +25,6 @@
                                  />
 
         <addForeignKeyConstraint baseColumnNames="device_id"
-                                 baseTableName="rel_device__options"
-                                 constraintName="fk_rel_device__options__device_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="device"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="options_id"
-                                 baseTableName="rel_device__options"
-                                 constraintName="fk_rel_device__options__options_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_option"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="device_id"
                                  baseTableName="rel_device__extras"
                                  constraintName="fk_rel_device__extras__device_id"
                                  referencedColumnNames="id"
@@ -50,6 +36,20 @@
                                  constraintName="fk_rel_device__extras__extras_id"
                                  referencedColumnNames="id"
                                  referencedTableName="extra"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="device_id"
+                                 baseTableName="rel_device__customizations"
+                                 constraintName="fk_rel_device__customizations__device_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="device"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="customizations_id"
+                                 baseTableName="rel_device__customizations"
+                                 constraintName="fk_rel_device__customizations__customizations_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customization"
                                  />
     </changeSet>
 </databaseChangeLog>

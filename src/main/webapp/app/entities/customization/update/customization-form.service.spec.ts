@@ -23,6 +23,8 @@ describe('Customization Form Service', () => {
             supplierForeignId: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
+            options: expect.any(Object),
+            devices: expect.any(Object),
           }),
         );
       });
@@ -36,6 +38,8 @@ describe('Customization Form Service', () => {
             supplierForeignId: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
+            options: expect.any(Object),
+            devices: expect.any(Object),
           }),
         );
       });

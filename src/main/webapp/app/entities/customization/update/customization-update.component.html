@@ -71,6 +71,40 @@
             formControlName="description"
           />
         </div>
+
+        <div class="mb-3">
+          <label for="field_options" jhiTranslate="computechApp.customization.options">Options</label>
+          <select
+            class="form-control"
+            id="field_options"
+            data-cy="options"
+            multiple
+            name="options"
+            formControlName="options"
+            [compareWith]="compareOption"
+          >
+            @for (optionOption of optionsSharedCollection; track $index) {
+              <option [ngValue]="optionOption">{{ optionOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_devices" jhiTranslate="computechApp.customization.devices">Devices</label>
+          <select
+            class="form-control"
+            id="field_devices"
+            data-cy="devices"
+            multiple
+            name="devices"
+            formControlName="devices"
+            [compareWith]="compareDevice"
+          >
+            @for (deviceOption of devicesSharedCollection; track $index) {
+              <option [ngValue]="deviceOption">{{ deviceOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

@@ -55,17 +55,6 @@
 
         <addPrimaryKey columnNames="device_id, characteristics_id" tableName="rel_device__characteristics"/>
 
-        <createTable tableName="rel_device__options">
-            <column name="options_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="device_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="device_id, options_id" tableName="rel_device__options"/>
-
         <createTable tableName="rel_device__extras">
             <column name="extras_id" type="bigint">
                 <constraints nullable="false"/>
@@ -76,6 +65,17 @@
         </createTable>
 
         <addPrimaryKey columnNames="device_id, extras_id" tableName="rel_device__extras"/>
+
+        <createTable tableName="rel_device__customizations">
+            <column name="customizations_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="device_id, customizations_id" tableName="rel_device__customizations"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

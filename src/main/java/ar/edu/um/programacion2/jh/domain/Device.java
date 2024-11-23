@@ -70,16 +70,6 @@ public class Device implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "rel_device__options",
-        joinColumns = @JoinColumn(name = "device_id"),
-        inverseJoinColumns = @JoinColumn(name = "options_id")
-    )
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "customization", "devices" }, allowSetters = true)
-    private Set<Option> options = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
         name = "rel_device__extras",
         joinColumns = @JoinColumn(name = "device_id"),
         inverseJoinColumns = @JoinColumn(name = "extras_id")
@@ -87,6 +77,16 @@ public class Device implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private Set<Extra> extras = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rel_device__customizations",
+        joinColumns = @JoinColumn(name = "device_id"),
+        inverseJoinColumns = @JoinColumn(name = "customizations_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "options", "devices" }, allowSetters = true)
+    private Set<Customization> customizations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -261,29 +261,6 @@ public class Device implements Serializable {
         return this;
     }
 
-    public Set<Option> getOptions() {
-        return this.options;
-    }
-
-    public void setOptions(Set<Option> options) {
-        this.options = options;
-    }
-
-    public Device options(Set<Option> options) {
-        this.setOptions(options);
-        return this;
-    }
-
-    public Device addOptions(Option option) {
-        this.options.add(option);
-        return this;
-    }
-
-    public Device removeOptions(Option option) {
-        this.options.remove(option);
-        return this;
-    }
-
     public Set<Extra> getExtras() {
         return this.extras;
     }
@@ -304,6 +281,29 @@ public class Device implements Serializable {
 
     public Device removeExtras(Extra extra) {
         this.extras.remove(extra);
+        return this;
+    }
+
+    public Set<Customization> getCustomizations() {
+        return this.customizations;
+    }
+
+    public void setCustomizations(Set<Customization> customizations) {
+        this.customizations = customizations;
+    }
+
+    public Device customizations(Set<Customization> customizations) {
+        this.setCustomizations(customizations);
+        return this;
+    }
+
+    public Device addCustomizations(Customization customization) {
+        this.customizations.add(customization);
+        return this;
+    }
+
+    public Device removeCustomizations(Customization customization) {
+        this.customizations.remove(customization);
         return this;
     }
 

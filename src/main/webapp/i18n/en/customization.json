@@ -21,7 +21,8 @@
       "supplierForeignId": "Supplier Foreign Id",
       "name": "Name",
       "description": "Description",
-      "options": "Options"
+      "options": "Options",
+      "devices": "Devices"
     }
   }
 }

@@ -53,7 +53,7 @@ public class Sale implements Serializable {
     private Set<SaleItem> saleItems = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "sales", "characteristics", "options", "extras" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "sales", "characteristics", "extras", "customizations" }, allowSetters = true)
     private Device device;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

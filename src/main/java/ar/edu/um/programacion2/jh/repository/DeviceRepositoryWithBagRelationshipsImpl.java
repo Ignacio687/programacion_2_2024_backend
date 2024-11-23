@@ -24,7 +24,7 @@ public class DeviceRepositoryWithBagRelationshipsImpl implements DeviceRepositor
 
     @Override
     public Optional<Device> fetchBagRelationships(Optional<Device> device) {
-        return device.map(this::fetchCharacteristics).map(this::fetchOptions).map(this::fetchExtras);
+        return device.map(this::fetchCharacteristics).map(this::fetchExtras).map(this::fetchCustomizations);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class DeviceRepositoryWithBagRelationshipsImpl implements DeviceRepositor
     public List<Device> fetchBagRelationships(List<Device> devices) {
         return Optional.of(devices)
             .map(this::fetchCharacteristics)
-            .map(this::fetchOptions)
             .map(this::fetchExtras)
+            .map(this::fetchCustomizations)
             .orElse(Collections.emptyList());
     }
 
@@ -59,24 +59,6 @@ public class DeviceRepositoryWithBagRelationshipsImpl implements DeviceRepositor
         return result;
     }
 
-    Device fetchOptions(Device result) {
-        return entityManager
-            .createQuery("select device from Device device left join fetch device.options where device.id = :id", Device.class)
-            .setParameter(ID_PARAMETER, result.getId())
-            .getSingleResult();
-    }
-
-    List<Device> fetchOptions(List<Device> devices) {
-        HashMap<Object, Integer> order = new HashMap<>();
-        IntStream.range(0, devices.size()).forEach(index -> order.put(devices.get(index).getId(), index));
-        List<Device> result = entityManager
-            .createQuery("select device from Device device left join fetch device.options where device in :devices", Device.class)
-            .setParameter(DEVICES_PARAMETER, devices)
-            .getResultList();
-        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
-        return result;
-    }
-
     Device fetchExtras(Device result) {
         return entityManager
             .createQuery("select device from Device device left join fetch device.extras where device.id = :id", Device.class)
@@ -89,6 +71,24 @@ public class DeviceRepositoryWithBagRelationshipsImpl implements DeviceRepositor
         IntStream.range(0, devices.size()).forEach(index -> order.put(devices.get(index).getId(), index));
         List<Device> result = entityManager
             .createQuery("select device from Device device left join fetch device.extras where device in :devices", Device.class)
+            .setParameter(DEVICES_PARAMETER, devices)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
+    }
+
+    Device fetchCustomizations(Device result) {
+        return entityManager
+            .createQuery("select device from Device device left join fetch device.customizations where device.id = :id", Device.class)
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Device> fetchCustomizations(List<Device> devices) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, devices.size()).forEach(index -> order.put(devices.get(index).getId(), index));
+        List<Device> result = entityManager
+            .createQuery("select device from Device device left join fetch device.customizations where device in :devices", Device.class)
             .setParameter(DEVICES_PARAMETER, devices)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));

@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type DeviceFormGroupInput = IDevice | PartialWithRequiredKeyOf<NewDevice>;
 
-type DeviceFormDefaults = Pick<NewDevice, 'id' | 'active' | 'characteristics' | 'options' | 'extras'>;
+type DeviceFormDefaults = Pick<NewDevice, 'id' | 'active' | 'characteristics' | 'extras' | 'customizations'>;
 
 type DeviceFormGroupContent = {
   id: FormControl<IDevice['id'] | NewDevice['id']>;
@@ -27,8 +27,8 @@ type DeviceFormGroupContent = {
   currency: FormControl<IDevice['currency']>;
   active: FormControl<IDevice['active']>;
   characteristics: FormControl<IDevice['characteristics']>;
-  options: FormControl<IDevice['options']>;
   extras: FormControl<IDevice['extras']>;
+  customizations: FormControl<IDevice['customizations']>;
 };
 
 export type DeviceFormGroup = FormGroup<DeviceFormGroupContent>;
@@ -65,8 +65,8 @@ export class DeviceFormService {
       currency: new FormControl(deviceRawValue.currency),
       active: new FormControl(deviceRawValue.active),
       characteristics: new FormControl(deviceRawValue.characteristics ?? []),
-      options: new FormControl(deviceRawValue.options ?? []),
       extras: new FormControl(deviceRawValue.extras ?? []),
+      customizations: new FormControl(deviceRawValue.customizations ?? []),
     });
   }
 
@@ -89,8 +89,8 @@ export class DeviceFormService {
       id: null,
       active: false,
       characteristics: [],
-      options: [],
       extras: [],
+      customizations: [],
     };
   }
 }

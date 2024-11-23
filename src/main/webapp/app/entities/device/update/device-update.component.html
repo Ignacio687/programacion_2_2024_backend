@@ -133,23 +133,6 @@
         </div>
 
         <div class="mb-3">
-          <label for="field_options" jhiTranslate="computechApp.device.options">Options</label>
-          <select
-            class="form-control"
-            id="field_options"
-            data-cy="options"
-            multiple
-            name="options"
-            formControlName="options"
-            [compareWith]="compareOption"
-          >
-            @for (optionOption of optionsSharedCollection; track $index) {
-              <option [ngValue]="optionOption">{{ optionOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
           <label for="field_extras" jhiTranslate="computechApp.device.extras">Extras</label>
           <select
             class="form-control"
@@ -162,6 +145,23 @@
           >
             @for (extraOption of extrasSharedCollection; track $index) {
               <option [ngValue]="extraOption">{{ extraOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_customizations" jhiTranslate="computechApp.device.customizations">Customizations</label>
+          <select
+            class="form-control"
+            id="field_customizations"
+            data-cy="customizations"
+            multiple
+            name="customizations"
+            formControlName="customizations"
+            [compareWith]="compareCustomization"
+          >
+            @for (customizationOption of customizationsSharedCollection; track $index) {
+              <option [ngValue]="customizationOption">{{ customizationOption.id }}</option>
             }
           </select>
         </div>

@@ -52,12 +52,12 @@ entity SaleItem {
 
 relationship ManyToMany {
   Device{characteristics} to Characteristic{devices}
-  Device{options} to Option{devices}
   Device{extras} to Extra{devices}
+  Device{customizations} to Customization{devices}
+  Customization{options} to Option{customization}
 }
 
 relationship OneToMany {
-  Customization{options} to Option{customization}
   Device{sales} to Sale{device}
   Sale{saleItems} to SaleItem{sale}
 }

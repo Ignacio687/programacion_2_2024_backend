@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.jh.domain;
 
 import static ar.edu.um.programacion2.jh.domain.CustomizationTestSamples.*;
+import static ar.edu.um.programacion2.jh.domain.DeviceTestSamples.*;
 import static ar.edu.um.programacion2.jh.domain.OptionTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,18 +33,36 @@ class CustomizationTest {
 
         customization.addOptions(optionBack);
         assertThat(customization.getOptions()).containsOnly(optionBack);
-        assertThat(optionBack.getCustomization()).isEqualTo(customization);
 
         customization.removeOptions(optionBack);
         assertThat(customization.getOptions()).doesNotContain(optionBack);
-        assertThat(optionBack.getCustomization()).isNull();
 
         customization.options(new HashSet<>(Set.of(optionBack)));
         assertThat(customization.getOptions()).containsOnly(optionBack);
-        assertThat(optionBack.getCustomization()).isEqualTo(customization);
 
         customization.setOptions(new HashSet<>());
         assertThat(customization.getOptions()).doesNotContain(optionBack);
-        assertThat(optionBack.getCustomization()).isNull();
+    }
+
+    @Test
+    void devicesTest() {
+        Customization customization = getCustomizationRandomSampleGenerator();
+        Device deviceBack = getDeviceRandomSampleGenerator();
+
+        customization.addDevices(deviceBack);
+        assertThat(customization.getDevices()).containsOnly(deviceBack);
+        assertThat(deviceBack.getCustomizations()).containsOnly(customization);
+
+        customization.removeDevices(deviceBack);
+        assertThat(customization.getDevices()).doesNotContain(deviceBack);
+        assertThat(deviceBack.getCustomizations()).doesNotContain(customization);
+
+        customization.devices(new HashSet<>(Set.of(deviceBack)));
+        assertThat(customization.getDevices()).containsOnly(deviceBack);
+        assertThat(deviceBack.getCustomizations()).containsOnly(customization);
+
+        customization.setDevices(new HashSet<>());
+        assertThat(customization.getDevices()).doesNotContain(deviceBack);
+        assertThat(deviceBack.getCustomizations()).doesNotContain(customization);
     }
 }

@@ -38,7 +38,7 @@ public class Characteristic implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "characteristics")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "sales", "characteristics", "options", "extras" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "sales", "characteristics", "extras", "customizations" }, allowSetters = true)
     private Set<Device> devices = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -27,6 +27,24 @@
           <dd>
             <span>{{ customizationRef.description }}</span>
           </dd>
+          <dt><span jhiTranslate="computechApp.customization.options">Options</span></dt>
+          <dd>
+            @for (options of customizationRef.options; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/option', options.id, 'view']">{{ options?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="computechApp.customization.devices">Devices</span></dt>
+          <dd>
+            @for (devices of customizationRef.devices; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/device', devices.id, 'view']">{{ devices?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

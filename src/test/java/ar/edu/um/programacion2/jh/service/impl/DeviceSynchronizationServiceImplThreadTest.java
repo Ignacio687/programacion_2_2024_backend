@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 
 import ar.edu.um.programacion2.jh.repository.*;
 import ar.edu.um.programacion2.jh.service.client.DeviceClient;
+import ar.edu.um.programacion2.jh.service.utilities.ExternalDevicesChangeChecker;
+import ar.edu.um.programacion2.jh.service.utilities.LocalToExternalObjectUpdater;
 import ar.edu.um.programacion2.jh.web.rest.DeviceSynchronizationController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,22 +25,16 @@ class DeviceSynchronizationServiceImplThreadTest {
     private Logger LOG = LoggerFactory.getLogger(DeviceSynchronizationController.class);
 
     @Mock
-    private DeviceClient deviceClient;
-
-    @Mock
     private DeviceRepository deviceRepository;
 
     @Mock
-    private CharacteristicRepository characteristicRepository;
+    private DeviceClient deviceClient;
 
     @Mock
-    private ExtraRepository extraRepository;
+    private ExternalDevicesChangeChecker externalDevicesChangeChecker;
 
     @Mock
-    private OptionRepository optionRepository;
-
-    @Mock
-    private CustomizationRepository customizationRepository;
+    private LocalToExternalObjectUpdater localToExternalObjectUpdater;
 
     @InjectMocks
     private DeviceSynchronizationServiceImpl deviceSynchronizationService;
@@ -47,12 +43,10 @@ class DeviceSynchronizationServiceImplThreadTest {
     void setUp() {
         this.deviceSynchronizationService = spy(
             new DeviceSynchronizationServiceImpl(
-                deviceClient,
-                deviceRepository,
-                characteristicRepository,
-                extraRepository,
-                optionRepository,
-                customizationRepository
+                this.deviceRepository,
+                this.deviceClient,
+                this.externalDevicesChangeChecker,
+                this.localToExternalObjectUpdater
             )
         );
         MockitoAnnotations.openMocks(this);

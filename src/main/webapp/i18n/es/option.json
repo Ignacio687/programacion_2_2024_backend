@@ -23,8 +23,7 @@
       "name": "Name",
       "description": "Description",
       "additionalPrice": "Additional Price",
-      "customization": "Customization",
-      "devices": "Devices"
+      "customization": "Customization"
     }
   }
 }

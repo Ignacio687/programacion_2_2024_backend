@@ -25,8 +25,7 @@ describe('Option Form Service', () => {
             name: expect.any(Object),
             description: expect.any(Object),
             additionalPrice: expect.any(Object),
-            customization: expect.any(Object),
-            devices: expect.any(Object),
+            customizations: expect.any(Object),
           }),
         );
       });
@@ -42,8 +41,7 @@ describe('Option Form Service', () => {
             name: expect.any(Object),
             description: expect.any(Object),
             additionalPrice: expect.any(Object),
-            customization: expect.any(Object),
-            devices: expect.any(Object),
+            customizations: expect.any(Object),
           }),
         );
       });

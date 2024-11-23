@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,11 +68,15 @@ public class CustomizationServiceImpl implements CustomizationService {
         return customizationRepository.findAll();
     }
 
+    public Page<Customization> findAllWithEagerRelationships(Pageable pageable) {
+        return customizationRepository.findAllWithEagerRelationships(pageable);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<Customization> findOne(Long id) {
         LOG.debug("Request to get Customization : {}", id);
-        return customizationRepository.findById(id);
+        return customizationRepository.findOneWithEagerRelationships(id);
     }
 
     @Override

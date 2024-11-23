@@ -28,7 +28,7 @@ public class SaleItem implements Serializable {
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "customization", "devices" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "customizations" }, allowSetters = true)
     private Option option;
 
     @ManyToOne(fetch = FetchType.LAZY)

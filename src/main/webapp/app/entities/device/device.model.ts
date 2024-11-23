@@ -1,6 +1,6 @@
 import { ICharacteristic } from 'app/entities/characteristic/characteristic.model';
-import { IOption } from 'app/entities/option/option.model';
 import { IExtra } from 'app/entities/extra/extra.model';
+import { ICustomization } from 'app/entities/customization/customization.model';
 
 export interface IDevice {
   id: number;
@@ -13,8 +13,8 @@ export interface IDevice {
   currency?: string | null;
   active?: boolean | null;
   characteristics?: ICharacteristic[] | null;
-  options?: IOption[] | null;
   extras?: IExtra[] | null;
+  customizations?: ICustomization[] | null;
 }
 
 export type NewDevice = Omit<IDevice, 'id'> & { id: null };

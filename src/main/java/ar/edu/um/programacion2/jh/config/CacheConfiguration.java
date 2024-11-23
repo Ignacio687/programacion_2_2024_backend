@@ -66,6 +66,9 @@ public class CacheConfiguration {
             createCache(cm, ar.edu.um.programacion2.jh.domain.Sale.class.getName());
             createCache(cm, ar.edu.um.programacion2.jh.domain.Sale.class.getName() + ".saleItems");
             createCache(cm, ar.edu.um.programacion2.jh.domain.SaleItem.class.getName());
+            createCache(cm, ar.edu.um.programacion2.jh.domain.Device.class.getName() + ".customizations");
+            createCache(cm, ar.edu.um.programacion2.jh.domain.Customization.class.getName() + ".devices");
+            createCache(cm, ar.edu.um.programacion2.jh.domain.Option.class.getName() + ".customizations");
             // jhipster-needle-ehcache-add-entry
         };
     }

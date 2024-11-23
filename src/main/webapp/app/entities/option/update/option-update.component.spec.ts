@@ -6,10 +6,8 @@ import { Subject, from, of } from 'rxjs';
 
 import { ICustomization } from 'app/entities/customization/customization.model';
 import { CustomizationService } from 'app/entities/customization/service/customization.service';
-import { IDevice } from 'app/entities/device/device.model';
-import { DeviceService } from 'app/entities/device/service/device.service';
-import { IOption } from '../option.model';
 import { OptionService } from '../service/option.service';
+import { IOption } from '../option.model';
 import { OptionFormService } from './option-form.service';
 
 import { OptionUpdateComponent } from './option-update.component';
@@ -21,7 +19,6 @@ describe('Option Management Update Component', () => {
   let optionFormService: OptionFormService;
   let optionService: OptionService;
   let customizationService: CustomizationService;
-  let deviceService: DeviceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +42,6 @@ describe('Option Management Update Component', () => {
     optionFormService = TestBed.inject(OptionFormService);
     optionService = TestBed.inject(OptionService);
     customizationService = TestBed.inject(CustomizationService);
-    deviceService = TestBed.inject(DeviceService);
 
     comp = fixture.componentInstance;
   });
@@ -53,12 +49,12 @@ describe('Option Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Customization query and add missing value', () => {
       const option: IOption = { id: 456 };
-      const customization: ICustomization = { id: 30432 };
-      option.customization = customization;
+      const customizations: ICustomization[] = [{ id: 28253 }];
+      option.customizations = customizations;
 
-      const customizationCollection: ICustomization[] = [{ id: 22869 }];
+      const customizationCollection: ICustomization[] = [{ id: 27469 }];
       jest.spyOn(customizationService, 'query').mockReturnValue(of(new HttpResponse({ body: customizationCollection })));
-      const additionalCustomizations = [customization];
+      const additionalCustomizations = [...customizations];
       const expectedCollection: ICustomization[] = [...additionalCustomizations, ...customizationCollection];
       jest.spyOn(customizationService, 'addCustomizationToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -73,40 +69,15 @@ describe('Option Management Update Component', () => {
       expect(comp.customizationsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Device query and add missing value', () => {
-      const option: IOption = { id: 456 };
-      const devices: IDevice[] = [{ id: 26851 }];
-      option.devices = devices;
-
-      const deviceCollection: IDevice[] = [{ id: 12171 }];
-      jest.spyOn(deviceService, 'query').mockReturnValue(of(new HttpResponse({ body: deviceCollection })));
-      const additionalDevices = [...devices];
-      const expectedCollection: IDevice[] = [...additionalDevices, ...deviceCollection];
-      jest.spyOn(deviceService, 'addDeviceToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ option });
-      comp.ngOnInit();
-
-      expect(deviceService.query).toHaveBeenCalled();
-      expect(deviceService.addDeviceToCollectionIfMissing).toHaveBeenCalledWith(
-        deviceCollection,
-        ...additionalDevices.map(expect.objectContaining),
-      );
-      expect(comp.devicesSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const option: IOption = { id: 456 };
-      const customization: ICustomization = { id: 4040 };
-      option.customization = customization;
-      const devices: IDevice = { id: 285 };
-      option.devices = [devices];
+      const customization: ICustomization = { id: 10264 };
+      option.customizations = [customization];
 
       activatedRoute.data = of({ option });
       comp.ngOnInit();
 
       expect(comp.customizationsSharedCollection).toContain(customization);
-      expect(comp.devicesSharedCollection).toContain(devices);
       expect(comp.option).toEqual(option);
     });
   });
@@ -187,16 +158,6 @@ describe('Option Management Update Component', () => {
         jest.spyOn(customizationService, 'compareCustomization');
         comp.compareCustomization(entity, entity2);
         expect(customizationService.compareCustomization).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareDevice', () => {
-      it('Should forward to deviceService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(deviceService, 'compareDevice');
-        comp.compareDevice(entity, entity2);
-        expect(deviceService.compareDevice).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

@@ -59,16 +59,16 @@
       "relationshipType": "many-to-many"
     },
     {
-      "otherEntityName": "option",
+      "otherEntityName": "extra",
       "otherEntityRelationshipName": "devices",
-      "relationshipName": "options",
+      "relationshipName": "extras",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     },
     {
-      "otherEntityName": "extra",
+      "otherEntityName": "customization",
       "otherEntityRelationshipName": "devices",
-      "relationshipName": "extras",
+      "relationshipName": "customizations",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     }

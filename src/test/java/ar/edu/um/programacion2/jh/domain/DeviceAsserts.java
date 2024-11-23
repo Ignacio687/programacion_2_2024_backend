@@ -67,7 +67,7 @@ public class DeviceAsserts {
         assertThat(expected)
             .as("Verify Device relationships")
             .satisfies(e -> assertThat(e.getCharacteristics()).as("check characteristics").isEqualTo(actual.getCharacteristics()))
-            .satisfies(e -> assertThat(e.getOptions()).as("check options").isEqualTo(actual.getOptions()))
-            .satisfies(e -> assertThat(e.getExtras()).as("check extras").isEqualTo(actual.getExtras()));
+            .satisfies(e -> assertThat(e.getExtras()).as("check extras").isEqualTo(actual.getExtras()))
+            .satisfies(e -> assertThat(e.getCustomizations()).as("check customizations").isEqualTo(actual.getCustomizations()));
     }
 }

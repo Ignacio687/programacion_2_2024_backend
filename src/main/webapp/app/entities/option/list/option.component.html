@@ -83,12 +83,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="devices.id">
-              <div class="d-flex">
-                <span jhiTranslate="computechApp.option.devices">Devices</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -104,16 +98,9 @@
               <td>{{ option.description }}</td>
               <td>{{ option.additionalPrice }}</td>
               <td>
-                @if (option.customization) {
-                  <div>
-                    <a [routerLink]="['/customization', option.customization.id, 'view']">{{ option.customization.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @for (devices of option.devices; track $index; let last = $last) {
+                @for (customization of option.customizations; track $index; let last = $last) {
                   <span>
-                    <a class="form-control-static" [routerLink]="['/device', devices.id, 'view']">{{ devices.id }}</a
+                    <a class="form-control-static" [routerLink]="['/customization', customization.id, 'view']">{{ customization.id }}</a
                     >{{ last ? '' : ', ' }}
                   </span>
                 }

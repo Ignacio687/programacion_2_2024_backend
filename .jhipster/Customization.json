@@ -26,7 +26,14 @@
       "otherEntityRelationshipName": "customization",
       "relationshipName": "options",
       "relationshipSide": "left",
-      "relationshipType": "one-to-many"
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "customizations",
+      "relationshipName": "devices",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

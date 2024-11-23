@@ -14,13 +14,15 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type CustomizationFormGroupInput = ICustomization | PartialWithRequiredKeyOf<NewCustomization>;
 
-type CustomizationFormDefaults = Pick<NewCustomization, 'id'>;
+type CustomizationFormDefaults = Pick<NewCustomization, 'id' | 'options' | 'devices'>;
 
 type CustomizationFormGroupContent = {
   id: FormControl<ICustomization['id'] | NewCustomization['id']>;
   supplierForeignId: FormControl<ICustomization['supplierForeignId']>;
   name: FormControl<ICustomization['name']>;
   description: FormControl<ICustomization['description']>;
+  options: FormControl<ICustomization['options']>;
+  devices: FormControl<ICustomization['devices']>;
 };
 
 export type CustomizationFormGroup = FormGroup<CustomizationFormGroupContent>;
@@ -47,6 +49,8 @@ export class CustomizationFormService {
         validators: [Validators.required],
       }),
       description: new FormControl(customizationRawValue.description),
+      options: new FormControl(customizationRawValue.options ?? []),
+      devices: new FormControl(customizationRawValue.devices ?? []),
     });
   }
 
@@ -67,6 +71,8 @@ export class CustomizationFormService {
   private getFormDefaults(): CustomizationFormDefaults {
     return {
       id: null,
+      options: [],
+      devices: [],
     };
   }
 }
