@@ -27,6 +27,11 @@ logging:
     ROOT: INFO
     org.hibernate.SQL: INFO
     org.springframework: INFO
+    ar.edu.um.programacion2.jh: DEBUG
+
+feign:
+  client:
+    enabled: false
 
 cliente-web:
   rootUrl: 10.145.1.1:8080

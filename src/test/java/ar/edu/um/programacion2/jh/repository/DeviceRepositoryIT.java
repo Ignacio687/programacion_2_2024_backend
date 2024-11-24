@@ -17,10 +17,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
 @ImportAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class, LiquibaseProperties.class })
 @DataJpaTest
-public class DeviceRepositoryTest {
+public class DeviceRepositoryIT {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -41,7 +40,7 @@ public class DeviceRepositoryTest {
 
         Optional<Device> found = deviceRepository.findBySupplierForeignId(123L);
         assertThat(found).isPresent();
-        assertThat(found.get().getSupplierForeignId()).isEqualTo(123L);
+        assertThat(found.orElseThrow().getSupplierForeignId()).isEqualTo(123L);
     }
 
     @Test

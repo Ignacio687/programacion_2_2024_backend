@@ -10,14 +10,15 @@ import ar.edu.um.programacion2.jh.service.DeviceSynchronizationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
@@ -29,7 +30,7 @@ class DeviceSynchronizationControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private DeviceSynchronizationService deviceSynchronizationService;
 
     @BeforeEach
@@ -38,6 +39,7 @@ class DeviceSynchronizationControllerIT {
     }
 
     @Test
+    @WithMockUser
     void startThread_withValidSyncTimeLaps_shouldReturnOk(CapturedOutput output) throws Exception {
         mockMvc
             .perform(post("/api/startDeviceSync").param("syncTimeLaps", "3600").contentType(MediaType.APPLICATION_JSON))
@@ -48,6 +50,7 @@ class DeviceSynchronizationControllerIT {
     }
 
     @Test
+    @WithMockUser
     void startThread_withNegativeSyncTimeLaps_shouldReturnBadRequest(CapturedOutput output) throws Exception {
         mockMvc
             .perform(post("/api/startDeviceSync").param("syncTimeLaps", "-1").contentType(MediaType.APPLICATION_JSON))
@@ -58,6 +61,7 @@ class DeviceSynchronizationControllerIT {
     }
 
     @Test
+    @WithMockUser
     void stopThread_shouldReturnOk(CapturedOutput output) throws Exception {
         mockMvc.perform(post("/api/stopDeviceSync").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 

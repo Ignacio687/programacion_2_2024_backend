@@ -2,8 +2,7 @@ package ar.edu.um.programacion2.jh.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ar.edu.um.programacion2.jh.domain.Customization;
-import ar.edu.um.programacion2.jh.domain.Option;
+import ar.edu.um.programacion2.jh.domain.Extra;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,41 +16,42 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "cliente-web.rootUrl=http://localhost" })
 @ImportAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class, LiquibaseProperties.class })
 @DataJpaTest
-public class CustomizationRepositoryTest {
+public class ExtraRepositoryIT {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private CustomizationRepository customizationRepository;
+    private ExtraRepository extraRepository;
 
     @Test
     @Transactional
     public void testFindBySupplierForeignId() {
-        Customization customization = new Customization();
-        customization.setSupplierForeignId(123L);
-        customization.setName("Test Name");
-        entityManager.persistAndFlush(customization);
+        Extra extra = new Extra();
+        extra.setSupplierForeignId(123L);
+        extra.setName("Test Extra");
+        extra.setFreePrice((0.00));
+        extra.setPrice((50.00));
+        entityManager.persistAndFlush(extra);
 
-        Optional<Customization> found = customizationRepository.findBySupplierForeignId(123L);
+        Optional<Extra> found = extraRepository.findBySupplierForeignId(123L);
         assertThat(found).isPresent();
-        assertThat(found.get().getSupplierForeignId()).isEqualTo(123L);
+        assertThat(found.orElseThrow().getSupplierForeignId()).isEqualTo(123L);
     }
 
     @Test
     @Transactional
     public void findBySupplierForeignId_NotFound() {
-        Optional<Customization> found = customizationRepository.findBySupplierForeignId(999L);
+        Optional<Extra> found = extraRepository.findBySupplierForeignId(999L);
         assertThat(found).isNotPresent();
     }
 
     @Test
     @Transactional
     public void findBySupplierForeignId_NullId() {
-        Optional<Customization> found = customizationRepository.findBySupplierForeignId(null);
+        Optional<Extra> found = extraRepository.findBySupplierForeignId(null);
         assertThat(found).isNotPresent();
     }
 }

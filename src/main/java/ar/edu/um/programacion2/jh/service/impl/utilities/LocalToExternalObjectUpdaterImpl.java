@@ -40,7 +40,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
     public Device updateAndSaveDevice(DeviceDTO externalDevice, String supplier) {
         Optional<Device> localDevice = this.deviceRepository.findBySupplierForeignId(externalDevice.getId());
         if (localDevice.isPresent()) {
-            return this.updateAndSaveDevice(localDevice.get(), externalDevice);
+            return this.updateAndSaveDevice(localDevice.orElseThrow(), externalDevice);
         } else {
             Device newDevice = new Device();
             newDevice.setId(null);
@@ -87,7 +87,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
         Optional<Characteristic> localCharacteristic =
             this.characteristicRepository.findBySupplierForeignId(externalCharacteristic.getId());
         if (localCharacteristic.isPresent()) {
-            return this.updateAndSaveCharacteristic(localCharacteristic.get(), externalCharacteristic);
+            return this.updateAndSaveCharacteristic(localCharacteristic.orElseThrow(), externalCharacteristic);
         } else {
             Characteristic newCharacteristic = new Characteristic();
             newCharacteristic.setId(null);
@@ -107,7 +107,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
     public Extra updateAndSaveExtra(Extra externalExtra) {
         Optional<Extra> localExtra = this.extraRepository.findBySupplierForeignId(externalExtra.getId());
         if (localExtra.isPresent()) {
-            return this.updateAndSaveExtra(localExtra.get(), externalExtra);
+            return this.updateAndSaveExtra(localExtra.orElseThrow(), externalExtra);
         } else {
             Extra newExtra = new Extra();
             newExtra.setId(null);
@@ -127,7 +127,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
     public Option updateAndSaveOption(Option externalOption) {
         Optional<Option> localOption = this.optionRepository.findBySupplierForeignId(externalOption.getId());
         if (localOption.isPresent()) {
-            return this.updateAndSaveOption(localOption.get(), externalOption);
+            return this.updateAndSaveOption(localOption.orElseThrow(), externalOption);
         } else {
             Option newOption = new Option();
             newOption.setId(null);
@@ -147,7 +147,7 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
     public Customization updateAndSaveCustomization(Customization externalCustomization) {
         Optional<Customization> localCustomization = this.customizationRepository.findBySupplierForeignId(externalCustomization.getId());
         if (localCustomization.isPresent()) {
-            return this.updateAndSaveCustomization(localCustomization.get(), externalCustomization);
+            return this.updateAndSaveCustomization(localCustomization.orElseThrow(), externalCustomization);
         } else {
             Customization newCustomization = new Customization();
             newCustomization.setId(null);
