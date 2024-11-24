@@ -57,11 +57,11 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
         updatedDevice.setSupplierForeignId(localDevice.getSupplierForeignId());
         updatedDevice.setSupplier(localDevice.getSupplier());
         updatedDevice.setActive(true);
-        Device newDevice = this.saveDeviceDependencies(updatedDevice, externalDevice.getCustomizations());
+        Device newDevice = this.saveDeviceDependencies(updatedDevice);
         return this.deviceRepository.save(newDevice);
     }
 
-    private Device saveDeviceDependencies(Device device, List<CustomizationDTO> customizations) {
+    private Device saveDeviceDependencies(Device device) {
         Set<Characteristic> savedCharacteristics = device
             .getCharacteristics()
             .stream()
@@ -72,9 +72,9 @@ public class LocalToExternalObjectUpdaterImpl implements LocalToExternalObjectUp
         Set<Extra> savedExtras = device.getExtras().stream().map(this::updateAndSaveExtra).collect(Collectors.toSet());
         device.setExtras(savedExtras);
 
-        Set<Customization> savedCustomizations = customizations
+        Set<Customization> savedCustomizations = device
+            .getCustomizations()
             .stream()
-            .map(CustomizationDTO::toCustomization)
             .map(this::updateAndSaveCustomization)
             .collect(Collectors.toSet());
         device.setCustomizations(savedCustomizations);

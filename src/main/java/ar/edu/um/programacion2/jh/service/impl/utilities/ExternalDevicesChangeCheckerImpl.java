@@ -10,19 +10,14 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Data
+@NoArgsConstructor
 @Component
 public class ExternalDevicesChangeCheckerImpl implements ExternalDevicesChangeChecker {
-
-    private final CustomizationRepository customizationRepository;
-
-    @Autowired
-    public ExternalDevicesChangeCheckerImpl(CustomizationRepository customizationRepository) {
-        this.customizationRepository = customizationRepository;
-    }
 
     @Override
     public boolean hasChanges(List<DeviceDTO> externalDevices, List<Device> localDevices) {
