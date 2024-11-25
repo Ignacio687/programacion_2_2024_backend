@@ -27,11 +27,11 @@ public class SaleItem implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "customizations" }, allowSetters = true)
     private Option option;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
     private Extra extra;
 

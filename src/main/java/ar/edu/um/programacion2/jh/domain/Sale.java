@@ -47,12 +47,12 @@ public class Sale implements Serializable {
     @Column(name = "finalized")
     private Boolean finalized;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sale")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "option", "extra", "sale" }, allowSetters = true)
     private Set<SaleItem> saleItems = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "sales", "characteristics", "extras", "customizations" }, allowSetters = true)
     private Device device;
 

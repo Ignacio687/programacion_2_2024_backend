@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OptionDTO implements Serializable {
+public class OptionDTO implements Serializable, OptionalDTO {
 
     @JsonProperty("id")
     private Long id;
