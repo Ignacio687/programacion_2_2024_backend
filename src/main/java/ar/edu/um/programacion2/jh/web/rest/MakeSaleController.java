@@ -3,6 +3,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 import ar.edu.um.programacion2.jh.domain.Sale;
 import ar.edu.um.programacion2.jh.service.MakeSaleService;
 import ar.edu.um.programacion2.jh.service.dto.CompleteSaleDTO;
+import ar.edu.um.programacion2.jh.service.dto.SaleDTO;
 import ar.edu.um.programacion2.jh.service.dto.SaleListDTO;
 import ar.edu.um.programacion2.jh.service.dto.SaleRequestDTO;
 import ar.edu.um.programacion2.jh.service.errors.InvalidSaleRequestException;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -43,12 +45,12 @@ public class MakeSaleController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Sale> createSale(@Valid @RequestBody SaleRequestDTO saleRequestDTO) throws URISyntaxException {
+    public ResponseEntity<SaleDTO> createSale(@Valid @RequestBody SaleRequestDTO saleRequestDTO) throws URISyntaxException {
         LOG.debug("REST request to perform Sale : {}", saleRequestDTO);
         if (saleRequestDTO.getId() != null) {
             throw new BadRequestAlertException("A new sale cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Sale sale;
+        SaleDTO sale;
         try {
             sale = makeSaleService.save(saleRequestDTO);
         } catch (InvalidSaleRequestException e) {

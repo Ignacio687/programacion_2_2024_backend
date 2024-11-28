@@ -6,3 +6,5 @@ Tests Pendientes de crear o modificar:
   - src/main/java/ar/edu/um/programacion2/jh/service/impl/MakeSaleServiceImpl.java
   - src/main/java/ar/edu/um/programacion2/jh/web/rest/MakeSaleController.java
 
+// Recordar hacer pequeño cambio en el controlador de dispositivos para que solo traiga los activos pasando un
+// parametro en el request.
