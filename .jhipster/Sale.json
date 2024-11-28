@@ -43,6 +43,14 @@
       "relationshipType": "one-to-many"
     },
     {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "sales",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
       "otherEntityName": "device",
       "otherEntityRelationshipName": "sales",
       "relationshipName": "device",

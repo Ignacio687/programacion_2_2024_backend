@@ -39,6 +39,10 @@
           <dd>
             <span>{{ saleRef.finalized }}</span>
           </dd>
+          <dt><span jhiTranslate="computechApp.sale.user">User</span></dt>
+          <dd>
+            <span>{{ saleRef.user?.id }}</span>
+          </dd>
           <dt><span jhiTranslate="computechApp.sale.device">Device</span></dt>
           <dd>
             @if (sale()!.device) {

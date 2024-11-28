@@ -55,7 +55,7 @@ public class Device implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "device")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "saleItems", "device" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "saleItems", "user", "device" }, allowSetters = true)
     private Set<Sale> sales = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

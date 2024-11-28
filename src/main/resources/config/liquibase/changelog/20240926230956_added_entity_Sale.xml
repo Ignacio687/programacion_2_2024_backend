@@ -32,6 +32,9 @@
             <column name="finalized" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="device_id" type="bigint">
                 <constraints nullable="true" />
             </column>

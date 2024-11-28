@@ -4,10 +4,12 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IDevice } from 'app/entities/device/device.model';
 import { DeviceService } from 'app/entities/device/service/device.service';
-import { SaleService } from '../service/sale.service';
 import { ISale } from '../sale.model';
+import { SaleService } from '../service/sale.service';
 import { SaleFormService } from './sale-form.service';
 
 import { SaleUpdateComponent } from './sale-update.component';
@@ -18,6 +20,7 @@ describe('Sale Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let saleFormService: SaleFormService;
   let saleService: SaleService;
+  let userService: UserService;
   let deviceService: DeviceService;
 
   beforeEach(() => {
@@ -41,12 +44,35 @@ describe('Sale Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     saleFormService = TestBed.inject(SaleFormService);
     saleService = TestBed.inject(SaleService);
+    userService = TestBed.inject(UserService);
     deviceService = TestBed.inject(DeviceService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call User query and add missing value', () => {
+      const sale: ISale = { id: 456 };
+      const user: IUser = { id: 26108 };
+      sale.user = user;
+
+      const userCollection: IUser[] = [{ id: 25182 }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ sale });
+      comp.ngOnInit();
+
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
+        userCollection,
+        ...additionalUsers.map(expect.objectContaining),
+      );
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should call Device query and add missing value', () => {
       const sale: ISale = { id: 456 };
       const device: IDevice = { id: 24359 };
@@ -71,12 +97,15 @@ describe('Sale Management Update Component', () => {
 
     it('Should update editForm', () => {
       const sale: ISale = { id: 456 };
+      const user: IUser = { id: 12440 };
+      sale.user = user;
       const device: IDevice = { id: 7904 };
       sale.device = device;
 
       activatedRoute.data = of({ sale });
       comp.ngOnInit();
 
+      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.devicesSharedCollection).toContain(device);
       expect(comp.sale).toEqual(sale);
     });
@@ -151,6 +180,16 @@ describe('Sale Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
+    describe('compareUser', () => {
+      it('Should forward to userService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(userService, 'compareUser');
+        comp.compareUser(entity, entity2);
+        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
     describe('compareDevice', () => {
       it('Should forward to deviceService', () => {
         const entity = { id: 123 };

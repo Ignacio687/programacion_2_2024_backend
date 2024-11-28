@@ -65,6 +65,7 @@ relationship OneToMany {
 relationship ManyToOne {
   SaleItem{option} to Option
   SaleItem{extra} to Extra
+  Sale{user} to User{sales} with builtInEntity
 }
 
 paginate Device with pagination

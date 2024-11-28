@@ -1,4 +1,5 @@
 import dayjs from 'dayjs/esm';
+import { IUser } from 'app/entities/user/user.model';
 import { IDevice } from 'app/entities/device/device.model';
 
 export interface ISale {
@@ -9,6 +10,7 @@ export interface ISale {
   saleDate?: dayjs.Dayjs | null;
   currency?: string | null;
   finalized?: boolean | null;
+  user?: Pick<IUser, 'id'> | null;
   device?: IDevice | null;
 }
 

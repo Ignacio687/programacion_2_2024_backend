@@ -36,7 +36,7 @@ public class SaleItem implements Serializable {
     private Extra extra;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "saleItems", "device" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "saleItems", "user", "device" }, allowSetters = true)
     private Sale sale;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

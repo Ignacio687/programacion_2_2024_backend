@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ar.edu.um.programacion2.jh.IntegrationTest;
 import ar.edu.um.programacion2.jh.domain.Sale;
 import ar.edu.um.programacion2.jh.repository.SaleRepository;
+import ar.edu.um.programacion2.jh.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -63,6 +64,9 @@ class SaleResourceIT {
 
     @Autowired
     private SaleRepository saleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EntityManager em;

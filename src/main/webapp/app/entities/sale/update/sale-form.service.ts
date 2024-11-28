@@ -37,6 +37,7 @@ type SaleFormGroupContent = {
   saleDate: FormControl<SaleFormRawValue['saleDate']>;
   currency: FormControl<SaleFormRawValue['currency']>;
   finalized: FormControl<SaleFormRawValue['finalized']>;
+  user: FormControl<SaleFormRawValue['user']>;
   device: FormControl<SaleFormRawValue['device']>;
 };
 
@@ -69,6 +70,7 @@ export class SaleFormService {
       }),
       currency: new FormControl(saleRawValue.currency),
       finalized: new FormControl(saleRawValue.finalized),
+      user: new FormControl(saleRawValue.user),
       device: new FormControl(saleRawValue.device),
     });
   }

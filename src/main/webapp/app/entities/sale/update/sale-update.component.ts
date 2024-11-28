@@ -7,10 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IDevice } from 'app/entities/device/device.model';
 import { DeviceService } from 'app/entities/device/service/device.service';
-import { ISale } from '../sale.model';
 import { SaleService } from '../service/sale.service';
+import { ISale } from '../sale.model';
 import { SaleFormGroup, SaleFormService } from './sale-form.service';
 
 @Component({
@@ -23,15 +25,19 @@ export class SaleUpdateComponent implements OnInit {
   isSaving = false;
   sale: ISale | null = null;
 
+  usersSharedCollection: IUser[] = [];
   devicesSharedCollection: IDevice[] = [];
 
   protected saleService = inject(SaleService);
   protected saleFormService = inject(SaleFormService);
+  protected userService = inject(UserService);
   protected deviceService = inject(DeviceService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: SaleFormGroup = this.saleFormService.createSaleFormGroup();
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   compareDevice = (o1: IDevice | null, o2: IDevice | null): boolean => this.deviceService.compareDevice(o1, o2);
 
@@ -83,10 +89,17 @@ export class SaleUpdateComponent implements OnInit {
     this.sale = sale;
     this.saleFormService.resetForm(this.editForm, sale);
 
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, sale.user);
     this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(this.devicesSharedCollection, sale.device);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.sale?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
     this.deviceService
       .query()
       .pipe(map((res: HttpResponse<IDevice[]>) => res.body ?? []))

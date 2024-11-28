@@ -25,6 +25,7 @@
       "currency": "Currency",
       "finalized": "Finalized",
       "saleItems": "Sale Items",
+      "user": "User",
       "device": "Device"
     }
   }

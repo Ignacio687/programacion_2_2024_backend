@@ -53,6 +53,13 @@ public class Sale implements Serializable {
     private Set<SaleItem> saleItems = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(
+        value = { "password", "activated", "langKey", "imageUrl", "activationKey", "resetKey", "resetDate", "authorities" },
+        allowSetters = true
+    )
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "sales", "characteristics", "extras", "customizations" }, allowSetters = true)
     private Device device;
 
@@ -177,6 +184,19 @@ public class Sale implements Serializable {
     public Sale removeSaleItems(SaleItem saleItem) {
         this.saleItems.remove(saleItem);
         saleItem.setSale(null);
+        return this;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Sale user(User user) {
+        this.setUser(user);
         return this;
     }
 
