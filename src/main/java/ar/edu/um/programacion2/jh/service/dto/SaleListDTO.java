@@ -1,5 +1,6 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
+import ar.edu.um.programacion2.jh.domain.Sale;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,15 @@ public class SaleListDTO implements Serializable {
 
     @JsonProperty("precio")
     private Double price;
+
+    public static SaleListDTO fromSaleItem(Sale sale) {
+        SaleListDTO dto = new SaleListDTO();
+        dto.setSaleId(sale.getId());
+        dto.setId(sale.getDevice().getId());
+        dto.setCode(sale.getDevice().getCode());
+        dto.setName(sale.getDevice().getName());
+        dto.setDescription(sale.getDevice().getDescription());
+        dto.setPrice(sale.getDevicePrice());
+        return dto;
+    }
 }

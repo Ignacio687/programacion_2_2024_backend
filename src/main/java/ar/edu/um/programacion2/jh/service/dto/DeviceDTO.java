@@ -4,6 +4,7 @@ import ar.edu.um.programacion2.jh.domain.Customization;
 import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.domain.Option;
 import ar.edu.um.programacion2.jh.repository.CustomizationRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.*;
@@ -20,6 +21,7 @@ public class DeviceDTO implements Serializable {
     @JsonProperty("id")
     private Long id;
 
+    @JsonIgnore
     private Long supplierForeignId;
 
     private String supplier;

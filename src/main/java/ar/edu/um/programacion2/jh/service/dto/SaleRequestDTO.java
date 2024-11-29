@@ -69,6 +69,7 @@ public class SaleRequestDTO implements Serializable {
         );
         saleRequestDTO.setFinalPrice(sale.getFinalPrice());
         saleRequestDTO.setSaleDate(sale.getSaleDate());
+        saleRequestDTO.setDevice(DeviceDTO.fromDevice(sale.getDevice()));
         return saleRequestDTO;
     }
 
@@ -102,7 +103,7 @@ public class SaleRequestDTO implements Serializable {
         DeviceRepository deviceRepository,
         OptionRepository optionRepository,
         ExtraRepository extraRepository
-    ) {
+    ) throws IllegalArgumentException {
         Device device = deviceRepository
             .findById(this.deviceId)
             .orElseThrow(() -> new IllegalArgumentException("Device not found with id: " + this.deviceId));
@@ -122,11 +123,8 @@ public class SaleRequestDTO implements Serializable {
         }
     }
 
-    public void setDeviceIdToLocalId(
-        DeviceRepository deviceRepository,
-        OptionRepository optionRepository,
-        ExtraRepository extraRepository
-    ) {
+    public void setDeviceIdToLocalId(DeviceRepository deviceRepository, OptionRepository optionRepository, ExtraRepository extraRepository)
+        throws IllegalArgumentException {
         Device device = deviceRepository
             .findBySupplierForeignId(this.deviceId)
             .orElseThrow(() -> new IllegalArgumentException("Device not found with supplier foreign id: " + this.deviceId));

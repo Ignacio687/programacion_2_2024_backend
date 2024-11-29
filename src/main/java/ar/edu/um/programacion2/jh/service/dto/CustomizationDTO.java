@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
 import ar.edu.um.programacion2.jh.domain.Customization;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Collections;
@@ -19,6 +20,7 @@ public class CustomizationDTO implements Serializable {
     @JsonProperty("id")
     private Long id;
 
+    @JsonIgnore
     private Long supplierForeignId;
 
     @JsonProperty("nombre")

@@ -64,7 +64,7 @@ public class MakeSaleController {
     @GetMapping("")
     public ResponseEntity<List<SaleListDTO>> getAllSales(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(value = "local", required = false) Boolean local
+        @RequestParam(value = "local", required = false, defaultValue = "true") Boolean local
     ) {
         LOG.debug("REST request to get a page of Sales");
         Page<SaleListDTO> page = makeSaleService.findAll(pageable, local);
@@ -75,7 +75,7 @@ public class MakeSaleController {
     @GetMapping("/{id}")
     public ResponseEntity<CompleteSaleDTO> getSale(
         @PathVariable("id") Long id,
-        @RequestParam(value = "local", required = false) Boolean local
+        @RequestParam(value = "local", required = false, defaultValue = "true") Boolean local
     ) {
         LOG.debug("REST request to get Sale : {}", id);
         Optional<CompleteSaleDTO> sale = makeSaleService.findOne(id, local);

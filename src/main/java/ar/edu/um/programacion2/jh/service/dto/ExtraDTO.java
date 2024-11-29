@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
 import ar.edu.um.programacion2.jh.domain.Extra;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class ExtraDTO implements Serializable, OptionalDTO {
     @JsonProperty("id")
     private Long id;
 
+    @JsonIgnore
     private Long supplierForeignId;
 
     @JsonProperty("nombre")

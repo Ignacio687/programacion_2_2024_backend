@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,17 +67,15 @@ public class MakeSaleServiceImpl implements MakeSaleService {
 
     @Override
     public SaleDTO save(SaleRequestDTO saleRequestDTO) throws InvalidSaleRequestException {
+        LOG.debug("Request to save Sale : {}", saleRequestDTO);
         if (!verifyValidSale(saleRequestDTO)) {
+            LOG.warn("Invalid sale request: {}", saleRequestDTO);
             throw new InvalidSaleRequestException("Invalid sale request");
         }
         saleRequestDTO.setDeviceIdToExternalId(this.deviceRepository, this.optionRepository, this.extraRepository);
-        //        CompleteSaleDTO externalSale = this.saleClient.createSale(saleRequestDTO);
-
-        CompleteSaleDTO externalSale = new CompleteSaleDTO();
-        externalSale.setSaleId(3L);
-
+        CompleteSaleDTO externalSale = this.saleClient.createSale(saleRequestDTO);
         Optional<User> currentUser = this.userService.getUserWithAuthorities();
-        if (!currentUser.isPresent()) {
+        if (currentUser.isEmpty()) {
             throw new InvalidSaleRequestException("User not found");
         }
         Sale sale = SaleRequestDTO.fromSaleRequestDTO(saleRequestDTO, this.deviceRepository, externalSale.getSaleId(), currentUser.get());
@@ -88,23 +87,59 @@ public class MakeSaleServiceImpl implements MakeSaleService {
             this.saleItemService.save(saleItem);
         }
         savedSale.setSaleItems(saleItemSet);
+        LOG.debug("Saved Sale : {}", savedSale);
         return SaleDTO.toSaleDTO(savedSale);
     }
 
     @Override
     public Page<SaleListDTO> findAll(Pageable pageable, boolean local) {
-        return null;
+        LOG.debug("Request to get all Sales, local: {}", local);
+        if (local) {
+            Page<Sale> salesPage = this.saleRepository.findByUserIsCurrentUser(pageable);
+            return salesPage.map(SaleListDTO::fromSaleItem);
+        }
+        List<SaleListDTO> salesList = this.saleClient.getSales();
+        if (salesList == null) {
+            LOG.debug("No external sales found");
+            return new PageImpl<>(List.of(), pageable, 0);
+        }
+        LOG.debug("Found {} external sales", salesList.size());
+        return new PageImpl<>(salesList, pageable, salesList.size());
     }
 
     @Override
     public Optional<CompleteSaleDTO> findOne(Long id, boolean local) {
-        return Optional.empty();
+        if (local) {
+            LOG.debug("Fetching local sale with id: {}", id);
+            Optional<Sale> sale = this.saleRepository.findById(id);
+            Optional<User> currentUser = this.userService.getUserWithAuthorities();
+            if (currentUser.isEmpty()) {
+                throw new InvalidSaleRequestException("User not found");
+            }
+            if (sale.isEmpty() || !sale.get().getUser().getId().equals(currentUser.get().getId())) {
+                return Optional.empty();
+            }
+            CompleteSaleDTO saleDTO = CompleteSaleDTO.fromSaleItem(sale.get());
+            return Optional.of(saleDTO);
+        } else {
+            CompleteSaleDTO sale = this.saleClient.getSaleById(id);
+            if (sale == null) {
+                LOG.warn("External sale not found for id: {}", id);
+                return Optional.empty();
+            }
+            return Optional.of(sale);
+        }
     }
 
     @Override
     public Boolean verifyValidSale(SaleRequestDTO saleRequestDTO) {
+        LOG.debug("Verifying sale request: {}", saleRequestDTO);
         Device device = deviceRepository.findById(saleRequestDTO.getDeviceId()).orElse(null);
         if (device == null) {
+            LOG.warn("Device not found for id: {}", saleRequestDTO.getDeviceId());
+            return false;
+        } else if (!device.getActive()) {
+            LOG.warn("Device is not active: {}", device);
             return false;
         }
         double totalPrice = device.getBasePrice();
@@ -116,6 +151,7 @@ public class MakeSaleServiceImpl implements MakeSaleService {
         for (SaleItemDTO option : saleRequestDTO.getOptions()) {
             Option localOption = localOptions.stream().filter(opt -> opt.getId().equals(option.getObjectId())).findFirst().orElse(null);
             if (localOption == null || !option.getPrice().equals(localOption.getAdditionalPrice())) {
+                LOG.warn("Invalid option in sale request: {}", option);
                 return false;
             }
             totalPrice += localOption.getAdditionalPrice();
@@ -124,12 +160,17 @@ public class MakeSaleServiceImpl implements MakeSaleService {
         for (SaleItemDTO extra : saleRequestDTO.getExtras()) {
             Extra localExtra = device.getExtras().stream().filter(ext -> ext.getId().equals(extra.getObjectId())).findFirst().orElse(null);
             if (localExtra == null || !extra.getPrice().equals(localExtra.getPrice())) {
+                LOG.warn("Invalid extra in sale request: {}", extra);
                 return false;
             }
             if (localExtra.getFreePrice() >= freePrice || localExtra.getFreePrice() == -1) {
                 totalPrice += localExtra.getPrice();
             }
         }
-        return totalPrice == saleRequestDTO.getFinalPrice();
+        boolean isValid = totalPrice == saleRequestDTO.getFinalPrice();
+        if (!isValid) {
+            LOG.warn("Total price mismatch: calculated = {}, expected = {}", totalPrice, saleRequestDTO.getFinalPrice());
+        }
+        return isValid;
     }
 }

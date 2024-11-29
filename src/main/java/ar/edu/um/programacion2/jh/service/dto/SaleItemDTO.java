@@ -59,7 +59,8 @@ public class SaleItemDTO implements Serializable {
         return dto;
     }
 
-    public void setObjectIdToExternalId(OptionRepository optionRepository, ExtraRepository extraRepository) {
+    public void setObjectIdToExternalId(OptionRepository optionRepository, ExtraRepository extraRepository)
+        throws IllegalArgumentException {
         if (this.optional instanceof OptionDTO) {
             Option option = optionRepository
                 .findById(this.objectId)
@@ -75,7 +76,7 @@ public class SaleItemDTO implements Serializable {
         }
     }
 
-    public void setObjectIdToLocalId(OptionRepository optionRepository, ExtraRepository extraRepository) {
+    public void setObjectIdToLocalId(OptionRepository optionRepository, ExtraRepository extraRepository) throws IllegalArgumentException {
         if (this.optional instanceof OptionDTO) {
             Option option = optionRepository
                 .findBySupplierForeignId(this.objectId)

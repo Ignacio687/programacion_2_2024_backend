@@ -1,8 +1,4 @@
 Tests Pendientes de crear o modificar:
-  - src/main/java/ar/edu/um/programacion2/jh/service/dto/CompleteSaleDTO.java
-  - src/main/java/ar/edu/um/programacion2/jh/service/dto/SaleDTO.java
-  - src/main/java/ar/edu/um/programacion2/jh/service/dto/SaleItemDTO.java
-  - src/main/java/ar/edu/um/programacion2/jh/service/dto/SaleRequestDTO.java
   - src/main/java/ar/edu/um/programacion2/jh/service/impl/MakeSaleServiceImpl.java
   - src/main/java/ar/edu/um/programacion2/jh/web/rest/MakeSaleController.java
 
