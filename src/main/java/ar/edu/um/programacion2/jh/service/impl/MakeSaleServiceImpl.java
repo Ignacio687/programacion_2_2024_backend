@@ -72,12 +72,12 @@ public class MakeSaleServiceImpl implements MakeSaleService {
             LOG.warn("Invalid sale request: {}", saleRequestDTO);
             throw new InvalidSaleRequestException("Invalid sale request");
         }
-        saleRequestDTO.setDeviceIdToExternalId(this.deviceRepository, this.optionRepository, this.extraRepository);
-        CompleteSaleDTO externalSale = this.saleClient.createSale(saleRequestDTO);
         Optional<User> currentUser = this.userService.getUserWithAuthorities();
         if (currentUser.isEmpty()) {
             throw new InvalidSaleRequestException("User not found");
         }
+        saleRequestDTO.setDeviceIdToExternalId(this.deviceRepository, this.optionRepository, this.extraRepository);
+        CompleteSaleDTO externalSale = this.saleClient.createSale(saleRequestDTO);
         Sale sale = SaleRequestDTO.fromSaleRequestDTO(saleRequestDTO, this.deviceRepository, externalSale.getSaleId(), currentUser.get());
         Set<SaleItem> saleItemSet = sale.getSaleItems();
         sale.setSaleItems(null);

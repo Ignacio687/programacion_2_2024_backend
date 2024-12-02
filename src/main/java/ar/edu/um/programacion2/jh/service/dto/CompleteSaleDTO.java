@@ -1,5 +1,6 @@
 package ar.edu.um.programacion2.jh.service.dto;
 
+import ar.edu.um.programacion2.jh.domain.Extra;
 import ar.edu.um.programacion2.jh.domain.Sale;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +23,6 @@ public class CompleteSaleDTO implements Serializable {
     @JsonProperty("idDispositivo")
     private Long deviceId;
 
-    @JsonIgnore
     private Long supplierForeignId;
 
     @JsonProperty("codigo")
@@ -69,9 +69,48 @@ public class CompleteSaleDTO implements Serializable {
             sale.getDevice().getCharacteristics().stream().map(CharacteristicDTO::fromCharacteristic).collect(Collectors.toList())
         );
         dto.setCustomizations(
-            sale.getDevice().getCustomizations().stream().map(CustomizationDTO::fromCustomization).collect(Collectors.toList())
+            sale
+                .getDevice()
+                .getCustomizations()
+                .stream()
+                .map(CustomizationDTO::fromCustomization)
+                .map(customizationDTO -> {
+                    customizationDTO.setOptions(
+                        customizationDTO
+                            .getOptions()
+                            .stream()
+                            .filter(optionDTO ->
+                                sale
+                                    .getSaleItems()
+                                    .stream()
+                                    .anyMatch(item -> {
+                                        if (item.getOption() != null && item.getOption().getId().equals(optionDTO.getId())) {
+                                            optionDTO.setAdditionalPrice(item.getPrice());
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    })
+                            )
+                            .collect(Collectors.toList())
+                    );
+                    return customizationDTO;
+                })
+                .filter(customizationDTO -> !customizationDTO.getOptions().isEmpty())
+                .collect(Collectors.toList())
         );
-        dto.setExtras(sale.getDevice().getExtras().stream().map(ExtraDTO::fromExtra).collect(Collectors.toList()));
+        dto.setExtras(
+            sale
+                .getSaleItems()
+                .stream()
+                .filter(item -> item.getExtra() != null)
+                .map(item -> {
+                    Extra extra = item.getExtra();
+                    extra.setPrice(item.getPrice());
+                    return ExtraDTO.fromExtra(item.getExtra());
+                })
+                .collect(Collectors.toList())
+        );
         dto.setFinalPrice(sale.getFinalPrice());
         dto.setSaleDate(sale.getSaleDate());
         return dto;
