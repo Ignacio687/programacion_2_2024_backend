@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,6 +51,7 @@ public class SaleItemResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<SaleItem> createSaleItem(@Valid @RequestBody SaleItem saleItem) throws URISyntaxException {
         LOG.debug("REST request to save SaleItem : {}", saleItem);
         if (saleItem.getId() != null) {
@@ -72,6 +74,7 @@ public class SaleItemResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<SaleItem> updateSaleItem(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody SaleItem saleItem
@@ -106,6 +109,7 @@ public class SaleItemResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<SaleItem> partialUpdateSaleItem(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SaleItem saleItem
@@ -161,6 +165,7 @@ public class SaleItemResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteSaleItem(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SaleItem : {}", id);
         saleItemService.delete(id);

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -55,6 +56,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Device> createDevice(@Valid @RequestBody Device device) throws URISyntaxException {
         LOG.debug("REST request to save Device : {}", device);
         if (device.getId() != null) {
@@ -77,6 +79,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Device> updateDevice(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Device device
@@ -111,6 +114,7 @@ public class DeviceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Device> partialUpdateDevice(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Device device
@@ -183,6 +187,7 @@ public class DeviceResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteDevice(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Device : {}", id);
         deviceService.delete(id);

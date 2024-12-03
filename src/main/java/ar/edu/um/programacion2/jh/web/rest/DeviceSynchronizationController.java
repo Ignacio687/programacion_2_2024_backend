@@ -4,6 +4,7 @@ import ar.edu.um.programacion2.jh.service.DeviceSynchronizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class DeviceSynchronizationController {
     }
 
     @PostMapping("/startDeviceSync")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> startThread(@RequestParam(defaultValue = "3600") Long syncTimeLaps) {
         LOG.debug("Request to start device synchronization with syncTimeLaps: {}", syncTimeLaps);
         if (syncTimeLaps < 0) {
@@ -31,6 +33,7 @@ public class DeviceSynchronizationController {
     }
 
     @PostMapping("/stopDeviceSync")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public void stopThread() {
         LOG.debug("Request to stop device synchronization");
         deviceSynchronizationService.stopThread();

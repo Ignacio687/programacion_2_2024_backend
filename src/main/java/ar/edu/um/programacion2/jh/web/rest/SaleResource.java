@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -55,6 +56,7 @@ public class SaleResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Sale> createSale(@Valid @RequestBody Sale sale) throws URISyntaxException {
         LOG.debug("REST request to save Sale : {}", sale);
         if (sale.getId() != null) {
@@ -77,6 +79,7 @@ public class SaleResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Sale> updateSale(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Sale sale)
         throws URISyntaxException {
         LOG.debug("REST request to update Sale : {}, {}", id, sale);
@@ -109,6 +112,7 @@ public class SaleResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Sale> partialUpdateSale(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Sale sale
@@ -167,6 +171,7 @@ public class SaleResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteSale(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Sale : {}", id);
         saleService.delete(id);
