@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class MakeSaleServiceImplTest {
 
@@ -44,8 +45,6 @@ public class MakeSaleServiceImplTest {
 
     private Logger log;
 
-    private MockedStatic<LoggerFactory> mockedLoggerFactory;
-
     @BeforeEach
     void setUp() {
         this.saleService = mock(SaleService.class);
@@ -57,10 +56,6 @@ public class MakeSaleServiceImplTest {
         this.userService = mock(UserService.class);
         this.saleItemService = mock(SaleItemService.class);
         this.log = mock(Logger.class);
-
-        this.mockedLoggerFactory = mockStatic(LoggerFactory.class);
-        this.mockedLoggerFactory.when(() -> LoggerFactory.getLogger(MakeSaleServiceImpl.class)).thenReturn(this.log);
-
         this.makeSaleService = spy(
             new MakeSaleServiceImpl(
                 this.saleService,
@@ -73,11 +68,7 @@ public class MakeSaleServiceImplTest {
                 this.saleItemService
             )
         );
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.mockedLoggerFactory.close();
+        ReflectionTestUtils.setField(this.makeSaleService, "LOG", this.log);
     }
 
     @Test
@@ -277,7 +268,7 @@ public class MakeSaleServiceImplTest {
 
         assertTrue(result.isPresent());
         verify(saleClient, times(1)).getSaleById(saleId);
-        verify(this.log).debug("Fetching local sale with id: {}", saleId);
+        verify(this.log).debug("Fetching external sale with id: {}", saleId);
     }
 
     @Test
@@ -290,8 +281,8 @@ public class MakeSaleServiceImplTest {
 
         assertFalse(result.isPresent());
         verify(saleClient, times(1)).getSaleById(saleId);
+        verify(this.log).debug("Fetching external sale with id: {}", saleId);
         verify(this.log).warn("External sale not found for id: {}", saleId);
-        verify(this.log).debug("Fetching local sale with id: {}", saleId);
     }
 
     @Test

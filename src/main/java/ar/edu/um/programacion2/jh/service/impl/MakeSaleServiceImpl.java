@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MakeSaleServiceImpl implements MakeSaleService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MakeSaleServiceImpl.class);
+    private final Logger LOG = LoggerFactory.getLogger(MakeSaleServiceImpl.class);
 
     private final SaleService saleService;
 
@@ -122,6 +122,7 @@ public class MakeSaleServiceImpl implements MakeSaleService {
             CompleteSaleDTO saleDTO = CompleteSaleDTO.fromSaleItem(sale.get());
             return Optional.of(saleDTO);
         } else {
+            LOG.debug("Fetching external sale with id: {}", id);
             CompleteSaleDTO sale = this.saleClient.getSaleById(id);
             if (sale == null) {
                 LOG.warn("External sale not found for id: {}", id);
