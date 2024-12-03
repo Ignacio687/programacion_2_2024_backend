@@ -41,6 +41,8 @@ public interface DeviceService {
      */
     Page<Device> findAll(Pageable pageable);
 
+    Page<Device> findAllByActive(boolean active, Pageable pageable);
+
     /**
      * Get all the devices with eager load of many-to-many relationships.
      *

@@ -145,14 +145,19 @@ public class DeviceResource {
     @GetMapping("")
     public ResponseEntity<List<Device>> getAllDevices(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(name = "active", required = false) Boolean active
     ) {
         LOG.debug("REST request to get a page of Devices");
         Page<Device> page;
-        if (eagerload) {
-            page = deviceService.findAllWithEagerRelationships(pageable);
+        if (active != null) {
+            page = deviceService.findAllByActive(active, pageable);
         } else {
-            page = deviceService.findAll(pageable);
+            if (eagerload) {
+                page = deviceService.findAllWithEagerRelationships(pageable);
+            } else {
+                page = deviceService.findAll(pageable);
+            }
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

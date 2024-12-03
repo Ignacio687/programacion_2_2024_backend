@@ -12,6 +12,9 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfigurati
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,5 +84,61 @@ public class DeviceRepositoryTest {
         assertThat(foundDevices).isNotEmpty();
         assertThat(foundDevices).hasSize(1);
         assertThat(foundDevices.get(0).getName()).isEqualTo("Active Device");
+    }
+
+    @Test
+    @Transactional
+    public void testFindByActiveTrue_Pageable() {
+        Device activeDevice = new Device();
+        activeDevice.setSupplierForeignId(126L);
+        activeDevice.setName("Active Device Pageable");
+        activeDevice.setSupplier("Active Supplier");
+        activeDevice.setBasePrice(150.00);
+        activeDevice.setCode("ACTIVE124");
+        activeDevice.setActive(true);
+        entityManager.persistAndFlush(activeDevice);
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Device> foundDevices = deviceRepository.findByActiveTrue(pageable);
+        assertThat(foundDevices).isNotEmpty();
+        assertThat(foundDevices.getContent()).hasSize(1);
+        assertThat(foundDevices.getContent().get(0).getName()).isEqualTo("Active Device Pageable");
+    }
+
+    @Test
+    @Transactional
+    public void testFindByActiveFalse() {
+        Device inactiveDevice = new Device();
+        inactiveDevice.setSupplierForeignId(127L);
+        inactiveDevice.setName("Inactive Device");
+        inactiveDevice.setSupplier("Inactive Supplier");
+        inactiveDevice.setBasePrice(200.00);
+        inactiveDevice.setCode("INACTIVE124");
+        inactiveDevice.setActive(false);
+        entityManager.persistAndFlush(inactiveDevice);
+
+        List<Device> foundDevices = deviceRepository.findByActiveFalse();
+        assertThat(foundDevices).isNotEmpty();
+        assertThat(foundDevices).hasSize(1);
+        assertThat(foundDevices.get(0).getName()).isEqualTo("Inactive Device");
+    }
+
+    @Test
+    @Transactional
+    public void testFindByActiveFalse_Pageable() {
+        Device inactiveDevice = new Device();
+        inactiveDevice.setSupplierForeignId(128L);
+        inactiveDevice.setName("Inactive Device Pageable");
+        inactiveDevice.setSupplier("Inactive Supplier");
+        inactiveDevice.setBasePrice(200.00);
+        inactiveDevice.setCode("INACTIVE125");
+        inactiveDevice.setActive(false);
+        entityManager.persistAndFlush(inactiveDevice);
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Device> foundDevices = deviceRepository.findByActiveFalse(pageable);
+        assertThat(foundDevices).isNotEmpty();
+        assertThat(foundDevices.getContent()).hasSize(1);
+        assertThat(foundDevices.getContent().get(0).getName()).isEqualTo("Inactive Device Pageable");
     }
 }

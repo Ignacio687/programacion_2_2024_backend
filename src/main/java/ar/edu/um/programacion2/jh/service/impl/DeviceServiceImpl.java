@@ -82,6 +82,17 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceRepository.findAll(pageable);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Device> findAllByActive(boolean active, Pageable pageable) {
+        LOG.debug("Request to get all Devices by active status: {}", active);
+        if (active) {
+            return deviceRepository.findByActiveTrue(pageable);
+        } else {
+            return deviceRepository.findByActiveFalse(pageable);
+        }
+    }
+
     public Page<Device> findAllWithEagerRelationships(Pageable pageable) {
         return deviceRepository.findAllWithEagerRelationships(pageable);
     }
