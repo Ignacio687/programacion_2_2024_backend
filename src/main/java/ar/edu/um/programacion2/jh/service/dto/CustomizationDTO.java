@@ -32,6 +32,17 @@ public class CustomizationDTO implements Serializable {
     @JsonProperty("opciones")
     private List<OptionDTO> options = Collections.emptyList();
 
+    @JsonProperty("opcion")
+    private OptionDTO option;
+
+    public CustomizationDTO(Long id, Long supplierForeignId, String name, String description, List<OptionDTO> options) {
+        this.id = id;
+        this.supplierForeignId = supplierForeignId;
+        this.name = name;
+        this.description = description;
+        this.options = options;
+    }
+
     public static Customization toCustomization(CustomizationDTO dto) {
         Customization customization = new Customization();
         customization.setId(dto.getId());
