@@ -18,6 +18,7 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @ExtendWith(OutputCaptureExtension.class)
 @ActiveProfiles("dev")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class DeviceSynchronizationControllerTest {
 
     @Autowired
@@ -39,7 +41,7 @@ class DeviceSynchronizationControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "ROLE_ADMIN")
     void startThread_withValidSyncTimeLaps_shouldReturnOk(CapturedOutput output) throws Exception {
         mockMvc
             .perform(post("/api/startDeviceSync").param("syncTimeLaps", "3600").contentType(MediaType.APPLICATION_JSON))
@@ -50,7 +52,7 @@ class DeviceSynchronizationControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "ROLE_ADMIN")
     void startThread_withNegativeSyncTimeLaps_shouldReturnBadRequest(CapturedOutput output) throws Exception {
         mockMvc
             .perform(post("/api/startDeviceSync").param("syncTimeLaps", "-1").contentType(MediaType.APPLICATION_JSON))
@@ -61,7 +63,7 @@ class DeviceSynchronizationControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "ROLE_ADMIN")
     void stopThread_shouldReturnOk(CapturedOutput output) throws Exception {
         mockMvc.perform(post("/api/stopDeviceSync").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 

@@ -109,3 +109,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+cliente-web:
+  rootUrl: localhost:8080
+  token: fakeTokenForTesting
