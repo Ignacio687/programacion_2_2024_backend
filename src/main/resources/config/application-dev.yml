@@ -111,5 +111,5 @@ jhipster:
 # application:
 
 cliente-web:
-  rootUrl: localhost:8080
-  token: fakeTokenForTesting
+  rootUrl: 10.145.1.1:8080
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpZ25hY2lvX2NoYXZlcyIsImV4cCI6MTc0MTU2MTIwMiwiYXV0aCI6IlJPTEVfVVNFUiIsImlhdCI6MTczMjkyMTIwMn0.PR7WQ-f2oFnS_TBjYooat6iMxy5D-AwvYN4RavHxtFREGtSFxwk2qxkGT3_ZYGEwDM5NhVMcY4qf4YybKB-hmg
