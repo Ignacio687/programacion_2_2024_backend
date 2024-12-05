@@ -1,6 +1,7 @@
 package ar.edu.um.programacion2.jh.service;
 
 import ar.edu.um.programacion2.jh.domain.Device;
+import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +58,7 @@ public interface DeviceService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Device> findOne(Long id);
+    Optional<DeviceDTO> findOne(Long id);
 
     /**
      * Delete the "id" device.

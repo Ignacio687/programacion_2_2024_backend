@@ -3,6 +3,7 @@ package ar.edu.um.programacion2.jh.service.impl;
 import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.repository.DeviceRepository;
 import ar.edu.um.programacion2.jh.service.DeviceService;
+import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,9 +100,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Device> findOne(Long id) {
+    public Optional<DeviceDTO> findOne(Long id) {
         LOG.debug("Request to get Device : {}", id);
-        return deviceRepository.findOneWithEagerRelationships(id);
+        Optional<Device> device = deviceRepository.findOneWithEagerRelationships(id);
+        if (device.isPresent()) {
+            return Optional.of(DeviceDTO.fromDevice(device.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

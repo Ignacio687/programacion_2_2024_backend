@@ -3,6 +3,7 @@ package ar.edu.um.programacion2.jh.web.rest;
 import ar.edu.um.programacion2.jh.domain.Device;
 import ar.edu.um.programacion2.jh.repository.DeviceRepository;
 import ar.edu.um.programacion2.jh.service.DeviceService;
+import ar.edu.um.programacion2.jh.service.dto.DeviceDTO;
 import ar.edu.um.programacion2.jh.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -174,9 +175,9 @@ public class DeviceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the device, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Device> getDevice(@PathVariable("id") Long id) {
+    public ResponseEntity<DeviceDTO> getDevice(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Device : {}", id);
-        Optional<Device> device = deviceService.findOne(id);
+        Optional<DeviceDTO> device = deviceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(device);
     }
 
